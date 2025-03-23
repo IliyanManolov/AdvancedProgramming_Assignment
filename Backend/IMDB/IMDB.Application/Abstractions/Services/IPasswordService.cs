@@ -2,5 +2,5 @@
 
 public interface IPasswordService
 {
-    public Task<string> GetHash(string text);
+    public string GetHash(string text);
 }
