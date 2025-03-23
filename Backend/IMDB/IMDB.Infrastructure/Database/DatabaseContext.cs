@@ -1,14 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using IMDB.Domain.Models;
+using IMDB.Infrastructure.Mappings;
+using Microsoft.EntityFrameworkCore;
 
 namespace IMDB.Infrastructure.Database;
 
 public class DatabaseContext : DbContext
 {
+    public DbSet<Actor> Actors { get; set; }
+    public DbSet<Genre> Genres { get; set; }
+    public DbSet<ShowEpisode> ShowEpisodes { get; set; }
+    public DbSet<Director> Directors { get; set; }
     public DatabaseContext(DbContextOptions dbContextOptions)
     : base(dbContextOptions)
     {
@@ -17,6 +18,11 @@ public class DatabaseContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+
+        modelBuilder.ApplyConfiguration(new GenreMapping());
+        modelBuilder.ApplyConfiguration(new ShowEpisodeMapping());
+        modelBuilder.ApplyConfiguration(new ActorMapping());
+        modelBuilder.ApplyConfiguration(new DirectorMapping());
 
         base.OnModelCreating(modelBuilder);
     }
