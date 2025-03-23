@@ -8,6 +8,4 @@ interface IUserService
     public Task<(long? Id, string Error)> CreateUserAsync(CreateUserDto user, Role role = Role.User);
     public Task<(UserDetailsDto? User, string Error)> GetUserDetailsAsync(long? userId);
     public Task<(UserShortDto? User, string Error)> GetUserBasicsAsync(long? userId);
-
-    public Task<(bool Status, string Error)> LoginAsync(AuthenticateDto user);
 }
