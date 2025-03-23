@@ -4,7 +4,7 @@ using System.Text;
 
 namespace IMDB.Application.Services;
 
-class PasswordService : IPasswordService
+public class PasswordService : IPasswordService
 {
     public string GetHash(string text)
     {

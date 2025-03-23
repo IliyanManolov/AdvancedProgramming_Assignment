@@ -22,7 +22,7 @@ public class MediaShortDto
     public ISet<string> Directors { get; set; } = new HashSet<string>();
     public DateTime ReleaseDate { get; set; }
     public string Title { get; set; }
-    public double Rating { get; set; }
+    public double? Rating { get; set; }
     public long Reviews { get; set; }
     public string Description { get; set; }
 
