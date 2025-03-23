@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMDB.Domain", "IMDB.Domain\IMDB.Domain.csproj", "{FFFFFC7E-F0FC-4B39-B042-4151A1AEEEAB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMDB.Application", "IMDB.Application\IMDB.Application.csproj", "{6A9D105F-3B05-4FC0-ADCB-B5BC5572FE9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMDB.Infrastructure", "IMDB.Infrastructure\IMDB.Infrastructure.csproj", "{98DD1F03-4079-42BE-9C3E-4B1D6654A064}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{6A9D105F-3B05-4FC0-ADCB-B5BC5572FE9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A9D105F-3B05-4FC0-ADCB-B5BC5572FE9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A9D105F-3B05-4FC0-ADCB-B5BC5572FE9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98DD1F03-4079-42BE-9C3E-4B1D6654A064}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98DD1F03-4079-42BE-9C3E-4B1D6654A064}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98DD1F03-4079-42BE-9C3E-4B1D6654A064}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98DD1F03-4079-42BE-9C3E-4B1D6654A064}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
