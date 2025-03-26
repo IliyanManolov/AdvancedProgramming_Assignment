@@ -23,6 +23,10 @@ public class DatabaseContext : DbContext
         modelBuilder.ApplyConfiguration(new ShowEpisodeMapping());
         modelBuilder.ApplyConfiguration(new ActorMapping());
         modelBuilder.ApplyConfiguration(new DirectorMapping());
+        modelBuilder.ApplyConfiguration(new MovieMapping());
+        modelBuilder.ApplyConfiguration(new TvShowMapping());
+        modelBuilder.ApplyConfiguration(new UserMapping());
+        modelBuilder.ApplyConfiguration(new WatchListMapping());
 
         base.OnModelCreating(modelBuilder);
     }

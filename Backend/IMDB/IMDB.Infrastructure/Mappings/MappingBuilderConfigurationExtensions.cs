@@ -58,4 +58,32 @@ public static class MappingBuilderConfigurationExtensions
                 v => v.Value.ToUniversalTime(),
                 v => new DateTime(v.Ticks, DateTimeKind.Utc));
     }
+
+    public static void AddMediaSharedMappings<TEntity>(this EntityTypeBuilder<TEntity> builder)
+        where TEntity : Media
+    {
+        builder.Property(e => e.ReleaseDate)
+            .HasColumnName("release_date")
+            .HasConversion(
+                v => v.ToUniversalTime(),
+                v => new DateTime(v.Ticks, DateTimeKind.Utc));
+
+        builder.Property(e => e.Title)
+            .HasColumnName("title")
+            .IsRequired();
+
+        builder.Property(e => e.Rating)
+            .HasColumnName("reviews");
+
+        builder.Property(e => e.Reviews)
+            .HasColumnName("reviews");
+
+        builder.Property(e => e.Description)
+            .HasColumnName("description");
+
+        builder.Property(e => e.PosterImage)
+            .HasColumnName("poster_image")
+            .HasColumnType("VARBINARY(MAX)");
+
+    }
 }
