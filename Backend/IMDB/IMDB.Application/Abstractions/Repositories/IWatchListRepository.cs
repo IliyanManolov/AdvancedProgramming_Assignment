@@ -4,5 +4,5 @@ namespace IMDB.Application.Abstractions.Repositories;
 
 public interface IWatchListRepository : IBaseRepository<WatchList>
 {
-    public Task<WatchList> GetByUserIdAsync(long? userId);
+    public Task<WatchList?> GetByUserIdAsync(long? userId);
 }

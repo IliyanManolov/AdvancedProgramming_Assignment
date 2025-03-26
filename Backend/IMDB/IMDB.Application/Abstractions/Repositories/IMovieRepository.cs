@@ -10,10 +10,9 @@ public interface IMovieRepository : IBaseRepository<Movie>
     public Task<IEnumerable<Movie>> GetAllByActorNameAsync(string? actorName);
     public Task<IEnumerable<Movie>> GetAllByGenreIdAsync(long? genreId);
     public Task<IEnumerable<Movie>> GetAllByGenreNameAsync(string? genreName);
-    public Task<Movie> GetByNameAsync(string? movieName);
+    public Task<Movie?> GetByNameAsync(string? movieName);
     public Task<IEnumerable<Movie>> GetAllWithMaxLengthAsync(long? maxLength);
     public Task<IEnumerable<Movie>> GetAllWithMinimumLengthAsync(long? minLength);
     public Task<IEnumerable<Movie>> GetAllBetweenSpecificLengthAsync(long? minLength, long? maxLength);
-    public Task<IEnumerable<Movie>> GetAllEndedAsync();
 
 }

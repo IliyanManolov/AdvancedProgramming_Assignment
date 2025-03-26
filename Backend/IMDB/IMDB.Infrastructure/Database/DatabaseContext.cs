@@ -10,6 +10,12 @@ public class DatabaseContext : DbContext
     public DbSet<Genre> Genres { get; set; }
     public DbSet<ShowEpisode> ShowEpisodes { get; set; }
     public DbSet<Director> Directors { get; set; }
+    public DbSet<Movie> Movies { get; set; }
+    public DbSet<TvShow> TvShows { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<WatchList> WatchLists { get; set; }
+
+
     public DatabaseContext(DbContextOptions dbContextOptions)
     : base(dbContextOptions)
     {

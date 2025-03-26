@@ -1,4 +1,6 @@
-﻿using IMDB.Infrastructure.Database;
+﻿using IMDB.Application.Abstractions.Repositories;
+using IMDB.Infrastructure.Database;
+using IMDB.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,7 +36,23 @@ public static class Configuration
             });
         });
 
-
+        services.AddRepositories();
         return services;
+    }
+
+    private static void AddRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IWatchListRepository, WatchListRepository>();
+
+        services.AddScoped<IActorRepository, ActorRepository>();
+        services.AddScoped<IDirectorRepository, DirectorRepository>();
+
+        services.AddScoped<IGenreRepository, GenreRepository>();
+        
+        services.AddScoped<IMovieRepository, MovieRepository>();
+        services.AddScoped<IEpisodeRepository, EpisodeRepository>();
+        services.AddScoped<ITvShowRepository, TvShowRepository>();
+        
     }
 }
