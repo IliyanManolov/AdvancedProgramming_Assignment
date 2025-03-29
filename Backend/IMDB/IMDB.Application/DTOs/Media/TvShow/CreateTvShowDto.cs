@@ -14,8 +14,9 @@ public class CreateTvShowDto
     public string Title { get; set; }
     public string Description { get; set; }
 
-
     public int? SeasonsCount { get; set; }
-    public long? EpisodesCount { get; set; }
     public DateTime? ShowEndDate { get; set; }
+
+    public byte[]? PosterImage { get; set; }
+    public long CreatedByUserId { get; set; }
 }

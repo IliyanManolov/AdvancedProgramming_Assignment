@@ -16,15 +16,8 @@ public class CreateMovieDto
 
     public byte[]? PosterImage { get; set; }
 
-    /// <summary>
-    /// Property to allow frontend to distinguish between Movie, TvShow, etc.
-    /// </summary>
-    public MediaType Type { get; set; }
-
     [Required]
     public long Length { get; set; }
 
-    public int? ShowSeasonsCount { get; set; }
-    public long? ShowEpisodesCount { get; set; }
-    public DateTime? ShowEndDate { get; set; }
+    public long CreatedByUserId { get; set; }
 }

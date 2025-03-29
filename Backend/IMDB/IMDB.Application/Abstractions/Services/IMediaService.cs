@@ -6,9 +6,9 @@ namespace IMDB.Application.Abstractions.Services;
 
 public interface IMediaService
 {
-    public Task<(IEnumerable<MediaShortDto>? MediaList, string Error)> GetAllDiscoveryAsync();
-    public Task<(IEnumerable<MediaShortDto>? MediaList, string Error)> GetAllWithGenres(string[] genres);
+    public Task<(IEnumerable<MediaShortDto>? MediaList, string? Error)> GetAllDiscoveryAsync();
+    public Task<(IEnumerable<MediaShortDto>? MediaList, string? Error)> GetAllWithGenres(string[] genres);
 
-    public Task<(long? Id, string Error)> CreateMovieAsync(CreateMovieDto dto);
-    public Task<(long? Id, string Error)> CreateTvShowAsync(CreateTvShowDto dto);
+    public Task<(long? Id, string? Error)> CreateMovieAsync(CreateMovieDto dto);
+    public Task<(long? Id, string? Error)> CreateTvShowAsync(CreateTvShowDto dto);
 }
