@@ -14,7 +14,7 @@ internal class GenreRepository : BaseRepository<Genre>, IGenreRepository
     public async Task<Genre?> GetByGenreNameAsync(string? genreName)
     {
         return await Query
-            .Where(e => e.Name.Equals(genreName, StringComparison.InvariantCulture))
+            .Where(e => e.Name.Equals(genreName))
             .FirstOrDefaultAsync();
     }
 

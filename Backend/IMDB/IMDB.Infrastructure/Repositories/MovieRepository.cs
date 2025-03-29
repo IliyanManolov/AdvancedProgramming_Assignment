@@ -22,7 +22,7 @@ internal class MovieRepository : BaseRepository<Movie>, IMovieRepository
     {
 
         return await Query
-            .Where(e => e.Actors.Any(ac => $"{ac.FirstName} {ac.LastName}".Equals(actorName, StringComparison.InvariantCulture)))
+            .Where(e => e.Actors.Any(ac => $"{ac.FirstName} {ac.LastName}".Equals(actorName)))
             .ToListAsync();
     }
 
@@ -43,7 +43,7 @@ internal class MovieRepository : BaseRepository<Movie>, IMovieRepository
     public async Task<IEnumerable<Movie>> GetAllByGenreNameAsync(string? genreName)
     {
         return await Query
-            .Where(e => e.Genres.Any(ge => ge.Name.Equals(genreName, StringComparison.InvariantCulture)))
+            .Where(e => e.Genres.Any(ge => ge.Name.Equals(genreName)))
             .ToListAsync();
     }
 
@@ -77,7 +77,7 @@ internal class MovieRepository : BaseRepository<Movie>, IMovieRepository
     public async Task<Movie?> GetByNameAsync(string? movieName)
     {
         return await Query
-            .Where(e => e.Title.Equals(movieName, StringComparison.InvariantCulture))
+            .Where(e => e.Title.Equals(movieName))
             .FirstOrDefaultAsync();
     }
 }

@@ -4,7 +4,7 @@ using IMDB.Application.DTOs.Media.TvShow;
 
 namespace IMDB.Application.Abstractions.Services;
 
-interface IMediaService
+public interface IMediaService
 {
     public Task<(IEnumerable<MediaShortDto>? MediaList, string Error)> GetAllDiscoveryAsync();
     public Task<(IEnumerable<MediaShortDto>? MediaList, string Error)> GetAllWithGenres(string[] genres);

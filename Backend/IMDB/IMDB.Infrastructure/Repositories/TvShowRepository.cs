@@ -22,7 +22,7 @@ internal class TvShowRepository : BaseRepository<TvShow>, ITvShowRepository
     {
 
         return await Query
-            .Where(e => e.Actors.Any(ac => $"{ac.FirstName} {ac.LastName}".Equals(actorName, StringComparison.InvariantCulture)))
+            .Where(e => e.Actors.Any(ac => $"{ac.FirstName} {ac.LastName}".Equals(actorName)))
             .ToListAsync();
     }
 
@@ -43,7 +43,7 @@ internal class TvShowRepository : BaseRepository<TvShow>, ITvShowRepository
     public async Task<IEnumerable<TvShow>> GetAllByGenreNameAsync(string? genreName)
     {
         return await Query
-            .Where(e => e.Genres.Any(ge => ge.Name.Equals(genreName, StringComparison.InvariantCulture)))
+            .Where(e => e.Genres.Any(ge => ge.Name.Equals(genreName)))
             .ToListAsync();
     }
 
@@ -57,7 +57,7 @@ internal class TvShowRepository : BaseRepository<TvShow>, ITvShowRepository
     public async Task<TvShow?> GetByNameAsync(string? movieName)
     {
         return await Query
-            .Where(e => e.Title.Equals(movieName, StringComparison.InvariantCulture))
+            .Where(e => e.Title.Equals(movieName))
             .FirstOrDefaultAsync();
     }
 

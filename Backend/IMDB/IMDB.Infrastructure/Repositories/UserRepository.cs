@@ -14,18 +14,18 @@ internal class UserRepository : BaseRepository<User>, IUserRepository
     public async Task<User?> GetByUsernameAsync(string username)
     {
         return await Query
-            .FirstOrDefaultAsync(e => e.Username.Equals(username, StringComparison.InvariantCulture));
+            .FirstOrDefaultAsync(e => e.Username.Equals(username));
     }
 
     public Task<bool> IsExistingEmailAsync(string email)
     {
         return Query
-            .AnyAsync(e => e.Email.Equals(email, StringComparison.InvariantCulture));
+            .AnyAsync(e => e.Email.Equals(email));
     }
 
     public Task<bool> IsExistingUsernameAsync(string username)
     {
         return Query
-            .AnyAsync(e => e.Username.Equals(username, StringComparison.InvariantCulture));
+            .AnyAsync(e => e.Username.Equals(username));
     }
 }

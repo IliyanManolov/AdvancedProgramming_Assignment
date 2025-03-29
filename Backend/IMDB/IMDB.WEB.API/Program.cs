@@ -1,3 +1,4 @@
+using IMDB.Application;
 using IMDB.Infrastructure;
 using IMDB.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,7 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
 
 
-        //builder.Configuration.AddJsonFile("./Config/appsettings.json", optional: true, reloadOnChange: true);
+        builder.Configuration.AddJsonFile("./Config/appsettings.json", optional: true, reloadOnChange: true);
         // Add services to the container.
 
         builder.Services.AddControllers();
@@ -17,7 +18,7 @@ internal class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-
+        builder.Services.AddApplicationLayer();
         builder.Services.AddDatabase(builder.Configuration);
 
         var context = builder.Services.BuildServiceProvider().GetRequiredService<DatabaseContext>();

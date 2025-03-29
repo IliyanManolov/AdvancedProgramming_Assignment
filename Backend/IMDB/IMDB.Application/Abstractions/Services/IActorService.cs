@@ -2,7 +2,7 @@
 
 namespace IMDB.Application.Abstractions.Services;
 
-interface IActorService
+public interface IActorService
 {
     public Task<(long? Id, string Error)> CreateAsync(CreateActorDto dto);
 }

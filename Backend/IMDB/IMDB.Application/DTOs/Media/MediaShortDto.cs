@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace IMDB.Application.DTOs.Media;
@@ -29,6 +30,7 @@ public class MediaShortDto
     /// <summary>
     /// Property to allow frontend to distinguish between Movie, TvShow, etc.
     /// </summary>
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public MediaType Type { get; set; }
 
     public long Length { get; set; }
