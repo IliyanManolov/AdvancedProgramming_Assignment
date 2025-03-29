@@ -21,13 +21,23 @@ internal class ActorMapping : IEntityTypeConfiguration<Actor>
             .WithMany(s => s.CreatedActors)
             .HasForeignKey(e => e.CreatedByUserId);
 
-        builder.HasMany(e => e.ParticipatedShows)
-            .WithMany(e => e.Actors);
+        builder.HasMany(a => a.ParticipatedShows)
+        .WithMany(t => t.Actors)
+        .UsingEntity(
+            "ActorTvShow",
+            r => r.HasOne(typeof(Actor)).WithMany().HasForeignKey("ActorId").HasPrincipalKey(nameof(Actor.Id)),
+            l => l.HasOne(typeof(TvShow)).WithMany().HasForeignKey("TvShowId").HasPrincipalKey(nameof(TvShow.Id)),
+            j => j.HasKey("ActorId", "TvShowId"));
 
+        
 
         builder.HasMany(e => e.ParticipatedMovies)
-            .WithMany(e => e.Actors);
-
+            .WithMany(e => e.Actors)
+            .UsingEntity(
+            "ActorMovie",
+            r => r.HasOne(typeof(Actor)).WithMany().HasForeignKey("ActorId").HasPrincipalKey(nameof(Actor.Id)),
+            l => l.HasOne(typeof(Movie)).WithMany().HasForeignKey("MovieId").HasPrincipalKey(nameof(Movie.Id)),
+            j => j.HasKey("ActorId", "MovieId"));
 
         builder.AddPersonEntitySharedMappings();
         builder.AddBaseEntityTemporalMappings();

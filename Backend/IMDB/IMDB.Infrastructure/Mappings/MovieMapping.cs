@@ -25,17 +25,33 @@ internal class MovieMapping : IEntityTypeConfiguration<Movie>
 
         // TODO: Test if this will work correctly
         builder.HasMany(e => e.Genres)
-            .WithMany();
+            .WithMany()
+            .UsingEntity(
+            "MovieGenre",
+            l => l.HasOne(typeof(Movie)).WithMany().HasForeignKey("MovieId").HasPrincipalKey(nameof(Movie.Id)),
+            r => r.HasOne(typeof(Genre)).WithMany().HasForeignKey("GenreId").HasPrincipalKey(nameof(Genre.Id)),
+            j => j.HasKey("MovieId", "GenreId"));
 
         builder.HasMany(e => e.Actors)
-            .WithMany();
+            .WithMany()
+            .UsingEntity(
+            "ActorMovie",
+            l => l.HasOne(typeof(Movie)).WithMany().HasForeignKey("MovieId").HasPrincipalKey(nameof(Movie.Id)),
+            r => r.HasOne(typeof(Actor)).WithMany().HasForeignKey("ActorId").HasPrincipalKey(nameof(Actor.Id)),
+            j => j.HasKey("ActorId", "MovieId"));
 
         builder.HasMany(e => e.Directors)
-            .WithMany();
+            .WithMany()
+            .UsingEntity(
+            "DirectorMovie",
+            l => l.HasOne(typeof(Movie)).WithMany().HasForeignKey("MovieId").HasPrincipalKey(nameof(Movie.Id)),
+            r => r.HasOne(typeof(Director)).WithMany().HasForeignKey("DirectorId").HasPrincipalKey(nameof(Director.Id)),
+            j => j.HasKey("DirectorId", "MovieId")); ;
 
         builder.HasOne(e => e.CreatedByUser)
             .WithMany(u => u.CreatedMovies)
             .HasForeignKey(e => e.CreatedByUserId);
+        
 
         builder.AddMediaSharedMappings();
         builder.AddBaseEntityTemporalMappings();

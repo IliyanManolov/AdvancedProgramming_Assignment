@@ -22,11 +22,20 @@ internal class DirectorMapping : IEntityTypeConfiguration<Director>
             .HasForeignKey(e => e.CreatedByUserId);
 
         builder.HasMany(e => e.DirectedShows)
-            .WithMany(e => e.Directors);
+            .WithMany(e => e.Directors)
+            .UsingEntity("DirectorTvShow",
+            r => r.HasOne(typeof(Director)).WithMany().HasForeignKey("DirectorId").HasPrincipalKey(nameof(Director.Id)),
+            l => l.HasOne(typeof(TvShow)).WithMany().HasForeignKey("TvShowId").HasPrincipalKey(nameof(TvShow.Id)),
+            j => j.HasKey("DirectorId", "TvShowId"));
 
 
         builder.HasMany(e => e.DirectedMovies)
-            .WithMany(e => e.Directors);
+            .WithMany(e => e.Directors)
+            .UsingEntity(
+            "DirectorMovie",
+            r => r.HasOne(typeof(Director)).WithMany().HasForeignKey("DirectorId").HasPrincipalKey(nameof(Director.Id)),
+            l => l.HasOne(typeof(Movie)).WithMany().HasForeignKey("MovieId").HasPrincipalKey(nameof(Movie.Id)),
+            j => j.HasKey("DirectorId", "MovieId"));
 
 
         builder.AddPersonEntitySharedMappings();
