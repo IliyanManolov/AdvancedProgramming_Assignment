@@ -32,4 +32,10 @@ internal class ActorRepository : BaseRepository<Actor>, IActorRepository
         .Where(a => a.ParticipatedShows.Any(show => show.Id.Equals(showId)))
         .ToListAsync();
     }
+
+    public async Task<Actor?> GetByNameAsync(string firstName, string lastName)
+    {
+        return await Query
+            .FirstOrDefaultAsync(x => x.FirstName.Equals(firstName) && x.LastName.Equals(lastName));
+    }
 }

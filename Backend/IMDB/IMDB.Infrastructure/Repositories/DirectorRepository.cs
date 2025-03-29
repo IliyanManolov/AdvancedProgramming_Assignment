@@ -31,4 +31,10 @@ internal class DirectorRepository : BaseRepository<Director>, IDirectorRepositor
             .Where(a => a.DirectedShows.Any(show => show.Id.Equals(showId)))
             .ToListAsync();
     }
+
+    public async Task<Director?> GetByNameAsync(string firstName, string lastName)
+    {
+        return await Query
+            .FirstOrDefaultAsync(x => x.FirstName.Equals(firstName) && x.LastName.Equals(lastName));
+    }
 }

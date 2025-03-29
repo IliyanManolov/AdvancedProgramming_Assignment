@@ -11,12 +11,14 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordService _passwordService;
+    private readonly IWatchListRepository _watchlistRepository;
     private readonly ILogger<UserService> _logger;
 
-    public UserService(IUserRepository userRepository, IPasswordService passwordService, ILoggerFactory loggerFactory)
+    public UserService(IUserRepository userRepository, IPasswordService passwordService, IWatchListRepository watchlistRepository, ILoggerFactory loggerFactory)
     {
         _userRepository = userRepository;
         _passwordService = passwordService;
+        _watchlistRepository = watchlistRepository;
         _logger = loggerFactory.CreateLogger<UserService>();
     }
 
@@ -108,6 +110,11 @@ public class UserService : IUserService
         };
 
         await _userRepository.CreateAsync(dbUser);
+
+        // workaround-ish
+        var watchlist = dbUser.WatchList;
+        watchlist.UserId = dbUser.Id;
+        await _watchlistRepository.UpdateAsync(watchlist);
 
         return (dbUser.Id, null);
     }

@@ -15,6 +15,9 @@ public static class Configuration
         services.AddScoped<IMediaTransformer, MediaTransformer>();
         services.AddScoped<IGenreService, GenreService>();
 
+        services.AddScoped<IActorService, ActorService>();
+        services.AddScoped<IDirectorService, DirectorService>();
+
         return services;
     }
 }

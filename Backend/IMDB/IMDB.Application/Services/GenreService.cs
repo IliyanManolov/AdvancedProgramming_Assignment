@@ -1,6 +1,7 @@
 ﻿using IMDB.Application.Abstractions.Repositories;
 using IMDB.Application.Abstractions.Services;
 using IMDB.Application.DTOs.Genre;
+using IMDB.Domain.Enums;
 using IMDB.Domain.Models;
 using Microsoft.Extensions.Logging;
 
@@ -10,16 +11,39 @@ public class GenreService : IGenreService
 {
     private readonly IGenreRepository _genreRepository;
     private readonly ILogger<GenreService> _logger;
+    private readonly IUserRepository _userRepository;
 
-    public GenreService(IGenreRepository genreRepository, ILoggerFactory loggerFactory)
+    public GenreService(IGenreRepository genreRepository, IUserRepository userRepository, ILoggerFactory loggerFactory)
     {
         _genreRepository = genreRepository;
         _logger = loggerFactory.CreateLogger<GenreService>();
+        _userRepository = userRepository;
     }
 
-    public Task<(long? Id, string? Error)> CreateAsync(CreateGenreDto dto)
+    public async Task<(long? Id, string? Error)> CreateAsync(CreateGenreDto dto)
     {
-        throw new NotImplementedException();
+        var dbUser = await _userRepository.GetByIdAsync(dto.CreatedByUserId);
+
+        if (dbUser is null || (dbUser.Role is not Role.Moderator && dbUser.Role is not Role.Administrator))
+        {
+            return (null, "UNAUTHORIZED");
+        }
+
+        var dbGenre = await _genreRepository.GetByGenreNameAsync(dto.Name);
+
+        if (dbGenre is not null)
+            return (null, $"Genre with name {dto.Name} already exists");
+
+        var newGenre = new Genre()
+        {
+            CreatedByUserId = dto.CreatedByUserId,
+            Name = dto.Name,
+            CreateTimeStamp = DateTime.UtcNow
+        };
+
+        await _genreRepository.CreateAsync(newGenre);
+
+        return (newGenre.Id, null);
     }
 
     public async Task<(IEnumerable<GenreDetailsDto> GenresList, string? Error)> GetAllAsync()

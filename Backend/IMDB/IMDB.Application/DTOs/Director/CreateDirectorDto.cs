@@ -17,4 +17,6 @@ public class CreateDirectorDto
     [Required]
     public string Nationality { get; set; }
     public byte[]? ProfileImage { get; set; }
+
+    public long? CreatedByUserId { get; set; }
 }
