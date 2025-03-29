@@ -25,8 +25,8 @@ internal class ActorMapping : IEntityTypeConfiguration<Actor>
         .WithMany(t => t.Actors)
         .UsingEntity(
             "ActorTvShow",
-            r => r.HasOne(typeof(Actor)).WithMany().HasForeignKey("ActorId").HasPrincipalKey(nameof(Actor.Id)),
-            l => l.HasOne(typeof(TvShow)).WithMany().HasForeignKey("TvShowId").HasPrincipalKey(nameof(TvShow.Id)),
+            r => r.HasOne(typeof(Actor)).WithMany().HasForeignKey("ActorId").OnDelete(DeleteBehavior.Restrict).HasPrincipalKey(nameof(Actor.Id)),
+            l => l.HasOne(typeof(TvShow)).WithMany().HasForeignKey("TvShowId").OnDelete(DeleteBehavior.Restrict).HasPrincipalKey(nameof(TvShow.Id)),
             j => j.HasKey("ActorId", "TvShowId"));
 
         
@@ -35,8 +35,8 @@ internal class ActorMapping : IEntityTypeConfiguration<Actor>
             .WithMany(e => e.Actors)
             .UsingEntity(
             "ActorMovie",
-            r => r.HasOne(typeof(Actor)).WithMany().HasForeignKey("ActorId").HasPrincipalKey(nameof(Actor.Id)),
-            l => l.HasOne(typeof(Movie)).WithMany().HasForeignKey("MovieId").HasPrincipalKey(nameof(Movie.Id)),
+            r => r.HasOne(typeof(Actor)).WithMany().HasForeignKey("ActorId").OnDelete(DeleteBehavior.Restrict).HasPrincipalKey(nameof(Actor.Id)),
+            l => l.HasOne(typeof(Movie)).WithMany().HasForeignKey("MovieId").OnDelete(DeleteBehavior.Restrict).HasPrincipalKey(nameof(Movie.Id)),
             j => j.HasKey("ActorId", "MovieId"));
 
         builder.AddPersonEntitySharedMappings();

@@ -73,7 +73,7 @@ public static class MappingBuilderConfigurationExtensions
             .IsRequired();
 
         builder.Property(e => e.Rating)
-            .HasColumnName("reviews");
+            .HasColumnName("rating");
 
         builder.Property(e => e.Reviews)
             .HasColumnName("reviews");

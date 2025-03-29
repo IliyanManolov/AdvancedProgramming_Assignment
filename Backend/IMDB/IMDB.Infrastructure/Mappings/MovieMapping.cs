@@ -27,26 +27,19 @@ internal class MovieMapping : IEntityTypeConfiguration<Movie>
         builder.HasMany(e => e.Genres)
             .WithMany()
             .UsingEntity(
-            "MovieGenre",
-            l => l.HasOne(typeof(Movie)).WithMany().HasForeignKey("MovieId").HasPrincipalKey(nameof(Movie.Id)),
-            r => r.HasOne(typeof(Genre)).WithMany().HasForeignKey("GenreId").HasPrincipalKey(nameof(Genre.Id)),
-            j => j.HasKey("MovieId", "GenreId"));
-
-        builder.HasMany(e => e.Actors)
-            .WithMany()
-            .UsingEntity(
-            "ActorMovie",
-            l => l.HasOne(typeof(Movie)).WithMany().HasForeignKey("MovieId").HasPrincipalKey(nameof(Movie.Id)),
-            r => r.HasOne(typeof(Actor)).WithMany().HasForeignKey("ActorId").HasPrincipalKey(nameof(Actor.Id)),
-            j => j.HasKey("ActorId", "MovieId"));
-
-        builder.HasMany(e => e.Directors)
-            .WithMany()
-            .UsingEntity(
-            "DirectorMovie",
-            l => l.HasOne(typeof(Movie)).WithMany().HasForeignKey("MovieId").HasPrincipalKey(nameof(Movie.Id)),
-            r => r.HasOne(typeof(Director)).WithMany().HasForeignKey("DirectorId").HasPrincipalKey(nameof(Director.Id)),
-            j => j.HasKey("DirectorId", "MovieId")); ;
+                "MovieGenre",
+                j => j.HasOne(typeof(Genre))
+                    .WithMany()
+                    .HasForeignKey("GenreId")
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasPrincipalKey(nameof(Genre.Id)),
+                j => j.HasOne(typeof(Movie))
+                    .WithMany()
+                    .HasForeignKey("MovieId")
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasPrincipalKey(nameof(Movie.Id)),
+                j => j.HasKey("MovieId", "GenreId")
+            );
 
         builder.HasOne(e => e.CreatedByUser)
             .WithMany(u => u.CreatedMovies)

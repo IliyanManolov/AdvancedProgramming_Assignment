@@ -35,25 +35,18 @@ internal class TvShowMapping : IEntityTypeConfiguration<TvShow>
             .WithMany()
             .UsingEntity(
                 "TvShowGenre",
-                l => l.HasOne(typeof(TvShow)).WithMany().HasForeignKey("TvShowId").HasPrincipalKey(nameof(TvShow.Id)),
-                r => r.HasOne(typeof(Genre)).WithMany().HasForeignKey("GenreId").HasPrincipalKey(nameof(Genre.Id)),
-                j => j.HasKey("TvShowId", "GenreId"));
-
-        builder.HasMany(e => e.Actors)
-            .WithMany()
-            .UsingEntity(
-                "ActorTvShow",
-                l => l.HasOne(typeof(TvShow)).WithMany().HasForeignKey("TvShowId").HasPrincipalKey(nameof(TvShow.Id)),
-                r => r.HasOne(typeof(Actor)).WithMany().HasForeignKey("ActorId").HasPrincipalKey(nameof(Actor.Id)),
-                j => j.HasKey("ActorId", "TvShowId"));
-
-
-        builder.HasMany(e => e.Directors)
-            .WithMany()
-            .UsingEntity("DirectorTvShow",
-                l => l.HasOne(typeof(TvShow)).WithMany().HasForeignKey("TvShowId").HasPrincipalKey(nameof(TvShow.Id)),
-                r => r.HasOne(typeof(Director)).WithMany().HasForeignKey("DirectorId").HasPrincipalKey(nameof(Director.Id)),
-                j => j.HasKey("DirectorId", "TvShowId"));
+                j => j.HasOne(typeof(Genre))
+                    .WithMany()
+                    .HasForeignKey("GenreId")
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasPrincipalKey(nameof(Genre.Id)),
+                j => j.HasOne(typeof(TvShow))
+                    .WithMany()
+                    .HasForeignKey("TvShowId")
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasPrincipalKey(nameof(TvShow.Id)),
+                j => j.HasKey("TvShowId", "GenreId")
+            );
 
         builder.HasOne(e => e.CreatedByUser)
             .WithMany(u => u.CreatedShows)

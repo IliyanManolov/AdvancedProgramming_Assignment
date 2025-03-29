@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMDB.Application", "IMDB.Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMDB.Infrastructure", "IMDB.Infrastructure\IMDB.Infrastructure.csproj", "{98DD1F03-4079-42BE-9C3E-4B1D6654A064}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMDB.WEB.API", "IMDB.WEB.API\IMDB.WEB.API.csproj", "{BE158E50-5EFD-464D-75EA-EC8FD5BAE638}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{98DD1F03-4079-42BE-9C3E-4B1D6654A064}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98DD1F03-4079-42BE-9C3E-4B1D6654A064}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98DD1F03-4079-42BE-9C3E-4B1D6654A064}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE158E50-5EFD-464D-75EA-EC8FD5BAE638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE158E50-5EFD-464D-75EA-EC8FD5BAE638}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE158E50-5EFD-464D-75EA-EC8FD5BAE638}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE158E50-5EFD-464D-75EA-EC8FD5BAE638}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
