@@ -11,6 +11,18 @@ internal class MovieRepository : BaseRepository<Movie>, IMovieRepository
     {
     }
 
+    public override async Task<Movie?> GetByIdAsync(long? id)
+    {
+        return await Query
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+    public override async Task<IEnumerable<Movie>> GetAllAsync()
+    {
+        return await Query
+            .Include(e => e.Actors)
+            .ToListAsync();
+    }
+
     public async Task<IEnumerable<Movie>> GetAllByActorIdAsync(long? actorId)
     {
         return await Query

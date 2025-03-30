@@ -39,6 +39,27 @@ public class MediaController : ControllerBase
         return Ok(movieId);
     }
 
+    [HttpPatch("movies/{mediaId}")]
+    public async Task<IActionResult> UpdateMovieAsync([FromBody] UpdateMovieDto model, [FromRoute] long mediaId)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var (movieId, error) = await _mediaService.UpdateMovieAsync(model, mediaId);
+
+        if (!string.IsNullOrEmpty(error))
+        {
+            if (error.Contains("unauthorized", StringComparison.InvariantCultureIgnoreCase))
+                return Unauthorized();
+            else
+                return BadRequest(error);
+        }
+
+        return Ok(movieId);
+    }
+
     [HttpPost("shows/")]
     public async Task<IActionResult> CreateShowAsync([FromBody] CreateTvShowDto model)
     {
@@ -58,6 +79,27 @@ public class MediaController : ControllerBase
         }
 
         return Ok(showId);
+    }
+
+    [HttpPatch("shows/{mediaId}")]
+    public async Task<IActionResult> UpdateShowAsync([FromBody] UpdateTvShowDto model, [FromRoute] long mediaId)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var (movieId, error) = await _mediaService.UpdateTvShowAsync(model, mediaId);
+
+        if (!string.IsNullOrEmpty(error))
+        {
+            if (error.Contains("unauthorized", StringComparison.InvariantCultureIgnoreCase))
+                return Unauthorized();
+            else
+                return BadRequest(error);
+        }
+
+        return Ok(movieId);
     }
 
     [HttpGet]

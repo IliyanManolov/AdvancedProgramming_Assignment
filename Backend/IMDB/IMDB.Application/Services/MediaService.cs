@@ -17,12 +17,14 @@ public class MediaService : IMediaService
     private readonly ITvShowRepository _showRepository;
     private readonly IDirectorRepository _directorRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IActorRepository _actorRepository;
 
     public MediaService(IMediaTransformer mediaTransformer,
         IMovieRepository movieRepository,
         ITvShowRepository showRepository,
         IDirectorRepository directorRepository,
         IUserRepository userRepository,
+        IActorRepository actorRepository,
         ILoggerFactory loggerFactory)
     {
         _mediaTransformer = mediaTransformer;
@@ -30,6 +32,7 @@ public class MediaService : IMediaService
         _showRepository = showRepository;
         _directorRepository = directorRepository;
         _userRepository = userRepository;
+        _actorRepository = actorRepository;
         _logger = loggerFactory.CreateLogger<MediaService>();
     }
 
@@ -152,6 +155,47 @@ public class MediaService : IMediaService
         return (result, null);
     }
 
+    public async Task<(long? Id, string? Error)> UpdateMovieAsync(UpdateMovieDto dto, long mediaId)
+    {
+        var dbMedia = await _movieRepository.GetByIdAsync(mediaId);
+
+        if (dbMedia is null)
+        {
+            return (null, $"Media with id '{mediaId}' does not exist");
+        }
+
+        var (actors, errors) = await ValidateActorIds(dto.ActorIds);
+
+        if (errors is not null && errors.Any())
+            return (null, "Directors not found");
+
+        dbMedia.Actors = actors!;
+
+        await _movieRepository.UpdateAsync(dbMedia);
+
+        return (dbMedia.Id, null);
+    }
+
+    public async Task<(long? Id, string? Error)> UpdateTvShowAsync(UpdateTvShowDto dto, long mediaId)
+    {
+        var dbMedia = await _showRepository.GetByIdAsync(mediaId);
+
+        if (dbMedia is null)
+        {
+            return (null, $"Media with id '{mediaId}' does not exist");
+        }
+
+        var (actors, errors) = await ValidateActorIds(dto.ActorIds);
+
+        if (errors is not null && errors.Any())
+            return (null, "Directors not found");
+
+        dbMedia.Actors = actors!;
+
+        await _showRepository.UpdateAsync(dbMedia);
+
+        return (dbMedia.Id, null);
+    }
 
     private async Task<User?> ValidateCreatedByUser(long userId)
     {
@@ -180,6 +224,27 @@ public class MediaService : IMediaService
             {
                 _logger.LogDebug("Director with id '{id}' not found", id);
                 errors.Add("Director not found");
+            }
+            else
+                directors.Add(director);
+        }
+
+        return (directors, errors);
+    }
+
+    private async Task<(ISet<Actor>? directors, IList<string>? ValidationErrors)> ValidateActorIds(ISet<long> IDs)
+    {
+
+        var errors = new List<string>();
+        var directors = new HashSet<Actor>();
+
+        foreach (var id in IDs)
+        {
+            var director = await _actorRepository.GetByIdAsync(id);
+            if (director is null)
+            {
+                _logger.LogDebug("Actor with id '{id}' not found", id);
+                errors.Add("Actor not found");
             }
             else
                 directors.Add(director);

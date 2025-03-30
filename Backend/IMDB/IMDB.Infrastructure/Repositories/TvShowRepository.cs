@@ -10,11 +10,23 @@ internal class TvShowRepository : BaseRepository<TvShow>, ITvShowRepository
     public TvShowRepository(DatabaseContext dbContext) : base(dbContext)
     {
     }
+    public override async Task<TvShow?> GetByIdAsync(long? id)
+    {
+        return await Query
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+    public override async Task<IEnumerable<TvShow>> GetAllAsync()
+    {
+        return await Query
+            .Include(e => e.Actors)
+            .ToListAsync();
+    }
 
     public async Task<IEnumerable<TvShow>> GetAllByActorIdAsync(long? actorId)
     {
         return await Query
             .Where(e => e.Actors.Any(ac => ac.Id.Equals(actorId)))
+            .Include(e => e.Actors)
             .ToListAsync();
     }
 
@@ -23,6 +35,7 @@ internal class TvShowRepository : BaseRepository<TvShow>, ITvShowRepository
 
         return await Query
             .Where(e => e.Actors.Any(ac => $"{ac.FirstName} {ac.LastName}".Equals(actorName)))
+            .Include(e => e.Actors)
             .ToListAsync();
     }
 
@@ -30,6 +43,7 @@ internal class TvShowRepository : BaseRepository<TvShow>, ITvShowRepository
     {
         return await Query
             .Where(e => e.Director.Id.Equals(directorId))
+            .Include(e => e.Actors)
             .ToListAsync();
     }
 
@@ -38,6 +52,7 @@ internal class TvShowRepository : BaseRepository<TvShow>, ITvShowRepository
     {
         return await Query
             .Where(e => e.Genres.Split(';', StringSplitOptions.None).Contains(genreName))
+            .Include(e => e.Actors)
             .ToListAsync();
     }
 
@@ -45,6 +60,7 @@ internal class TvShowRepository : BaseRepository<TvShow>, ITvShowRepository
     {
         return await Query
             .Where(e => e.CreatedByUserId.Equals(userId))
+            .Include(e => e.Actors)
             .ToListAsync();
     }
 
@@ -52,6 +68,7 @@ internal class TvShowRepository : BaseRepository<TvShow>, ITvShowRepository
     {
         return await Query
             .Where(e => e.Title.Equals(movieName))
+            .Include(e => e.Actors)
             .FirstOrDefaultAsync();
     }
 
@@ -59,6 +76,7 @@ internal class TvShowRepository : BaseRepository<TvShow>, ITvShowRepository
     {
         return await Query
             .Where(e => e.Seasons < seasonsCount)
+            .Include(e => e.Actors)
             .ToListAsync();
     }
 
@@ -66,6 +84,7 @@ internal class TvShowRepository : BaseRepository<TvShow>, ITvShowRepository
     {
         return await Query
             .Where(e => e.EndDate != null)
+            .Include(e => e.Actors)
             .ToListAsync();
     }
 }
