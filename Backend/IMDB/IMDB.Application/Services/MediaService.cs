@@ -38,6 +38,12 @@ public class MediaService : IMediaService
 
     public async Task<(long? Id, string? Error)> CreateMovieAsync(CreateMovieDto dto)
     {
+
+        var existingMovie = await _movieRepository.GetByNameAsync(dto.Title);
+
+        if (existingMovie is not null)
+            return (null, $"Movie with title '{dto.Title}' already exists");
+
         var dbUser = await ValidateCreatedByUser(dto.CreatedByUserId);
 
         if (dbUser is null)
@@ -75,6 +81,11 @@ public class MediaService : IMediaService
 
     public async Task<(long? Id, string? Error)> CreateTvShowAsync(CreateTvShowDto dto)
     {
+        var existingMovie = await _showRepository.GetByNameAsync(dto.Title);
+
+        if (existingMovie is not null)
+            return (null, $"Show with title '{dto.Title}' already exists");
+
         var dbUser = await ValidateCreatedByUser(dto.CreatedByUserId);
 
         if (dbUser is null)
