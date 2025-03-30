@@ -33,17 +33,10 @@ internal class MovieRepository : BaseRepository<Movie>, IMovieRepository
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<Movie>> GetAllByGenreIdAsync(long? genreId)
-    {
-        return await Query
-            .Where(e => e.Genres.Any(ge => ge.Id.Equals(genreId)))
-            .ToListAsync();
-    }
-
     public async Task<IEnumerable<Movie>> GetAllByGenreNameAsync(string? genreName)
     {
         return await Query
-            .Where(e => e.Genres.Any(ge => ge.Name.Equals(genreName)))
+            .Where(e => e.Genres.Split(';', StringSplitOptions.None).Contains(genreName))
             .ToListAsync();
     }
 

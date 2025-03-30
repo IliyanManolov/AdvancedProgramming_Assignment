@@ -5,7 +5,7 @@ namespace IMDB.Application.DTOs.Media.TvShow;
 public class CreateTvShowDto
 {
     [Required]
-    public ISet<long> GenreIds { get; set; }
+    public ISet<string> Genres { get; set; }
     public ISet<long> DirectorIds { get; set; }
     [Required]
     public DateTime ReleaseDate { get; set; }

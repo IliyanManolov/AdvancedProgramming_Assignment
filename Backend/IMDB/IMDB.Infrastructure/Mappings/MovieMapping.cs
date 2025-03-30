@@ -23,25 +23,8 @@ internal class MovieMapping : IEntityTypeConfiguration<Movie>
         builder.Property(e => e.Length)
             .HasColumnName("length_seconds");
 
-        // TODO: Test if this will work correctly
-        builder.HasMany(e => e.Genres)
-            .WithMany()
-            .UsingEntity<Dictionary<string, object>>(
-                "MovieGenre",
-                j => j
-                    .HasOne<Genre>()
-                    .WithMany()
-                    .HasForeignKey("GenreId")
-                    .OnDelete(DeleteBehavior.Restrict),
-                j => j
-                    .HasOne<Movie>()
-                    .WithMany()
-                    .HasForeignKey("MovieId")
-                    .OnDelete(DeleteBehavior.Restrict),
-                j =>
-                {
-                    j.HasKey("GenreId", "MovieId");
-                });
+        builder.Property(e => e.Genres)
+            .HasColumnName("genres");
 
         builder.HasOne(e => e.CreatedByUser)
             .WithMany(u => u.CreatedMovies)

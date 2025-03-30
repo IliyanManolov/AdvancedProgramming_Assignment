@@ -48,8 +48,6 @@ public static class Configuration
 
         services.AddScoped<IActorRepository, ActorRepository>();
         services.AddScoped<IDirectorRepository, DirectorRepository>();
-
-        services.AddScoped<IGenreRepository, GenreRepository>();
         
         services.AddScoped<IMovieRepository, MovieRepository>();
         services.AddScoped<IEpisodeRepository, EpisodeRepository>();

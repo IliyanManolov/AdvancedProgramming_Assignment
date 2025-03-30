@@ -13,7 +13,6 @@ public static class Configuration
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IWatchListService, WatchListService>();
         services.AddScoped<IMediaTransformer, MediaTransformer>();
-        services.AddScoped<IGenreService, GenreService>();
 
         services.AddScoped<IActorService, ActorService>();
         services.AddScoped<IDirectorService, DirectorService>();
