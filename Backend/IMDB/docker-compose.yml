@@ -1,0 +1,14 @@
+services:
+  imdb.web.api:
+    image: ${DOCKER_REGISTRY-}imdb-webapi
+    container_name: imdb-dev-api
+    ports:
+    - "10080:8080"
+    build:
+      context: .
+      dockerfile: IMDB.WEB.API/Dockerfile
+    volumes:
+      - ./Config:/_config
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - ASPNETCORE_ENVIRONMENT=Development

@@ -4,6 +4,7 @@ using IMDB.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 namespace IMDB.Infrastructure;
@@ -54,5 +55,24 @@ public static class Configuration
         services.AddScoped<IEpisodeRepository, EpisodeRepository>();
         services.AddScoped<ITvShowRepository, TvShowRepository>();
         
+    }
+
+    public static IHost UseMigrations(this IHost app)
+    {
+        var settings = app.Services
+            .GetRequiredService<IOptions<DatabaseSettings>>();
+
+        if (settings.Value.EnableMigrations)
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider
+                    .GetRequiredService<DatabaseContext>();
+
+                context.Database.Migrate();
+            }
+        }
+
+        return app;
     }
 }

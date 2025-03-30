@@ -9,7 +9,7 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-
+        // Add this as env variable
         builder.Configuration.AddJsonFile("./Config/appsettings.json", optional: true, reloadOnChange: true);
         // Add services to the container.
 
@@ -21,23 +21,25 @@ internal class Program
         builder.Services.AddApplicationLayer();
         builder.Services.AddDatabase(builder.Configuration);
 
-        var context = builder.Services.BuildServiceProvider().GetRequiredService<DatabaseContext>();
-        context.Database.Migrate();
+        //var context = builder.Services.BuildServiceProvider().GetRequiredService<DatabaseContext>();
+        //context.Database.Migrate();
 
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
+        //if (app.Environment.IsDevelopment())
+        //{
             app.UseSwagger();
             app.UseSwaggerUI();
-        }
+        //}
 
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
 
         app.MapControllers();
+
+        app.UseMigrations();
 
         app.Run();
     }
