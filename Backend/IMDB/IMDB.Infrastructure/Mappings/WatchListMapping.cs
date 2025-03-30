@@ -19,10 +19,42 @@ internal class WatchListMapping : IEntityTypeConfiguration<WatchList>
 
 
         builder.HasMany(e => e.Shows)
-            .WithMany();
+            .WithMany()
+            .UsingEntity<Dictionary<string, object>>(
+                "WatchlistTvShow",
+                j => j
+                    .HasOne<TvShow>()
+                    .WithMany()
+                    .HasForeignKey("TvShowId")
+                    .OnDelete(DeleteBehavior.Restrict),
+                j => j
+                    .HasOne<WatchList>()
+                    .WithMany()
+                    .HasForeignKey("WatchlistId")
+                    .OnDelete(DeleteBehavior.Restrict),
+                j =>
+                {
+                    j.HasKey("WatchlistId", "TvShowId");
+                });
 
         builder.HasMany(e => e.Movies)
-            .WithMany();
+            .WithMany()
+            .UsingEntity<Dictionary<string, object>>(
+                "WatchlistMovie",
+                j => j
+                    .HasOne<Movie>()
+                    .WithMany()
+                    .HasForeignKey("MovieId")
+                    .OnDelete(DeleteBehavior.Restrict),
+                j => j
+                    .HasOne<WatchList>()
+                    .WithMany()
+                    .HasForeignKey("WatchlistId")
+                    .OnDelete(DeleteBehavior.Restrict),
+                j =>
+                {
+                    j.HasKey("WatchlistId", "MovieId");
+                });
 
         builder.HasOne(e => e.User)
             .WithOne(u => u.WatchList)

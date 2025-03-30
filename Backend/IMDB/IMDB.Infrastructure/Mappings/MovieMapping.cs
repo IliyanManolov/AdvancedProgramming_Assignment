@@ -26,20 +26,22 @@ internal class MovieMapping : IEntityTypeConfiguration<Movie>
         // TODO: Test if this will work correctly
         builder.HasMany(e => e.Genres)
             .WithMany()
-            .UsingEntity(
+            .UsingEntity<Dictionary<string, object>>(
                 "MovieGenre",
-                j => j.HasOne(typeof(Genre))
+                j => j
+                    .HasOne<Genre>()
                     .WithMany()
                     .HasForeignKey("GenreId")
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasPrincipalKey(nameof(Genre.Id)),
-                j => j.HasOne(typeof(Movie))
+                    .OnDelete(DeleteBehavior.Restrict),
+                j => j
+                    .HasOne<Movie>()
                     .WithMany()
                     .HasForeignKey("MovieId")
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasPrincipalKey(nameof(Movie.Id)),
-                j => j.HasKey("MovieId", "GenreId")
-            );
+                    .OnDelete(DeleteBehavior.Restrict),
+                j =>
+                {
+                    j.HasKey("GenreId", "MovieId");
+                });
 
         builder.HasOne(e => e.CreatedByUser)
             .WithMany(u => u.CreatedMovies)

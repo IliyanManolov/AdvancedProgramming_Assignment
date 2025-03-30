@@ -4,6 +4,7 @@ using IMDB.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IMDB.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250330104857_AttemptDirectorMovieFix")]
+    partial class AttemptDirectorMovieFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,9 +33,19 @@ namespace IMDB.Infrastructure.Migrations
                     b.Property<long>("MovieId")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("ActorsId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ParticipatedMoviesId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("ActorId", "MovieId");
 
+                    b.HasIndex("ActorsId");
+
                     b.HasIndex("MovieId");
+
+                    b.HasIndex("ParticipatedMoviesId");
 
                     b.ToTable("ActorMovie", "imdb");
                 });
@@ -45,7 +58,17 @@ namespace IMDB.Infrastructure.Migrations
                     b.Property<long>("TvShowId")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("ActorsId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ParticipatedShowsId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("ActorId", "TvShowId");
+
+                    b.HasIndex("ActorsId");
+
+                    b.HasIndex("ParticipatedShowsId");
 
                     b.HasIndex("TvShowId");
 
@@ -75,7 +98,17 @@ namespace IMDB.Infrastructure.Migrations
                     b.Property<long>("TvShowId")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("DirectedShowsId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("DirectorsId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("DirectorId", "TvShowId");
+
+                    b.HasIndex("DirectedShowsId");
+
+                    b.HasIndex("DirectorsId");
 
                     b.HasIndex("TvShowId");
 
@@ -502,62 +535,62 @@ namespace IMDB.Infrastructure.Migrations
 
             modelBuilder.Entity("MovieGenre", b =>
                 {
-                    b.Property<long>("GenreId")
-                        .HasColumnType("bigint");
-
                     b.Property<long>("MovieId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("GenreId", "MovieId");
+                    b.Property<long>("GenreId")
+                        .HasColumnType("bigint");
 
-                    b.HasIndex("MovieId");
+                    b.HasKey("MovieId", "GenreId");
+
+                    b.HasIndex("GenreId");
 
                     b.ToTable("MovieGenre", "imdb");
                 });
 
-            modelBuilder.Entity("TvShowGenre", b =>
+            modelBuilder.Entity("MovieWatchList", b =>
                 {
-                    b.Property<long>("GenreId")
+                    b.Property<long>("MoviesId")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("WatchListId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("MoviesId", "WatchListId");
+
+                    b.HasIndex("WatchListId");
+
+                    b.ToTable("MovieWatchList", "imdb");
+                });
+
+            modelBuilder.Entity("TvShowGenre", b =>
+                {
                     b.Property<long>("TvShowId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("GenreId", "TvShowId");
+                    b.Property<long>("GenreId")
+                        .HasColumnType("bigint");
 
-                    b.HasIndex("TvShowId");
+                    b.HasKey("TvShowId", "GenreId");
+
+                    b.HasIndex("GenreId");
 
                     b.ToTable("TvShowGenre", "imdb");
                 });
 
-            modelBuilder.Entity("WatchlistMovie", b =>
+            modelBuilder.Entity("TvShowWatchList", b =>
                 {
-                    b.Property<long>("WatchlistId")
+                    b.Property<long>("ShowsId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("MovieId")
+                    b.Property<long>("WatchListId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("WatchlistId", "MovieId");
+                    b.HasKey("ShowsId", "WatchListId");
 
-                    b.HasIndex("MovieId");
+                    b.HasIndex("WatchListId");
 
-                    b.ToTable("WatchlistMovie", "imdb");
-                });
-
-            modelBuilder.Entity("WatchlistTvShow", b =>
-                {
-                    b.Property<long>("WatchlistId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("TvShowId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("WatchlistId", "TvShowId");
-
-                    b.HasIndex("TvShowId");
-
-                    b.ToTable("WatchlistTvShow", "imdb");
+                    b.ToTable("TvShowWatchList", "imdb");
                 });
 
             modelBuilder.Entity("ActorMovie", b =>
@@ -568,10 +601,22 @@ namespace IMDB.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("IMDB.Domain.Models.Actor", null)
+                        .WithMany()
+                        .HasForeignKey("ActorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("IMDB.Domain.Models.Movie", null)
                         .WithMany()
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("IMDB.Domain.Models.Movie", null)
+                        .WithMany()
+                        .HasForeignKey("ParticipatedMoviesId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -581,6 +626,18 @@ namespace IMDB.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("ActorId")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("IMDB.Domain.Models.Actor", null)
+                        .WithMany()
+                        .HasForeignKey("ActorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IMDB.Domain.Models.TvShow", null)
+                        .WithMany()
+                        .HasForeignKey("ParticipatedShowsId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("IMDB.Domain.Models.TvShow", null)
@@ -607,10 +664,22 @@ namespace IMDB.Infrastructure.Migrations
 
             modelBuilder.Entity("DirectorTvShow", b =>
                 {
+                    b.HasOne("IMDB.Domain.Models.TvShow", null)
+                        .WithMany()
+                        .HasForeignKey("DirectedShowsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("IMDB.Domain.Models.Director", null)
                         .WithMany()
                         .HasForeignKey("DirectorId")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("IMDB.Domain.Models.Director", null)
+                        .WithMany()
+                        .HasForeignKey("DirectorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("IMDB.Domain.Models.TvShow", null)
@@ -704,6 +773,21 @@ namespace IMDB.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MovieWatchList", b =>
+                {
+                    b.HasOne("IMDB.Domain.Models.Movie", null)
+                        .WithMany()
+                        .HasForeignKey("MoviesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IMDB.Domain.Models.WatchList", null)
+                        .WithMany()
+                        .HasForeignKey("WatchListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TvShowGenre", b =>
                 {
                     b.HasOne("IMDB.Domain.Models.Genre", null)
@@ -719,33 +803,18 @@ namespace IMDB.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WatchlistMovie", b =>
-                {
-                    b.HasOne("IMDB.Domain.Models.Movie", null)
-                        .WithMany()
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("IMDB.Domain.Models.WatchList", null)
-                        .WithMany()
-                        .HasForeignKey("WatchlistId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("WatchlistTvShow", b =>
+            modelBuilder.Entity("TvShowWatchList", b =>
                 {
                     b.HasOne("IMDB.Domain.Models.TvShow", null)
                         .WithMany()
-                        .HasForeignKey("TvShowId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("ShowsId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("IMDB.Domain.Models.WatchList", null)
                         .WithMany()
-                        .HasForeignKey("WatchlistId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("WatchListId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

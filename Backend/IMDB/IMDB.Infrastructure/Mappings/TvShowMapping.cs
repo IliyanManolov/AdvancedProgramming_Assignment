@@ -33,20 +33,22 @@ internal class TvShowMapping : IEntityTypeConfiguration<TvShow>
         // TODO: Test if this will work correctly
         builder.HasMany(e => e.Genres)
             .WithMany()
-            .UsingEntity(
+            .UsingEntity<Dictionary<string, object>>(
                 "TvShowGenre",
-                j => j.HasOne(typeof(Genre))
+                j => j
+                    .HasOne<Genre>()
                     .WithMany()
                     .HasForeignKey("GenreId")
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasPrincipalKey(nameof(Genre.Id)),
-                j => j.HasOne(typeof(TvShow))
+                    .OnDelete(DeleteBehavior.Restrict),
+                j => j
+                    .HasOne<TvShow>()
                     .WithMany()
                     .HasForeignKey("TvShowId")
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasPrincipalKey(nameof(TvShow.Id)),
-                j => j.HasKey("TvShowId", "GenreId")
-            );
+                    .OnDelete(DeleteBehavior.Restrict),
+                j =>
+                {
+                    j.HasKey("GenreId", "TvShowId");
+                });
 
         builder.HasOne(e => e.CreatedByUser)
             .WithMany(u => u.CreatedShows)

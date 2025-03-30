@@ -73,7 +73,7 @@ public class MediaService : IMediaService
         return (dbMovie.Id, null);
     }
 
-    public async Task<(long? Id, string Error)> CreateTvShowAsync(CreateTvShowDto dto)
+    public async Task<(long? Id, string? Error)> CreateTvShowAsync(CreateTvShowDto dto)
     {
         var dbUser = await ValidateCreatedByUser(dto.CreatedByUserId);
 

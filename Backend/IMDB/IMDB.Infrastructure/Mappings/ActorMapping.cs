@@ -23,21 +23,43 @@ internal class ActorMapping : IEntityTypeConfiguration<Actor>
 
         builder.HasMany(a => a.ParticipatedShows)
         .WithMany(t => t.Actors)
-        .UsingEntity(
-            "ActorTvShow",
-            r => r.HasOne(typeof(Actor)).WithMany().HasForeignKey("ActorId").OnDelete(DeleteBehavior.Restrict).HasPrincipalKey(nameof(Actor.Id)),
-            l => l.HasOne(typeof(TvShow)).WithMany().HasForeignKey("TvShowId").OnDelete(DeleteBehavior.Restrict).HasPrincipalKey(nameof(TvShow.Id)),
-            j => j.HasKey("ActorId", "TvShowId"));
+        .UsingEntity<Dictionary<string, object>>(
+                "ActorTvShow",
+                j => j
+                    .HasOne<TvShow>()
+                    .WithMany()
+                    .HasForeignKey("TvShowId")
+                    .OnDelete(DeleteBehavior.Restrict),
+                j => j
+                    .HasOne<Actor>()
+                    .WithMany()
+                    .HasForeignKey("ActorId")
+                    .OnDelete(DeleteBehavior.Restrict),
+                j =>
+                {
+                    j.HasKey("ActorId", "TvShowId");
+                });
 
-        
+
 
         builder.HasMany(e => e.ParticipatedMovies)
             .WithMany(e => e.Actors)
-            .UsingEntity(
-            "ActorMovie",
-            r => r.HasOne(typeof(Actor)).WithMany().HasForeignKey("ActorId").OnDelete(DeleteBehavior.Restrict).HasPrincipalKey(nameof(Actor.Id)),
-            l => l.HasOne(typeof(Movie)).WithMany().HasForeignKey("MovieId").OnDelete(DeleteBehavior.Restrict).HasPrincipalKey(nameof(Movie.Id)),
-            j => j.HasKey("ActorId", "MovieId"));
+            .UsingEntity<Dictionary<string, object>>(
+                "ActorMovie",
+                j => j
+                    .HasOne<Movie>()
+                    .WithMany()
+                    .HasForeignKey("MovieId")
+                    .OnDelete(DeleteBehavior.Restrict),
+                j => j
+                    .HasOne<Actor>()
+                    .WithMany()
+                    .HasForeignKey("ActorId")
+                    .OnDelete(DeleteBehavior.Restrict),
+                j =>
+                {
+                    j.HasKey("ActorId", "MovieId");
+                });
 
         builder.AddPersonEntitySharedMappings();
         builder.AddBaseEntityTemporalMappings();
