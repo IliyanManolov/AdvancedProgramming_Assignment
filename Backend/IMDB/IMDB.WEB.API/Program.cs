@@ -13,6 +13,9 @@ internal class Program
         builder.Configuration.AddJsonFile("./Config/appsettings.json", optional: true, reloadOnChange: true);
         // Add services to the container.
 
+        builder.Services.AddObservability(builder.Configuration);
+        builder.Host.UseCustomLogging();
+
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
@@ -32,6 +35,8 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         //}
+
+        app.UseApplicationLogging();
 
         app.UseHttpsRedirection();
 

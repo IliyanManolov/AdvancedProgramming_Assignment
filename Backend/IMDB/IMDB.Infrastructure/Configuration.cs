@@ -48,11 +48,11 @@ public static class Configuration
 
         services.AddScoped<IActorRepository, ActorRepository>();
         services.AddScoped<IDirectorRepository, DirectorRepository>();
-        
+
         services.AddScoped<IMovieRepository, MovieRepository>();
         services.AddScoped<IEpisodeRepository, EpisodeRepository>();
         services.AddScoped<ITvShowRepository, TvShowRepository>();
-        
+
     }
 
     public static IHost UseMigrations(this IHost app)
