@@ -54,7 +54,7 @@ public class MediaTransformer : IMediaTransformer
             Id = show.Id,
             Description = show.Description,
             Type = MediaType.TvShow,
-            Directors = show.Directors.Select(x => $"{x.FirstName} {x.LastName}").ToHashSet(),
+            Director = $"{show.Director.FirstName} {show.Director.LastName}",
             Reviews = show.Reviews ?? 0,
             Length = show.Episodes.Any() ? show.Episodes.Sum(x => x.Length)!.Value : 0
         };
@@ -73,7 +73,7 @@ public class MediaTransformer : IMediaTransformer
             Id = movie.Id,
             Description = movie.Description,
             Type = MediaType.Movie,
-            Directors = movie.Directors.Select(x => $"{x.FirstName} {x.LastName}").ToHashSet(),
+            Director = $"{movie.Director.FirstName} {movie.Director.LastName}",
             Reviews = movie.Reviews ?? 0,
         };
     }

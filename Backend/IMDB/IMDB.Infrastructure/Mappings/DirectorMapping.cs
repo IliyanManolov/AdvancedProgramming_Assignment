@@ -22,44 +22,13 @@ internal class DirectorMapping : IEntityTypeConfiguration<Director>
             .HasForeignKey(e => e.CreatedByUserId);
 
         builder.HasMany(e => e.DirectedShows)
-            .WithMany(e => e.Directors)
-            .UsingEntity<Dictionary<string, object>>(
-                "DirectorTvShow",
-                j => j
-                    .HasOne<TvShow>()
-                    .WithMany()
-                    .HasForeignKey("TvShowId")
-                    .OnDelete(DeleteBehavior.Restrict),
-                j => j
-                    .HasOne<Director>()
-                    .WithMany()
-                    .HasForeignKey("DirectorId")
-                    .OnDelete(DeleteBehavior.Restrict),
-                j =>
-                {
-                    j.HasKey("DirectorId", "TvShowId");
-                });
+            .WithOne(e => e.Director)
+            .HasForeignKey(e => e.DirectorId);
 
 
         builder.HasMany(d => d.DirectedMovies)
-            .WithMany(m => m.Directors)
-            .UsingEntity<Dictionary<string, object>>(
-                "DirectorMovie",
-                j => j
-                    .HasOne<Movie>()
-                    .WithMany()
-                    .HasForeignKey("MovieId")
-                    .OnDelete(DeleteBehavior.Restrict),
-                j => j
-                    .HasOne<Director>()
-                    .WithMany()
-                    .HasForeignKey("DirectorId")
-                    .OnDelete(DeleteBehavior.Restrict),
-                j =>
-                {
-                    j.HasKey("DirectorId", "MovieId");
-                });
-
+            .WithOne(e => e.Director)
+            .HasForeignKey(e => e.DirectorId);
 
 
         builder.AddPersonEntitySharedMappings();

@@ -29,6 +29,10 @@ internal class MovieMapping : IEntityTypeConfiguration<Movie>
         builder.HasOne(e => e.CreatedByUser)
             .WithMany(u => u.CreatedMovies)
             .HasForeignKey(e => e.CreatedByUserId);
+
+        builder.HasOne(e => e.Director)
+            .WithMany(e => e.DirectedMovies)
+            .HasForeignKey(e => e.DirectorId);
         
 
         builder.AddMediaSharedMappings();

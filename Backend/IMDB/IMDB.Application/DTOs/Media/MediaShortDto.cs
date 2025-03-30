@@ -20,7 +20,7 @@ public class MediaShortDto
     /// <summary>
     /// Full names Names of directors
     /// </summary>
-    public ISet<string> Directors { get; set; } = new HashSet<string>();
+    public string Director { get; set; }
     public DateTime ReleaseDate { get; set; }
     public string Title { get; set; }
     public double? Rating { get; set; }

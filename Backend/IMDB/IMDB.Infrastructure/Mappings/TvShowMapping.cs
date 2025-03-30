@@ -33,6 +33,11 @@ internal class TvShowMapping : IEntityTypeConfiguration<TvShow>
         builder.Property(e => e.Genres)
             .HasColumnName("genres");
 
+
+        builder.HasOne(e => e.Director)
+            .WithMany(e => e.DirectedShows)
+            .HasForeignKey(e => e.DirectorId);
+
         builder.HasOne(e => e.CreatedByUser)
             .WithMany(u => u.CreatedShows)
             .HasForeignKey(e => e.CreatedByUserId);

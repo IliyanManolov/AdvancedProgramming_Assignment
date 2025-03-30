@@ -46,7 +46,7 @@ public class MediaService : IMediaService
         if (dbUser is null)
             return (null, "UNAUTHORIZED");
 
-        var (directors, directorErrors) = await ValidateDirectorIds(dto.DirectorIds);
+        var (directors, directorErrors) = await ValidateDirectorIds(new HashSet<long>() { dto.DirectorId });
 
         if (directorErrors is not null && directorErrors.Any())
             return (null, "Directors not found");
@@ -62,7 +62,8 @@ public class MediaService : IMediaService
             Rating = 0,
             Reviews = 0,
             ReleaseDate = dto.ReleaseDate,
-            Directors = directors!,
+            Director = directors!.First()!,
+            DirectorId = directors.First().Id,
             Genres = string.Join(';', dto.Genres)
         };
 
@@ -83,7 +84,7 @@ public class MediaService : IMediaService
         if (dbUser is null)
             return (null, "UNAUTHORIZED");
 
-        var (directors, directorErrors) = await ValidateDirectorIds(dto.DirectorIds);
+        var (directors, directorErrors) = await ValidateDirectorIds(new HashSet<long>() { dto.DirectorId });
 
         if (directorErrors is not null && directorErrors.Any())
             return (null, "Directors not found");
@@ -107,7 +108,8 @@ public class MediaService : IMediaService
             Rating = 0,
             Reviews = 0,
             ReleaseDate = dto.ReleaseDate,
-            Directors = directors!,
+            Director = directors.First()!,
+            DirectorId = directors.First().Id,
             Genres = string.Join(';', dto.Genres),
             EndDate = dto.ShowEndDate,
             Seasons = dto.SeasonsCount

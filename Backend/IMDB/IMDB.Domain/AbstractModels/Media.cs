@@ -15,7 +15,8 @@ public abstract class Media : DomainEntity
     public string? Description { get; set; }
     public byte[]? PosterImage { get; set; }
 
-    public ISet<Director> Directors { get; set; } = new HashSet<Director>();
+    public Director Director { get; set; }
+    public long? DirectorId { get; set; }
 
     public User CreatedByUser { get; set; }
     public long? CreatedByUserId { get; set; }

@@ -29,7 +29,7 @@ internal class TvShowRepository : BaseRepository<TvShow>, ITvShowRepository
     public async Task<IEnumerable<TvShow>> GetAllByDirectorIdAsync(long? directorId)
     {
         return await Query
-            .Where(e => e.Directors.Any(di => di.Id.Equals(directorId)))
+            .Where(e => e.Director.Id.Equals(directorId))
             .ToListAsync();
     }
 
