@@ -220,7 +220,7 @@ public class MediaService : IMediaService
     {
         var dbUser = await _userRepository.GetByIdAsync(userId);
 
-        if (dbUser is null || (dbUser.Role is not Role.Moderator && dbUser.Role is not Role.Administrator))
+        if (dbUser is null || (dbUser.Role is not Role.Moderator && dbUser.Role is not Role.Administrator) || dbUser.IsDeleted == true)
         {
             _logger.LogDebug("User does not exist '{exists}' or has insufficient role '{role}'",
                 dbUser is not null,

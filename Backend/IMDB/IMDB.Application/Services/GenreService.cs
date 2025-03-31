@@ -24,7 +24,7 @@ public class GenreService : IGenreService
     {
         var dbUser = await _userRepository.GetByIdAsync(dto.CreatedByUserId);
 
-        if (dbUser is null || (dbUser.Role is not Role.Moderator && dbUser.Role is not Role.Administrator))
+        if (dbUser is null || (dbUser.Role is not Role.Moderator && dbUser.Role is not Role.Administrator) || dbUser.IsDeleted == true)
         {
             return (null, "UNAUTHORIZED");
         }

@@ -42,6 +42,12 @@ public class AuthenticationService : IAuthenticationService
             return Invalid();
         }
 
+        if (dbUser.IsDeleted == true)
+        {
+            _logger.LogDebug("User with username '{username}' is deleted", username);
+            return Invalid();
+        }
+
         var passwordHesh = _passwordService.GetHash(password);
 
         if (passwordHesh != dbUser.Password)

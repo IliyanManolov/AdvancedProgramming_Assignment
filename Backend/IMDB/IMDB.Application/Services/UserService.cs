@@ -35,6 +35,12 @@ public class UserService : IUserService
         if (dbUser == null)
             return (null, $"No user with id '{userId}' found");
 
+        if (dbUser.IsDeleted == true)
+        {
+            _logger.LogDebug("User is deleted");
+            return (null, $"No user with id '{userId}' found");
+        }
+
         var user = new UserShortDto()
         {
             Id = dbUser.Id,
@@ -57,6 +63,12 @@ public class UserService : IUserService
 
         if (dbUser == null)
             return (null, $"No user with id '{userId}' found");
+
+        if (dbUser.IsDeleted == true)
+        {
+            _logger.LogDebug("User is deleted");
+            return (null, $"No user with id '{userId}' found");
+        }
 
         var user = new UserDetailsDto()
         {

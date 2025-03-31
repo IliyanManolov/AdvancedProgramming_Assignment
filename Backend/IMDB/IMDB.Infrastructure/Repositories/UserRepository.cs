@@ -11,6 +11,13 @@ internal class UserRepository : BaseRepository<User>, IUserRepository
     {
     }
 
+    public override async Task<User> DeleteAsync(User entity)
+    {
+        entity.IsDeleted = true;
+        await base.UpdateAsync(entity);
+        return entity;
+    }
+
     public async Task<User?> GetByUsernameAsync(string username)
     {
         return await Query

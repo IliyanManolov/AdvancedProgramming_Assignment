@@ -22,7 +22,7 @@ internal abstract class BaseRepository<T> : IBaseRepository<T> where T : DomainE
         return entity;
     }
 
-    public async Task<T> DeleteAsync(T entity)
+    public virtual async Task<T> DeleteAsync(T entity)
     {
         _dbContext.Set<T>().Remove(entity);
         await _dbContext.SaveChangesAsync();

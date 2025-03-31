@@ -89,6 +89,12 @@ public class ShowEpisodeService : IShowEpisodeService
             return (false, null);
         }
 
+        if (dbUser.IsDeleted == true)
+        {
+            _logger.LogWarning("Attempted to create episode with user that is deleted '{userId}'", dto.CreatedByUserId);
+            return (false, null);
+        }
+
         return (true, dbUser);
     }
 
