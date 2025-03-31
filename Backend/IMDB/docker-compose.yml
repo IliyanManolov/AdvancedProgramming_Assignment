@@ -12,3 +12,4 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:8080
       - ASPNETCORE_ENVIRONMENT=Development
+      - ConfigurationPath=/_config/appsettings.json

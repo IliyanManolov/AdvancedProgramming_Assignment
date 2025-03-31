@@ -2,6 +2,7 @@ using IMDB.Application;
 using IMDB.Infrastructure;
 using IMDB.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 internal class Program
 {
@@ -10,7 +11,8 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add this as env variable
-        builder.Configuration.AddJsonFile("./Config/appsettings.json", optional: true, reloadOnChange: true);
+
+        builder.Configuration.UseCustomConfiguration();
         // Add services to the container.
 
         builder.Services.AddObservability(builder.Configuration);
@@ -38,7 +40,7 @@ internal class Program
 
         app.UseApplicationLogging();
 
-        app.UseHttpsRedirection();
+        //app.UseHttpsRedirection();
 
         app.UseAuthorization();
 

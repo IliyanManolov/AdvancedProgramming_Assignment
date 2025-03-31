@@ -55,6 +55,15 @@ public static class Configuration
 
     }
 
+    public static void UseCustomConfiguration(this IConfigurationBuilder configurationBuilder)
+    {
+        var filePath = Environment.GetEnvironmentVariable("ConfigurationPath")?.ToString();
+
+        if (string.IsNullOrWhiteSpace(filePath))
+            return;
+        else
+            configurationBuilder.AddJsonFile(filePath, optional: true, reloadOnChange: true);
+    }
     public static IHost UseMigrations(this IHost app)
     {
         var settings = app.Services
