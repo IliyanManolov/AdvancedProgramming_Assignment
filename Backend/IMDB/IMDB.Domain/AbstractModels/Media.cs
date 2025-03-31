@@ -8,7 +8,7 @@ namespace IMDB.Domain.AbstractModels;
 public abstract class Media : DomainEntity
 {
     public DateTime ReleaseDate { get; set; }
-    public string Genres { get; set; } = string.Empty;
+    public ISet<Genre> Genres { get; set; } = new HashSet<Genre>();
     public string Title { get; set; }
     public double? Rating { get; set; }
     public long? Reviews { get; set; }

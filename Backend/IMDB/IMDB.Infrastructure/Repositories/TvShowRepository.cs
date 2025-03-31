@@ -13,12 +13,17 @@ internal class TvShowRepository : BaseRepository<TvShow>, ITvShowRepository
     public override async Task<TvShow?> GetByIdAsync(long? id)
     {
         return await Query
+            .Include(E => E.Actors)
+            .Include(e => e.Genres)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
     public override async Task<IEnumerable<TvShow>> GetAllAsync()
     {
         return await Query
-            .Include(e => e.Actors)
+            .Include(E => E.Actors)
+            .Include(e => e.Genres)
+            .Include(e => e.Director)
+            .Include(e => e.Episodes)
             .ToListAsync();
     }
 
@@ -48,11 +53,17 @@ internal class TvShowRepository : BaseRepository<TvShow>, ITvShowRepository
     }
 
 
+    public async Task<IEnumerable<TvShow>> GetAllByGenreIdAsync(long? genreId)
+    {
+        return await Query
+            .Where(e => e.Genres.Any(ge => ge.Id.Equals(genreId)))
+            .ToListAsync();
+    }
+
     public async Task<IEnumerable<TvShow>> GetAllByGenreNameAsync(string? genreName)
     {
         return await Query
-            .Where(e => e.Genres.Split(';', StringSplitOptions.None).Contains(genreName))
-            .Include(e => e.Actors)
+            .Where(e => e.Genres.Any(ge => ge.Name.Equals(genreName)))
             .ToListAsync();
     }
 

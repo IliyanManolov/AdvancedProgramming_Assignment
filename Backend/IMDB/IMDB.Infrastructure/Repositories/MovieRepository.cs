@@ -14,12 +14,16 @@ internal class MovieRepository : BaseRepository<Movie>, IMovieRepository
     public override async Task<Movie?> GetByIdAsync(long? id)
     {
         return await Query
+            .Include(E => E.Actors)
+            .Include(e => e.Genres)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
     public override async Task<IEnumerable<Movie>> GetAllAsync()
     {
         return await Query
-            .Include(e => e.Actors)
+            .Include(E => E.Actors)
+            .Include(e => e.Genres)
+            .Include(e => e.Director)
             .ToListAsync();
     }
 
@@ -45,10 +49,17 @@ internal class MovieRepository : BaseRepository<Movie>, IMovieRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Movie>> GetAllByGenreIdAsync(long? genreId)
+    {
+        return await Query
+            .Where(e => e.Genres.Any(ge => ge.Id.Equals(genreId)))
+            .ToListAsync();
+    }
+
     public async Task<IEnumerable<Movie>> GetAllByGenreNameAsync(string? genreName)
     {
         return await Query
-            .Where(e => e.Genres.Split(';', StringSplitOptions.None).Contains(genreName))
+            .Where(e => e.Genres.Any(ge => ge.Name.Equals(genreName)))
             .ToListAsync();
     }
 

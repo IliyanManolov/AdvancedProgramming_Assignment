@@ -21,4 +21,5 @@ public class User : DomainEntity
     public ISet<Actor> CreatedActors { get; set; } = new HashSet<Actor>();
     public ISet<Director> CreatedDirectors { get; set; } = new HashSet<Director>();
     public ISet<ShowEpisode> CreatedEpisodes { get; set; } = new HashSet<ShowEpisode>();
+    public ISet<Genre> CreatedGenres { get; set; } = new HashSet<Genre>();
 }

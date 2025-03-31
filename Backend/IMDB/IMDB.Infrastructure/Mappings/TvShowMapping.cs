@@ -30,8 +30,25 @@ internal class TvShowMapping : IEntityTypeConfiguration<TvShow>
                 v => v.Value.ToUniversalTime(),
                 v => new DateTime(v.Ticks, DateTimeKind.Utc));
 
-        builder.Property(e => e.Genres)
-            .HasColumnName("genres");
+
+        builder.HasMany(e => e.Genres)
+            .WithMany()
+            .UsingEntity<Dictionary<string, object>>(
+                "TvShowGenre",
+                j => j
+                    .HasOne<Genre>()
+                    .WithMany()
+                    .HasForeignKey("GenreId")
+                    .OnDelete(DeleteBehavior.Restrict),
+                j => j
+                    .HasOne<TvShow>()
+                    .WithMany()
+                    .HasForeignKey("TvShowId")
+                    .OnDelete(DeleteBehavior.Restrict),
+                j =>
+                {
+                    j.HasKey("GenreId", "TvShowId");
+                });
 
 
         builder.HasOne(e => e.Director)

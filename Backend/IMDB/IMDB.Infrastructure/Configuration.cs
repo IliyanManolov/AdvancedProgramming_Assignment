@@ -53,6 +53,8 @@ public static class Configuration
         services.AddScoped<IEpisodeRepository, EpisodeRepository>();
         services.AddScoped<ITvShowRepository, TvShowRepository>();
 
+        services.AddScoped<IGenreRepository, GenreRepository>();
+
     }
 
     public static void UseCustomConfiguration(this IConfigurationBuilder configurationBuilder)

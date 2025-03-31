@@ -7,6 +7,7 @@ namespace IMDB.Infrastructure.Database;
 public class DatabaseContext : DbContext
 {
     public DbSet<Actor> Actors { get; set; }
+    public DbSet<Genre> Genres { get; set; }
     public DbSet<ShowEpisode> ShowEpisodes { get; set; }
     public DbSet<Director> Directors { get; set; }
     public DbSet<Movie> Movies { get; set; }
@@ -31,6 +32,7 @@ public class DatabaseContext : DbContext
         modelBuilder.ApplyConfiguration(new TvShowMapping());
         modelBuilder.ApplyConfiguration(new UserMapping());
         modelBuilder.ApplyConfiguration(new WatchListMapping());
+        modelBuilder.ApplyConfiguration(new GenreMapping());
 
         base.OnModelCreating(modelBuilder);
     }

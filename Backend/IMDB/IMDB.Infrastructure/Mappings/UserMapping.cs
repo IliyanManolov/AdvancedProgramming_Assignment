@@ -71,6 +71,10 @@ internal class UserMapping : IEntityTypeConfiguration<User>
             .WithOne(c => c.CreatedByUser)
             .HasForeignKey(c => c.CreatedByUserId);
 
+        builder.HasMany(e => e.CreatedGenres)
+            .WithOne(c => c.CreatedByUser)
+            .HasForeignKey(c => c.CreatedByUserId);
+
         builder.AddBaseEntityTemporalMappings();
     }
 }

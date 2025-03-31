@@ -17,6 +17,7 @@ public static class Configuration
         services.AddScoped<IActorService, ActorService>();
         services.AddScoped<IDirectorService, DirectorService>();
 
+        services.AddScoped<IGenreService, GenreService>();
         services.AddScoped<IMediaService, MediaService>();
 
         return services;

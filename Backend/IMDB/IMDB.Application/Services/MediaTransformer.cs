@@ -48,7 +48,7 @@ public class MediaTransformer : IMediaTransformer
             ShowEndDate = show.EndDate,
 
             ReleaseDate = show.ReleaseDate,
-            Genres = show.Genres.Split(';').ToHashSet(),
+            Genres = show.Genres.Select(x => x.Name).ToHashSet(),
             Title = show.Title,
             Rating = show.Rating,
             Id = show.Id,
@@ -67,7 +67,7 @@ public class MediaTransformer : IMediaTransformer
             Length = movie.Length,
 
             ReleaseDate = movie.ReleaseDate,
-            Genres = movie.Genres.Split(';').ToHashSet(),
+            Genres = movie.Genres.Select(x => x.Name).ToHashSet(),
             Title = movie.Title,
             Rating = movie.Rating,
             Id = movie.Id,

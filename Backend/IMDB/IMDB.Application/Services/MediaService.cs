@@ -18,6 +18,7 @@ public class MediaService : IMediaService
     private readonly IDirectorRepository _directorRepository;
     private readonly IUserRepository _userRepository;
     private readonly IActorRepository _actorRepository;
+    private readonly IGenreRepository _genreRepository;
 
     public MediaService(IMediaTransformer mediaTransformer,
         IMovieRepository movieRepository,
@@ -25,6 +26,7 @@ public class MediaService : IMediaService
         IDirectorRepository directorRepository,
         IUserRepository userRepository,
         IActorRepository actorRepository,
+        IGenreRepository genreRepository,
         ILoggerFactory loggerFactory)
     {
         _mediaTransformer = mediaTransformer;
@@ -33,6 +35,7 @@ public class MediaService : IMediaService
         _directorRepository = directorRepository;
         _userRepository = userRepository;
         _actorRepository = actorRepository;
+        _genreRepository = genreRepository;
         _logger = loggerFactory.CreateLogger<MediaService>();
     }
 
@@ -54,6 +57,11 @@ public class MediaService : IMediaService
         if (directorErrors is not null && directorErrors.Any())
             return (null, "Directors not found");
 
+        var (genres, genreErrors) = await ValidateGenreIds(dto.GenreIds);
+
+        if (genreErrors is not null && genreErrors.Any())
+            return (null, "Genres not found");
+
         var dbMovie = new Movie()
         {
             CreatedByUserId = dbUser.Id,
@@ -67,7 +75,7 @@ public class MediaService : IMediaService
             ReleaseDate = dto.ReleaseDate,
             Director = directors!.First()!,
             DirectorId = directors.First().Id,
-            Genres = string.Join(';', dto.Genres)
+            Genres = genres!
         };
 
         await _movieRepository.CreateAsync(dbMovie);
@@ -92,6 +100,11 @@ public class MediaService : IMediaService
         if (directorErrors is not null && directorErrors.Any())
             return (null, "Directors not found");
 
+        var (genres, genreErrors) = await ValidateGenreIds(dto.GenreIds);
+
+        if (genreErrors is not null && genreErrors.Any())
+            return (null, "Genres not found");
+
         if (dto.SeasonsCount is null || dto.SeasonsCount <= 0)
             return (null, "Invalid seasons count");
 
@@ -113,7 +126,7 @@ public class MediaService : IMediaService
             ReleaseDate = dto.ReleaseDate,
             Director = directors.First()!,
             DirectorId = directors.First().Id,
-            Genres = string.Join(';', dto.Genres),
+            Genres = genres!,
             EndDate = dto.ShowEndDate,
             Seasons = dto.SeasonsCount
         };
@@ -138,15 +151,21 @@ public class MediaService : IMediaService
 
     public async Task<(IEnumerable<MediaShortDto>? MediaList, string? Error)> GetAllWithGenres(string[] genreNames)
     {
+
+        var (genres, errors) = await ValidateGenreNames(genreNames);
+
+        if (errors is not null && errors.Any())
+            return (null, string.Join(';', errors));
+
         var result = new List<MediaShortDto>();
 
         var movies = new List<Movie>();
         var shows = new List<TvShow>();
 
-        foreach (var genre in genreNames)
+        foreach (var genre in genres)
         {
-            movies.AddRange(await _movieRepository.GetAllByGenreNameAsync(genre));
-            shows.AddRange(await _showRepository.GetAllByGenreNameAsync(genre));
+            movies.AddRange(await _movieRepository.GetAllByGenreIdAsync(genre.Id));
+            shows.AddRange(await _showRepository.GetAllByGenreIdAsync(genre.Id));
         }
 
         result.AddRange(_mediaTransformer.ToShortDto(shows));
@@ -251,5 +270,45 @@ public class MediaService : IMediaService
         }
 
         return (directors, errors);
+    }
+
+    private async Task<(ISet<Genre>? genres, IList<string>? ValidationErrors)> ValidateGenreIds(ISet<long> IDs)
+    {
+        var errors = new List<string>();
+        var genres = new HashSet<Genre>();
+
+        foreach (var id in IDs)
+        {
+            var genre = await _genreRepository.GetByIdAsync(id);
+            if (genre is null)
+            {
+                _logger.LogDebug("Genre with id '{id}' not found", id);
+                errors.Add("Genre not found");
+            }
+            else
+                genres.Add(genre);
+        }
+
+        return (genres, errors);
+    }
+
+    private async Task<(ISet<Genre>? genres, IList<string>? ValidationErrors)> ValidateGenreNames(IEnumerable<string> names)
+    {
+        var errors = new List<string>();
+        var genres = new HashSet<Genre>();
+
+        foreach (var name in names)
+        {
+            var genre = await _genreRepository.GetByGenreNameAsync(name);
+            if (genre is null)
+            {
+                _logger.LogDebug("Genre with name '{name}' not found", name);
+                errors.Add("Genre not found");
+            }
+            else
+                genres.Add(genre);
+        }
+
+        return (genres, errors);
     }
 }
