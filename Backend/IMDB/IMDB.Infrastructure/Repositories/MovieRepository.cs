@@ -31,6 +31,7 @@ internal class MovieRepository : BaseRepository<Movie>, IMovieRepository
     {
         return await Query
             .Where(e => e.Actors.Any(ac => ac.Id.Equals(actorId)))
+            .Include(e => e.Genres)
             .ToListAsync();
     }
 
@@ -39,6 +40,7 @@ internal class MovieRepository : BaseRepository<Movie>, IMovieRepository
 
         return await Query
             .Where(e => e.Actors.Any(ac => $"{ac.FirstName} {ac.LastName}".Equals(actorName)))
+            .Include(e => e.Genres)
             .ToListAsync();
     }
 
@@ -46,6 +48,7 @@ internal class MovieRepository : BaseRepository<Movie>, IMovieRepository
     {
         return await Query
             .Where(e => e.Director.Id.Equals(directorId))
+            .Include(e => e.Genres)
             .ToListAsync();
     }
 
@@ -53,6 +56,7 @@ internal class MovieRepository : BaseRepository<Movie>, IMovieRepository
     {
         return await Query
             .Where(e => e.Genres.Any(ge => ge.Id.Equals(genreId)))
+            .Include(e => e.Genres)
             .ToListAsync();
     }
 
@@ -60,6 +64,7 @@ internal class MovieRepository : BaseRepository<Movie>, IMovieRepository
     {
         return await Query
             .Where(e => e.Genres.Any(ge => ge.Name.Equals(genreName)))
+            .Include(e => e.Genres)
             .ToListAsync();
     }
 
@@ -73,6 +78,7 @@ internal class MovieRepository : BaseRepository<Movie>, IMovieRepository
     {
         return await Query
             .Where(e => minLength >= e.Length && e.Length <= maxLength)
+            .Include(e => e.Genres)
             .ToListAsync();
     }
 
@@ -87,6 +93,7 @@ internal class MovieRepository : BaseRepository<Movie>, IMovieRepository
     {
         return await Query
             .Where(e => minLength >= e.Length)
+            .Include(e => e.Genres)
             .ToListAsync();
     }
 
@@ -94,6 +101,7 @@ internal class MovieRepository : BaseRepository<Movie>, IMovieRepository
     {
         return await Query
             .Where(e => e.Title.Equals(movieName))
+            .Include(e => e.Genres)
             .FirstOrDefaultAsync();
     }
 }

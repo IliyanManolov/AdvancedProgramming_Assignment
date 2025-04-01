@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using IMDB.Application.DTOs.Media.Movie;
 using IMDB.Application.DTOs.Media.TvShow;
 using IMDB.Application.DTOs.Media;
+using IMDB.Application.DTOs.ShowEpisode;
 namespace IMDB.WEB.API.Controllers;
 
 [ApiController]
@@ -69,6 +70,48 @@ public class MediaController : ControllerBase
         }
 
         var (showId, error) = await _mediaService.CreateTvShowAsync(model);
+
+        if (!string.IsNullOrEmpty(error))
+        {
+            if (error.Contains("unauthorized", StringComparison.InvariantCultureIgnoreCase))
+                return Unauthorized();
+            else
+                return BadRequest(error);
+        }
+
+        return Ok(showId);
+    }
+
+    [HttpGet("shows/{showId}/episodes")]
+    public async Task<IActionResult> CreateShowAsync(long showId)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var (episodes, error) = await _mediaService.GetShowEpisodes(showId);
+
+        if (!string.IsNullOrEmpty(error))
+        {
+            if (error.Contains("unauthorized", StringComparison.InvariantCultureIgnoreCase))
+                return Unauthorized();
+            else
+                return BadRequest(error);
+        }
+
+        return Ok(episodes);
+    }
+
+    [HttpPost("episodes/")]
+    public async Task<IActionResult> CreateEpisodeAsync([FromBody] CreateEpisodeDto model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var (showId, error) = await _mediaService.CreateEpisodeAsync(model);
 
         if (!string.IsNullOrEmpty(error))
         {

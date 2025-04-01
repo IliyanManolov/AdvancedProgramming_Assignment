@@ -3,6 +3,7 @@ using IMDB.Application.Abstractions.Services;
 using IMDB.Application.DTOs.Media;
 using IMDB.Application.DTOs.Media.Movie;
 using IMDB.Application.DTOs.Media.TvShow;
+using IMDB.Application.DTOs.ShowEpisode;
 using IMDB.Domain.Enums;
 using IMDB.Domain.Models;
 using Microsoft.Extensions.Logging;
@@ -19,6 +20,7 @@ public class MediaService : IMediaService
     private readonly IUserRepository _userRepository;
     private readonly IActorRepository _actorRepository;
     private readonly IGenreRepository _genreRepository;
+    private readonly IEpisodeRepository _episodeRepository;
 
     public MediaService(IMediaTransformer mediaTransformer,
         IMovieRepository movieRepository,
@@ -27,6 +29,7 @@ public class MediaService : IMediaService
         IUserRepository userRepository,
         IActorRepository actorRepository,
         IGenreRepository genreRepository,
+        IEpisodeRepository episodeRepository,
         ILoggerFactory loggerFactory)
     {
         _mediaTransformer = mediaTransformer;
@@ -36,6 +39,7 @@ public class MediaService : IMediaService
         _userRepository = userRepository;
         _actorRepository = actorRepository;
         _genreRepository = genreRepository;
+        _episodeRepository = episodeRepository;
         _logger = loggerFactory.CreateLogger<MediaService>();
     }
 
@@ -136,6 +140,56 @@ public class MediaService : IMediaService
         return (dbShow.Id, null);
     }
 
+
+    public async Task<(long? Id, string? Error)> CreateEpisodeAsync(CreateEpisodeDto dto)
+    {
+        var show = await _showRepository.GetByIdAsync(dto.ShowId);
+
+        if (show is null)
+            return (null, $"Show with id '{dto.ShowId}' does not exist");
+
+        var dbUser = await ValidateCreatedByUser(dto.CreatedByUserId);
+
+        if (dbUser is null)
+            return (null, "UNAUTHORIZED");
+
+        var dbEpisode = new ShowEpisode()
+        {
+            CreateTimeStamp = DateTime.UtcNow,
+            CreatedByUserId = dbUser.Id,
+            DateAired = dto.DateAired,
+            Description = dto.Description,
+            Length = dto.Length,
+            Reviews = 0,
+            Rating = 0,
+            ShowId = dto.ShowId,
+            Show = show!,
+            SeasonNumber = dto.SeasonNumber,
+            Title = dto.Title,
+        };
+
+        if (dbEpisode.SeasonNumber > show.Seasons)
+        {
+            show.Seasons = dbEpisode.SeasonNumber;
+            show.UpdateTimeStamp = DateTime.UtcNow;
+            await _showRepository.UpdateAsync(show);
+        }
+        await _episodeRepository.CreateAsync(dbEpisode);
+
+        return (dbEpisode.Id, null);
+    }
+
+    public async Task<(IEnumerable<EpisodeDetailsDto>? episodesList, string? Error)> GetShowEpisodes(long? showId)
+    {
+        var show = await _showRepository.GetByIdAsync(showId);
+
+        if (show is null)
+            return (null, $"Show with id '{showId}' does not exist");
+
+        var episodes = _mediaTransformer.ToDetails(show.Episodes);
+        return (episodes, null);
+    }
+
     public async Task<(IEnumerable<MediaShortDto>? MediaList, string? Error)> GetAllDiscoveryAsync()
     {
         var shows = await _showRepository.GetAllAsync();
@@ -189,6 +243,7 @@ public class MediaService : IMediaService
             return (null, "Directors not found");
 
         dbMedia.Actors = actors!;
+        dbMedia.UpdateTimeStamp = DateTime.UtcNow;
 
         await _movieRepository.UpdateAsync(dbMedia);
 
@@ -204,12 +259,33 @@ public class MediaService : IMediaService
             return (null, $"Media with id '{mediaId}' does not exist");
         }
 
-        var (actors, errors) = await ValidateActorIds(dto.ActorIds);
+        if (dto.ActorIds is not null)
+        {
+            var (actors, errors) = await ValidateActorIds(dto.ActorIds);
 
-        if (errors is not null && errors.Any())
-            return (null, "Directors not found");
+            if (errors is not null && errors.Any())
+                return (null, "Directors not found");
 
-        dbMedia.Actors = actors!;
+            dbMedia.Actors = actors!;
+            dbMedia.UpdateTimeStamp = DateTime.UtcNow;
+        }
+
+        if (dto.EpisodeIds is not null)
+        {
+            var (episodes, errors) = await ValidateEpisodeIds(dto.ActorIds);
+
+            if (errors is not null && errors.Any())
+                return (null, "Episodes not found");
+
+            dbMedia.Episodes = episodes!;
+            dbMedia.UpdateTimeStamp = DateTime.UtcNow;
+        }
+
+        if (dto.TotalSeasons is not null)
+        {
+            dbMedia.Seasons = dto.TotalSeasons;
+            dbMedia.UpdateTimeStamp = DateTime.UtcNow;
+        }
 
         await _showRepository.UpdateAsync(dbMedia);
 
@@ -255,21 +331,42 @@ public class MediaService : IMediaService
     {
 
         var errors = new List<string>();
-        var directors = new HashSet<Actor>();
+        var actors = new HashSet<Actor>();
 
         foreach (var id in IDs)
         {
-            var director = await _actorRepository.GetByIdAsync(id);
-            if (director is null)
+            var actor = await _actorRepository.GetByIdAsync(id);
+            if (actor is null)
             {
                 _logger.LogDebug("Actor with id '{id}' not found", id);
                 errors.Add("Actor not found");
             }
             else
-                directors.Add(director);
+                actors.Add(actor);
         }
 
-        return (directors, errors);
+        return (actors, errors);
+    }
+
+    private async Task<(ISet<ShowEpisode>? directors, IList<string>? ValidationErrors)> ValidateEpisodeIds(ISet<long> IDs)
+    {
+
+        var errors = new List<string>();
+        var episodes = new HashSet<ShowEpisode>();
+
+        foreach (var id in IDs)
+        {
+            var episode = await _episodeRepository.GetByIdAsync(id);
+            if (episode is null)
+            {
+                _logger.LogDebug("Episode with id '{id}' not found", id);
+                errors.Add("Episode not found");
+            }
+            else
+                episodes.Add(episode);
+        }
+
+        return (episodes, errors);
     }
 
     private async Task<(ISet<Genre>? genres, IList<string>? ValidationErrors)> ValidateGenreIds(ISet<long> IDs)

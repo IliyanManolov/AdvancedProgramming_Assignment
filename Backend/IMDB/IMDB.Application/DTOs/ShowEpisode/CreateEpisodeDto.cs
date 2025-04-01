@@ -12,7 +12,7 @@ public class CreateEpisodeDto
     [Required]
     public DateTime DateAired { get; set; }
     [Required]
-    public long? Length { get; set; }
+    public long Length { get; set; }
     [Required]
     public string? Title { get; set; }
     public string? Description { get; set; }
@@ -20,7 +20,7 @@ public class CreateEpisodeDto
     public int? SeasonNumber { get; set; }
 
     [Required]
-    public long? ShowId { get; set; }
+    public long ShowId { get; set; }
     [Required]
-    public long? CreatedByUserId { get; set; }
+    public long CreatedByUserId { get; set; }
 }

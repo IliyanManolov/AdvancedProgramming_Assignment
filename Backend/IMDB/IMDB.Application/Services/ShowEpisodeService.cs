@@ -39,7 +39,7 @@ public class ShowEpisodeService : IShowEpisodeService
         if (!showExists)
             return (null, "Show does not exist");
 
-        if (dto.Length is null || dto.Length <= 0)
+        if (dto.Length <= 0)
         {
             _logger.LogDebug("Episode length is 0 or null - '{episodeLength}'", dto.Length);
             return (null, "Invalid episode length");
@@ -75,9 +75,6 @@ public class ShowEpisodeService : IShowEpisodeService
 
     private async Task<(bool exists, User dbUser)> ValidateUser(CreateEpisodeDto dto)
     {
-        if (dto.CreatedByUserId is null)
-            return (false, null);
-
         var dbUser = await _userRepository.GetByIdAsync(dto.CreatedByUserId);
 
         if (dbUser is null)
@@ -100,9 +97,6 @@ public class ShowEpisodeService : IShowEpisodeService
 
     private async Task<(bool exists, TvShow show)> ValidateShow(CreateEpisodeDto dto)
     {
-        if (dto.ShowId is null)
-            return (false, null);
-
         var dbShow = await _showRepository.GetByIdAsync(dto.ShowId);
 
         if (dbShow is null)

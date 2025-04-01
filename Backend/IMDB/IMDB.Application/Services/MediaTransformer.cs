@@ -1,5 +1,6 @@
 ﻿using IMDB.Application.Abstractions.Services;
 using IMDB.Application.DTOs.Media;
+using IMDB.Application.DTOs.ShowEpisode;
 using IMDB.Domain.AbstractModels;
 using IMDB.Domain.Models;
 using Microsoft.Extensions.Logging;
@@ -39,6 +40,20 @@ public class MediaTransformer : IMediaTransformer
     }
 
 
+    public IEnumerable<EpisodeDetailsDto> ToDetails(IEnumerable<ShowEpisode> episodes)
+    {
+        return episodes.Select(dbEp => new EpisodeDetailsDto()
+        {
+            DateAired = dbEp.DateAired,
+            Description = dbEp.Description,
+            Length = dbEp.Length,
+            Rating = dbEp.Rating,
+            Reviews = dbEp.Reviews,
+            SeasonNumber = dbEp.SeasonNumber,
+            Title = dbEp.Title
+        });
+    }
+
     private static MediaShortDto TransformShow(TvShow show)
     {
         return new MediaShortDto()
@@ -77,4 +92,5 @@ public class MediaTransformer : IMediaTransformer
             Reviews = movie.Reviews ?? 0,
         };
     }
+
 }
