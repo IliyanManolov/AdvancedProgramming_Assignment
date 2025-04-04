@@ -26,6 +26,17 @@ internal class Program
         builder.Services.AddApplicationLayer();
         builder.Services.AddDatabase(builder.Configuration);
 
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowReactApp",
+                policy => policy
+                    .WithOrigins("http://localhost:3000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+            );
+        });
+
         //var context = builder.Services.BuildServiceProvider().GetRequiredService<DatabaseContext>();
         //context.Database.Migrate();
 
@@ -41,6 +52,8 @@ internal class Program
         app.UseApplicationLogging();
 
         //app.UseHttpsRedirection();
+
+        app.UseCors("AllowReactApp");
 
         app.UseAuthorization();
 

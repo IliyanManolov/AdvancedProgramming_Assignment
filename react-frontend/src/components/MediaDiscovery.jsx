@@ -1,72 +1,70 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Banner from '../images/banner.jpg'
+import axios from 'axios'
 
 function MediaDiscovery() {
+  const [mediaList, setMediaList] = useState([])
+
+  useEffect(() => {
+    async function fetchMedia()
+    {
+      try
+      {
+        const res = await axios.get("http://localhost:8080/api/media");
+        console.log(res.data);
+        setMediaList(res.data);
+      }
+      catch (err)
+      {
+        console.error("Failed to fetch media:", err)
+      }
+    }
+
+    fetchMedia()
+  }, [])
+
+  function getImageUrl(posterImage)
+  {
+    // Ensure that a random NULL value won't cause issues
+    if (posterImage && posterImage.length > 0)
+    {
+      const base64String = btoa(
+        posterImage.reduce((data, byte) => data + String.fromCharCode(byte), '')
+      )
+      return `data:image/jpeg;base64,${base64String}`
+    } 
+    else
+      return Banner
+  }
+
+  function truncateTitle(title)
+  {
+    const maxLength = 20; // TBD: reducing
+    return title.length > maxLength 
+      ? title.slice(0, maxLength) + "..." 
+      : title
+  }
+
   return (
     <div>
-
       <div className="mb-8 font-bold text-4xl text-center">
         New releases
       </div>
 
       <div className="flex justify-center flex-wrap">
-
-        {/* TODO: Add a function to truncate the name of the movie. Maybe have it pop-up on hover? */}
-
-        {/* TBD: decide if there should be an indication of Movie vs Show in this discovery*/}
-
-        <div className="w-[15vw] h-[25vh] m-5 rounded-lg bg-cover bg-center flex flex-col justify-end" 
-          style={{ backgroundImage: `url(${Banner})` }}>
-          <div className="text-xl text-white bg-gray-900 bg-opacity-60 p2 text-center w-full h-[4vh] rounded-lg">
-            FIRST MOVIE
+        {mediaList.map((media, index) => (
+          <div
+            key={index}
+            className="w-[15vw] h-[25vh] m-5 rounded-lg bg-cover bg-center flex flex-col justify-end"
+            style={{ backgroundImage: `url(${getImageUrl(media.PosterImage)})` }}
+            title= { media.title}
+          >
+            <div className="text-xl text-white bg-gray-900 bg-opacity-60 p2 text-center w-full h-[4vh] rounded-lg">
+              {truncateTitle(media.title)}
+            </div>
           </div>
-        </div>
-
-        <div className="w-[15vw] h-[25vh] m-5 rounded-lg bg-cover bg-center flex flex-col justify-end" 
-          style={{ backgroundImage: `url(${Banner})` }}>
-          <div className="text-xl text-white bg-gray-900 bg-opacity-60 p2 text-center w-full h-[4vh] rounded-lg">
-            SECOND MOVIE
-          </div>
-        </div>
-
-        <div className="w-[15vw] h-[25vh] m-5 rounded-lg bg-cover bg-center flex flex-col justify-end" 
-          style={{ backgroundImage: `url(${Banner})` }}>
-          <div className="text-xl text-white bg-gray-900 bg-opacity-60 p2 text-center w-full h-[4vh] rounded-lg">
-            THIRD MOVIE
-          </div>
-        </div>
-
-        {/* TEMPORARY FOR TESTING */}
-        <div className="w-[15vw] h-[25vh] m-5 rounded-lg bg-cover bg-center flex flex-col justify-end" 
-          style={{ backgroundImage: `url(${Banner})` }}>
-          <div className="text-xl text-white bg-gray-900 bg-opacity-60 p2 text-center w-full h-[4vh] rounded-lg">
-            FOURTH MOVIE
-          </div>
-        </div>
-
-        <div className="w-[15vw] h-[25vh] m-5 rounded-lg bg-cover bg-center flex flex-col justify-end" 
-          style={{ backgroundImage: `url(${Banner})` }}>
-          <div className="text-xl text-white bg-gray-900 bg-opacity-60 p2 text-center w-full h-[4vh] rounded-lg">
-            FIFTH MOVIE
-          </div>
-        </div>
-
-        <div className="w-[15vw] h-[25vh] m-5 rounded-lg bg-cover bg-center flex flex-col justify-end" 
-          style={{ backgroundImage: `url(${Banner})` }}>
-          <div className="text-xl text-white bg-gray-900 bg-opacity-60 p2 text-center w-full h-[4vh] rounded-lg">
-            SIXTH MOVIE
-          </div>
-        </div>
-
-        <div className="w-[15vw] h-[25vh] m-5 rounded-lg bg-cover bg-center flex flex-col justify-end" 
-          style={{ backgroundImage: `url(${Banner})` }}>
-          <div className="text-xl text-white bg-gray-900 bg-opacity-60 p2 text-center w-full h-[4vh] rounded-lg">
-            SEVENTH MOVIE
-          </div>
-        </div>
-
+        ))}
       </div>
-
     </div>
   )
 }

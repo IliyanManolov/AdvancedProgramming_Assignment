@@ -3,7 +3,7 @@ services:
     image: ${DOCKER_REGISTRY-}imdb-webapi
     container_name: imdb-dev-api
     ports:
-    - "10080:8080"
+    - "8080:8080"
     build:
       context: .
       dockerfile: IMDB.WEB.API/Dockerfile
