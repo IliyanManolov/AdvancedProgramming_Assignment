@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import NavigationBar from './components/NavigationBar';
 import Banner from './components/Banner';
+import MediaDiscovery from './components/MediaDiscovery';
 
 // Tailwind will be used for CSS
 
@@ -14,8 +15,12 @@ function App() {
       </NavigationBar>
 
       <Banner>
-        
+
       </Banner>
+
+      <MediaDiscovery>
+        
+      </MediaDiscovery>
     </>
 
     
