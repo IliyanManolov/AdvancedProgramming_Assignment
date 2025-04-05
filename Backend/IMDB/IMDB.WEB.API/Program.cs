@@ -1,8 +1,7 @@
 using IMDB.Application;
 using IMDB.Infrastructure;
-using IMDB.Infrastructure.Database;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 
 internal class Program
 {
@@ -32,13 +31,31 @@ internal class Program
             options.AddPolicy("AllowReactApp",
                 policy => policy
                     .WithOrigins("http://localhost:3000")
-                    .AllowAnyHeader()
                     .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
             );
         });
 
-        //var context = builder.Services.BuildServiceProvider().GetRequiredService<DatabaseContext>();
-        //context.Database.Migrate();
+
+        builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(settings =>
+            {
+                settings.LoginPath = "/oauth/login";
+                settings.Cookie.IsEssential = true;
+                settings.Cookie.HttpOnly = true;
+                settings.SlidingExpiration = true;
+                settings.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+                settings.Cookie.Name = "IMDB_Cookie";
+            });
+
+        builder.Services.AddAuthorization(options =>
+        {
+            options.DefaultPolicy = new AuthorizationPolicyBuilder()
+            .AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme)
+            .RequireAuthenticatedUser()
+            .Build();
+        });
 
         var app = builder.Build();
 
@@ -54,6 +71,8 @@ internal class Program
         //app.UseHttpsRedirection();
 
         app.UseCors("AllowReactApp");
+
+        app.UseAuthentication();
 
         app.UseAuthorization();
 

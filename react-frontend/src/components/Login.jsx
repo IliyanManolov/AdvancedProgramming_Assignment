@@ -27,7 +27,7 @@ function Login() {
 
         try {
             const response = await axios.post(
-                'https://your-api.com/api/login',
+                'http://localhost:8080/oauth/login',
                 formData,
                 {
                     withCredentials: true,
@@ -37,7 +37,7 @@ function Login() {
                 }
             );
 
-            setUserId(response.data);
+            setUserId(response.data.id);
         }
         catch (err)
         {
@@ -50,6 +50,7 @@ function Login() {
             }
         }
         
+        console.log(document.cookie)
         setLoading(false);
     };
 
@@ -61,7 +62,7 @@ function Login() {
                 <FormInput label="Password" name="password" type="password" value={formData.password} onChange={handleChange} required />
 
                 {error && <p className="text-red-500">{error}</p>}
-                {userId && <p className="text-green-600">Logged in successfully! User ID: {userId}</p>}
+                {userId && <p className="text-green-600">Logged in successfully!</p>}
 
                 <button
                     type="submit"
