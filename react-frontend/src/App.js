@@ -3,9 +3,11 @@ import './App.css';
 import NavigationBar from './components/NavigationBar';
 import Banner from './components/Banner';
 import MediaDiscovery from './components/MediaDiscovery';
+import Register from './components/Register';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Movies from './components/Movies';
 import NotFound from './components/NotFound';
+import Login from './components/Login';
 
 // Tailwind will be used for CSS
 
@@ -27,6 +29,22 @@ function App() {
               </MediaDiscovery>      
             </>
           }></Route>
+
+          <Route path="/register" element={
+            <>
+              <Banner></Banner>
+              <Register></Register>
+            </>
+          }>
+          </Route>
+
+          <Route path="/login" element={
+            <>
+              <Banner></Banner>
+              <Login></Login>
+            </>
+          }>
+          </Route>
 
           <Route path="/movies" element= {
             <>
