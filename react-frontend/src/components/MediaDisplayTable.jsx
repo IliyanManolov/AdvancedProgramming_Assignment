@@ -1,5 +1,6 @@
 import React from 'react'
 import Banner from '../images/banner.jpg'
+import { Link } from 'react-router-dom';
 
 function MediaDisplayTable({selectedGenres, media}) {
 
@@ -28,11 +29,14 @@ function MediaDisplayTable({selectedGenres, media}) {
           {filteredMedia.map((item, index) => (
             <tr key={item.id} className="border-t hover:bg-gray-50">
               <td className="px-4 py-3">
-                <img
-                  src={getImageUrl(item.posterImage)}
-                  alt={item.title}
-                  className="w-[10vw] h-[10vh] rounded object-cover"
-                />
+                {/* TBD: keep as state or change to URL parameter. Currently hidden and cannot be bookmarked */}
+                <Link to={`/movies/${item.id}`} state={{ type: item.type }}>
+                  <img
+                    src={getImageUrl(item.posterImage)}
+                    alt={item.title}
+                    className="w-[10vw] h-[10vh] rounded object-cover"
+                  />
+                </Link>
               </td>
               <td className="px-4 py-3 font-medium text-center">{item.title}</td>
               <td className="px-4 py-3 text-sm text-gray-600 text-center">

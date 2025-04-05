@@ -4,6 +4,7 @@ using IMDB.Application.DTOs.Media;
 using IMDB.Application.DTOs.Media.Movie;
 using IMDB.Application.DTOs.Media.TvShow;
 using IMDB.Application.DTOs.ShowEpisode;
+using IMDB.Domain.AbstractModels;
 using IMDB.Domain.Enums;
 using IMDB.Domain.Models;
 using Microsoft.Extensions.Logging;
@@ -201,6 +202,26 @@ public class MediaService : IMediaService
         result.AddRange(_mediaTransformer.ToShortDto(movies));
 
         return (result, null);
+    }
+
+    public async Task<(MediaShortDto? Media, string? Error)> GetMovieByIdAsync(long? id)
+    {
+        var movie = await _movieRepository.GetByIdAsync(id);
+
+        if (movie is null)
+            return (null, "Movie does not exist");
+
+        return (_mediaTransformer.ToShortDto(new List<Media>() { movie }).First(), null);
+    }
+
+    public async Task<(MediaShortDto? Media, string? Error)> GetShowByIdAsync(long? id)
+    {
+        var movie = await _showRepository.GetByIdAsync(id);
+
+        if (movie is null)
+            return (null, "Show does not exist");
+
+        return (_mediaTransformer.ToShortDto(new List<Media>() { movie }).First(), null);
     }
 
     public async Task<(IEnumerable<MediaShortDto>? MediaList, string? Error)> GetAllMoviesAsync()

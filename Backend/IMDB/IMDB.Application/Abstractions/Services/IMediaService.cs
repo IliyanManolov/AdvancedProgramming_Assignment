@@ -17,6 +17,9 @@ public interface IMediaService
     public Task<(long? Id, string? Error)> CreateEpisodeAsync(CreateEpisodeDto dto);
 
 
+    public Task<(MediaShortDto? Media, string? Error)> GetMovieByIdAsync(long? id);
+    public Task<(MediaShortDto? Media, string? Error)> GetShowByIdAsync(long? id);
+
     public Task<(long? Id, string? Error)> UpdateMovieAsync(UpdateMovieDto dto, long id);
     public Task<(long? Id, string? Error)> UpdateTvShowAsync(UpdateTvShowDto dto, long id);
 

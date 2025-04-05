@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import NavigationBar from './components/NavigationBar';
 import Banner from './components/Banner';
@@ -8,11 +7,13 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Movies from './components/Movies';
 import NotFound from './components/NotFound';
 import Login from './components/Login';
+import MediaDetails from './components/MediaDetails';
 
 // Tailwind will be used for CSS
 
 // TODO: add Tv shows display page
 // TODO: add single media page with more details (director, actors, etc.)
+// ^ initial version made, needs maaaajor UI overhauling # I am a backend dev dont shoot me
 // TODO: add watchlist functionality
 // TODO: revise backend record creation to be using the cookine
 
@@ -54,6 +55,12 @@ function App() {
           <Route path="/movies" element= {
             <>
               <Movies></Movies>
+            </>
+          }></Route>
+
+          <Route path="/movies/:id" element= {
+            <>
+              <MediaDetails></MediaDetails>
             </>
           }></Route>
 

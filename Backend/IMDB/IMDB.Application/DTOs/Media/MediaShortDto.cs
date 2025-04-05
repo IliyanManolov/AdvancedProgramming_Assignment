@@ -17,9 +17,6 @@ public class MediaShortDto
     /// Names of genres
     /// </summary>
     public ISet<string> Genres { get; set; } = new HashSet<string>();
-    /// <summary>
-    /// Full names Names of directors
-    /// </summary>
     public string Director { get; set; }
     public DateTime ReleaseDate { get; set; }
     public string Title { get; set; }

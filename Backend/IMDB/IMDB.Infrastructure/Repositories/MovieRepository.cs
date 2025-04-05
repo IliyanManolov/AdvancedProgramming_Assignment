@@ -16,6 +16,7 @@ internal class MovieRepository : BaseRepository<Movie>, IMovieRepository
         return await Query
             .Include(E => E.Actors)
             .Include(e => e.Genres)
+            .Include(e => e.Director)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
     public override async Task<IEnumerable<Movie>> GetAllAsync()

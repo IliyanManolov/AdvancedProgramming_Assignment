@@ -211,4 +211,46 @@ public class MediaController : ControllerBase
             return Ok(mediaDiscovery);
         }
     }
+
+    [HttpGet("movies/{id}")]
+    public async Task<IActionResult> GetMovieAsync(long id)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var (episodes, error) = await _mediaService.GetMovieByIdAsync(id);
+
+        if (!string.IsNullOrEmpty(error))
+        {
+            if (error.Contains("unauthorized", StringComparison.InvariantCultureIgnoreCase))
+                return Unauthorized();
+            else
+                return BadRequest(error);
+        }
+
+        return Ok(episodes);
+    }
+
+    [HttpGet("shows/{id}")]
+    public async Task<IActionResult> GetShowAsync(long id)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var (episodes, error) = await _mediaService.GetShowByIdAsync(id);
+
+        if (!string.IsNullOrEmpty(error))
+        {
+            if (error.Contains("unauthorized", StringComparison.InvariantCultureIgnoreCase))
+                return Unauthorized();
+            else
+                return BadRequest(error);
+        }
+
+        return Ok(episodes);
+    }
 }

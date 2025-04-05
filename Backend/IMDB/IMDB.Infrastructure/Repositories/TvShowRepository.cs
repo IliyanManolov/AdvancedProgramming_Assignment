@@ -16,6 +16,7 @@ internal class TvShowRepository : BaseRepository<TvShow>, ITvShowRepository
             .Include(E => E.Actors)
             .Include(e => e.Genres)
             .Include(e => e.Episodes)
+            .Include(e => e.Director)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
     public override async Task<IEnumerable<TvShow>> GetAllAsync()
@@ -34,6 +35,7 @@ internal class TvShowRepository : BaseRepository<TvShow>, ITvShowRepository
             .Where(e => e.Actors.Any(ac => ac.Id.Equals(actorId)))
             .Include(e => e.Actors)
             .Include(e => e.Genres)
+            .Include(e => e.Director)
             .ToListAsync();
     }
 
