@@ -50,7 +50,6 @@ function Login() {
             }
         }
         
-        console.log(document.cookie)
         setLoading(false);
     };
 

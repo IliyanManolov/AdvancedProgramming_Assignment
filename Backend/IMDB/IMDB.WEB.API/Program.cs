@@ -43,10 +43,11 @@ internal class Program
             {
                 settings.LoginPath = "/oauth/login";
                 settings.Cookie.IsEssential = true;
-                settings.Cookie.HttpOnly = true;
+                settings.Cookie.HttpOnly = false;
                 settings.SlidingExpiration = true;
                 settings.ExpireTimeSpan = TimeSpan.FromMinutes(10);
                 settings.Cookie.Name = "IMDB_Cookie";
+                settings.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             });
 
         builder.Services.AddAuthorization(options =>

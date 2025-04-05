@@ -12,7 +12,7 @@ function Genres({ selectedGenres, onToggleGenre }) {
       try
       {
         const res = await axios.get("http://localhost:8080/api/genres");
-        console.log(res.data);
+        // console.log(res.data);
         setGenres(res.data);
       }
       catch (err)

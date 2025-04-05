@@ -11,6 +11,11 @@ import Login from './components/Login';
 
 // Tailwind will be used for CSS
 
+// TODO: add Tv shows display page
+// TODO: add single media page with more details (director, actors, etc.)
+// TODO: add watchlist functionality
+// TODO: revise backend record creation to be using the cookine
+
 function App() {
   return (
 
