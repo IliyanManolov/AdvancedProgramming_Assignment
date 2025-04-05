@@ -12,6 +12,9 @@ function MediaDetails() {
     const location = useLocation();
     const mediaType = location.state?.type;
 
+    // TODO: List all actors in media
+    // Use a different component for EACH person and just map them below (try to make it reusable for future-proofing about directors)
+
     useEffect(() => {
 
         async function fetchMovie() {
@@ -62,28 +65,26 @@ function MediaDetails() {
     }
 
     return (
-        <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg">
-            <div className="flex flex-col md:flex-row gap-6">
+        <div className="bg-gradient-to-br from-gray-400 to-white min-h-screen py-12 px-6">
+            <div className="w-[60vw] mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+                <div className="p-8 flex-1">
+                    <h1 className="text-4xl font-extrabold mb-4">{movie.title}</h1>
+                    <p className="text-gray-700 text-lg mb-6">{movie.description}</p>
+
+                    <div className="space-y-3 text-base">
+                        <p><span className="font-semibold">Release Date:</span> {formatDate(movie.releaseDate)}</p>
+                        <p><span className="font-semibold">Director:</span> {movie.director}</p>
+                        <p><span className="font-semibold">Genres:</span> {movie.genres?.join(', ') || 'N/A'}</p>
+                        <p><span className="font-semibold">Rating:</span> {movie.rating}</p>
+                        <p><span className="font-semibold">Reviews:</span> {movie.reviews}</p>
+                        <p><span className="font-semibold">Length:</span> {movie.length / 60} min</p>
+                    </div>
+                </div>
                 <img
                     src={getImageUrl(movie.posterImage)}
                     alt={movie.title}
-                    className="w-full md:w-[300px] rounded-xl shadow object-cover"
+                    className="w-[35vw] h-[35vh] object-cover"
                 />
-
-                <div className="flex-1">
-                    <h1 className="text-3xl font-bold mb-2">{movie.title}</h1>
-                    <p className="text-gray-600 mb-4">{movie.description}</p>
-
-                    <ul className="space-y-2 text-sm text-gray-800">
-                        <li><strong>Director:</strong> {movie.director}</li>
-                        <li><strong>Release Date:</strong> {formatDate(movie.releaseDate)}</li>
-                        {/* Need to think if a media can even have 0 genres? */}
-                        <li><strong>Genres:</strong> {movie.genres?.length > 0 ? movie.genres.join(', ') : 'N/A'}</li>
-                        <li><strong>Rating:</strong> {movie.rating ?? 'N/A'}</li>
-                        <li><strong>Reviews:</strong> {movie.reviews}</li>
-                        <li><strong>Length:</strong> {movie.length / 60} minutes</li>
-                    </ul>
-                </div>
             </div>
         </div>
     );
