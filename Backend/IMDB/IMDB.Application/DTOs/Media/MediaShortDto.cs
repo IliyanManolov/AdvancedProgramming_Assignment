@@ -27,6 +27,7 @@ public class MediaShortDto
     public long Reviews { get; set; }
     public string Description { get; set; }
 
+    public byte[] PosterImage { get; set; }
     /// <summary>
     /// Property to allow frontend to distinguish between Movie, TvShow, etc.
     /// </summary>
@@ -38,4 +39,5 @@ public class MediaShortDto
     public int? ShowSeasonsCount { get; set; }
     public long? ShowEpisodesCount { get; set; }
     public DateTime? ShowEndDate { get; set; }
+
 }

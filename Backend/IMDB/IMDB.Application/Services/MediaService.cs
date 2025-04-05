@@ -203,6 +203,28 @@ public class MediaService : IMediaService
         return (result, null);
     }
 
+    public async Task<(IEnumerable<MediaShortDto>? MediaList, string? Error)> GetAllMoviesAsync()
+    {
+        var movies = await _movieRepository.GetAllAsync();
+
+        var result = new List<MediaShortDto>();
+
+        result.AddRange(_mediaTransformer.ToShortDto(movies));
+
+        return (result, null);
+    }
+
+    public async Task<(IEnumerable<MediaShortDto>? MediaList, string? Error)> GetAllShowsAsync()
+    {
+        var shows = await _showRepository.GetAllAsync();
+
+        var result = new List<MediaShortDto>();
+
+        result.AddRange(_mediaTransformer.ToShortDto(shows));
+
+        return (result, null);
+    }
+
     public async Task<(IEnumerable<MediaShortDto>? MediaList, string? Error)> GetAllWithGenres(string[] genreNames)
     {
 

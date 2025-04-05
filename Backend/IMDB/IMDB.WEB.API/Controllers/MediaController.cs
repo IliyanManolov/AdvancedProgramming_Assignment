@@ -40,6 +40,23 @@ public class MediaController : ControllerBase
         return Ok(movieId);
     }
 
+    [HttpGet("movies/")]
+    public async Task<IActionResult> GetAllMoviesAsync()
+    {
+
+        var (movies, error) = await _mediaService.GetAllMoviesAsync();
+
+        if (!string.IsNullOrEmpty(error))
+        {
+            if (error.Contains("unauthorized", StringComparison.InvariantCultureIgnoreCase))
+                return Unauthorized();
+            else
+                return BadRequest(error);
+        }
+
+        return Ok(movies);
+    }
+
     [HttpPatch("movies/{mediaId}")]
     public async Task<IActionResult> UpdateMovieAsync([FromBody] UpdateMovieDto model, [FromRoute] long mediaId)
     {
@@ -82,8 +99,25 @@ public class MediaController : ControllerBase
         return Ok(showId);
     }
 
+    [HttpGet("shows/")]
+    public async Task<IActionResult> GetAllShowsAsync()
+    {
+
+        var (movies, error) = await _mediaService.GetAllShowsAsync();
+
+        if (!string.IsNullOrEmpty(error))
+        {
+            if (error.Contains("unauthorized", StringComparison.InvariantCultureIgnoreCase))
+                return Unauthorized();
+            else
+                return BadRequest(error);
+        }
+
+        return Ok(movies);
+    }
+
     [HttpGet("shows/{showId}/episodes")]
-    public async Task<IActionResult> CreateShowAsync(long showId)
+    public async Task<IActionResult> GetShowEpisodesAsync(long showId)
     {
         if (!ModelState.IsValid)
         {

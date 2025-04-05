@@ -38,4 +38,25 @@ public class GenresController : ControllerBase
 
         return Ok(actorId);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllAsync()
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var (genres, error) = await _genreService.GetAllAsync();
+
+        if (!string.IsNullOrEmpty(error))
+        {
+            if (error.Contains("unauthorized", StringComparison.InvariantCultureIgnoreCase))
+                return Unauthorized();
+            else
+                return BadRequest(error);
+        }
+
+        return Ok(genres);
+    }
 }
