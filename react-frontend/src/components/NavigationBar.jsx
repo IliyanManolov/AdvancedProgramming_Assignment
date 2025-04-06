@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 function NavigationBar() {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const location = useLocation();
 
     useEffect(() => {
@@ -14,6 +16,30 @@ function NavigationBar() {
 
         CheckLogin();
     }, [location]); // base the refresh on the location of the current page since component is shared everywhere
+
+    useEffect(() => {
+        async function CheckAdmin(){
+            try {
+                await axios.get(
+                    'http://localhost:8080/oauth/admin',
+                    {
+                        withCredentials: true
+                    }
+                );
+                setIsAdmin(true)
+            }
+            catch (err)
+            {
+                if (err.response?.status === 500)
+                {
+                    console.log('An unexpected error occurred.');
+                }
+            }
+        }
+
+        if (isLoggedIn === true)
+            CheckAdmin();
+    }, [isLoggedIn])
 
     return (
         <div className="border flex space-x-20 pl-20 py-2">

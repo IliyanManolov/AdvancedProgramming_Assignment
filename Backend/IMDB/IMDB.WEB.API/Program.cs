@@ -45,7 +45,7 @@ internal class Program
                 settings.Cookie.IsEssential = true;
                 settings.Cookie.HttpOnly = false;
                 settings.SlidingExpiration = true;
-                settings.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+                settings.ExpireTimeSpan = TimeSpan.FromMinutes(40);
                 settings.Cookie.Name = "IMDB_Cookie";
                 settings.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             });

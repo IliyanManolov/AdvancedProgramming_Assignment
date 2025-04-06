@@ -5,6 +5,7 @@ using IMDB.Domain.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IMDB.WEB.API.Controllers;
 
@@ -56,5 +57,34 @@ public class AuthenticationController : ControllerBase
             return BadRequest(error);
 
         return Ok(userId);
+    }
+
+    [Authorize(Roles = "Administrator,Moderator")]
+    [HttpGet("admin/")]
+    public async Task<IActionResult> IsAdmin()
+    {
+        var claims = HttpContext.User.Claims;
+
+        var idClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+        var roleClaim = HttpContext.User.FindFirst(ClaimTypes.Role);
+
+        if (roleClaim is null || idClaim is null)
+            return NotFound();
+
+        var (dbUser, error) = await _userService.GetUserDetailsAsync(long.Parse(idClaim.Value));
+
+        if (!string.IsNullOrWhiteSpace(error))
+        {
+            _logger.LogWarning("Error when attempting to check admin privileges for user with claims: '{idClaim}', '{roleClaim}'", idClaim.Value, roleClaim.Value);
+            return NotFound();
+        }
+
+        if (long.Parse(idClaim.Value) != dbUser.Id || roleClaim.Value != dbUser.Role.ToString())
+        {
+            _logger.LogWarning("Mismatching information from cookie and database when attempting to check admin privileges");
+            return NotFound();
+        }
+
+        return Ok();
     }
 }
