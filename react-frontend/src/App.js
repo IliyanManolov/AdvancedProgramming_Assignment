@@ -8,14 +8,15 @@ import Movies from './components/Movies';
 import NotFound from './components/NotFound';
 import Login from './components/Login';
 import MediaDetails from './components/MediaDetails';
+import Shows from './components/Shows';
 
 // Tailwind will be used for CSS
 
-// TODO: add Tv shows display page
 // TODO: add single media page with more details (director, actors, etc.)
 // ^ initial version made, needs maaaajor UI overhauling # I am a backend dev dont shoot me
 // TODO: add watchlist functionality
 // TODO: revise backend record creation to be using the cookine
+// TODO: very basic admin panel
 
 function App() {
   return (
@@ -59,6 +60,18 @@ function App() {
           }></Route>
 
           <Route path="/movies/:id" element= {
+            <>
+              <MediaDetails></MediaDetails>
+            </>
+          }></Route>
+
+          <Route path="/shows" element= {
+            <>
+              <Shows></Shows>
+            </>
+          }></Route>
+
+          <Route path="/shows/:id" element= {
             <>
               <MediaDetails></MediaDetails>
             </>

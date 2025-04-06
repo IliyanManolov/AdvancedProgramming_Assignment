@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 function NavigationBar() {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const location = useLocation();
 
     useEffect(() => {
         function CheckLogin() {
@@ -12,7 +13,7 @@ function NavigationBar() {
         }
 
         CheckLogin();
-    }, []);
+    }, [location]); // base the refresh on the location of the current page since component is shared everywhere
 
     return (
         <div className="border flex space-x-20 pl-20 py-2">
@@ -20,8 +21,12 @@ function NavigationBar() {
             {/* TODO: decide if I will even have a logo here. Best place would be at the start (left)*/}
             <Link to="/" className="font-bold text-blue-600">Home</Link>
             <Link to="/movies" className="font-bold text-blue-600">Movies</Link>
-            <h3 className="font-bold text-blue-600">TV Shows</h3>
-            <h3 className="font-bold text-blue-600">Watchlist</h3>
+            <Link to="/shows" className="font-bold text-blue-600">TV Shows</Link>
+
+            {isLoggedIn && (
+                <h3 className="font-bold text-blue-600">Watchlist</h3>
+            )}
+
 
             {/* Conditional rendering again */}
             {!isLoggedIn && (

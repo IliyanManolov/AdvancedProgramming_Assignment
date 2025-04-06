@@ -47,7 +47,7 @@ function Movies() {
 
     <>
       <Genres selectedGenres={selectedGenres} onToggleGenre={handleGenreToggle}></Genres>
-      <MediaDisplayTable selectedGenres={selectedGenres} media={movies}></MediaDisplayTable>
+      <MediaDisplayTable selectedGenres={selectedGenres} media={movies} mediaType={"movies"}></MediaDisplayTable>
     </>
   )
 }

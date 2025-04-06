@@ -2,7 +2,7 @@ import React from 'react'
 import Banner from '../images/banner.jpg'
 import { Link } from 'react-router-dom';
 
-function MediaDisplayTable({selectedGenres, media}) {
+function MediaDisplayTable({selectedGenres, media, mediaType}) {
 
   // Annoying filtering because no LINQ...
   const filteredMedia = selectedGenres.length > 0
@@ -20,9 +20,15 @@ function MediaDisplayTable({selectedGenres, media}) {
             <th className="px-4 py-3 w-[10vw] text-center"></th>
             <th className="px-4 py-3 text-center">Title</th>
             <th className="px-4 py-3 text-center">Description</th>
+            <th className="px-4 py-3 text-center">Genres</th>
             <th className="px-4 py-3 text-center">Rating</th>
             <th className="px-4 py-3 text-center">Reviews</th>
-            <th className="px-4 py-3 text-center">Genres</th>
+            {mediaType === "shows" && (
+                <>
+                  <th className="px-4 py-3 text-center">Seasons</th>
+                  <th className="px-4 py-3 text-center">Episodes</th>
+                </>
+              )}
           </tr>
         </thead>
         <tbody>
@@ -30,7 +36,7 @@ function MediaDisplayTable({selectedGenres, media}) {
             <tr key={item.id} className="border-t hover:bg-gray-50">
               <td className="px-4 py-3">
                 {/* TBD: keep as state or change to URL parameter. Currently hidden and cannot be bookmarked */}
-                <Link to={`/movies/${item.id}`} state={{ type: item.type }}>
+                <Link to={`/${mediaType}/${item.id}`} state={{ type: item.type }}>
                   <img
                     src={getImageUrl(item.posterImage)}
                     alt={item.title}
@@ -42,9 +48,15 @@ function MediaDisplayTable({selectedGenres, media}) {
               <td className="px-4 py-3 text-sm text-gray-600 text-center">
                 {item.description}
               </td>
+              <td className="px-4 py-3 text-center">{item.genres.join(", ")}</td>
               <td className="px-4 py-3 text-center">{item.rating}</td>
               <td className="px-4 py-3 text-center">{item.reviews}</td>
-              <td className="px-4 py-3 text-center">{item.genres.join(", ")}</td>
+              {mediaType === "shows" && (
+                <>
+                  <td className="px-4 py-3 text-center">{item.showSeasonsCount}</td>
+                  <td className="px-4 py-3 text-center">{item.showEpisodesCount}</td>
+                </>
+              )}
             </tr>
           ))}
         </tbody>

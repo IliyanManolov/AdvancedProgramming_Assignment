@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import FormInput from './FormInput';
 
 function Login() {
@@ -11,6 +12,7 @@ function Login() {
     const [error, setError] = useState('');
     const [userId, setUserId] = useState(null);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData((prev) => ({
@@ -38,6 +40,11 @@ function Login() {
             );
 
             setUserId(response.data.id);
+
+            // Redirect to home page after 2 seconds
+            setTimeout(() => {
+                navigate("/")
+            }, 2000);
         }
         catch (err)
         {
