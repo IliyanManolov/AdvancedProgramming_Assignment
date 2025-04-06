@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import FormInput from '../FormInput'
 import axios from 'axios';
+import MultiSelectionInput from '../MultiSelectionInput';
 
 function CreateMovie({ onSubmit, genres, directors }) {
     const [formData, setFormData] = useState({
@@ -17,12 +18,21 @@ function CreateMovie({ onSubmit, genres, directors }) {
     const [userId, setMovieId] = useState(null);
     const [loading, setLoading] = useState(false);
 
+    // TODO: Add separate handleChange for the selections
     const handleChange = (e) => {
-
-        setFormData((prev) => ({
-            ...prev,
-            [e.target.name]: e.target.type === 'number' ? Number(e.target.value) : e.target.value,
-        }));
+        console.log(formData)
+        if (e.target === undefined) {
+            setFormData((prev) => ({
+                ...prev,
+                ["genreIds"]: e,
+            }));
+        }
+        else {
+            setFormData((prev) => ({
+                ...prev,
+                [e.target.name]: e.target.type === 'number' ? Number(e.target.value) : e.target.value,
+            }));
+        }
     };
 
 
@@ -47,17 +57,14 @@ function CreateMovie({ onSubmit, genres, directors }) {
 
             setMovieId(response.data.id);
         }
-        catch (err)
-        {
-            if (err.response?.status === 401)
-            {
+        catch (err) {
+            if (err.response?.status === 400) {
                 setError(err.response.data);
-            } else
-            {
+            } else {
                 setError('An unexpected error occurred.');
             }
         }
-        
+
         setLoading(false);
     };
 
@@ -69,6 +76,7 @@ function CreateMovie({ onSubmit, genres, directors }) {
                 <FormInput label="Description" name="description" value={formData.description} onChange={handleChange} required />
                 <FormInput label="Director ID" name="directorId" value={formData.directorId} type="number" onChange={handleChange} required />
                 <FormInput label="Length (in minutes))" name="length" value={formData.length} type="number" onChange={handleChange} required />
+                <MultiSelectionInput label="Genres" value={formData.genreIds} onChange={handleChange} options={genres} isMultiSelect={true} />
 
                 {error && <p className="text-red-500">{error}</p>}
                 {userId && <p className="text-green-600">Created movie successfully!</p>}
