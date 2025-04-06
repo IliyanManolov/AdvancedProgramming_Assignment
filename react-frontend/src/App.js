@@ -9,6 +9,7 @@ import NotFound from './components/NotFound';
 import Login from './components/Login';
 import MediaDetails from './components/MediaDetails';
 import Shows from './components/Shows';
+import AdminPanel from './components/admin/AdminPanel';
 
 // Tailwind will be used for CSS
 
@@ -17,6 +18,8 @@ import Shows from './components/Shows';
 // TODO: add watchlist functionality
 // TODO: revise backend record creation to be using the cookine
 // TODO: very basic admin panel
+
+// ADD PROTECTIONS FOR ACCESSING ADMIN PANEL
 
 function App() {
   return (
@@ -74,6 +77,12 @@ function App() {
           <Route path="/shows/:id" element= {
             <>
               <MediaDetails></MediaDetails>
+            </>
+          }></Route>
+
+          <Route path="/adminpanel" element= {
+            <>
+              <AdminPanel></AdminPanel>
             </>
           }></Route>
 

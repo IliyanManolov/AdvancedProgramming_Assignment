@@ -63,8 +63,6 @@ public class AuthenticationController : ControllerBase
     [HttpGet("admin/")]
     public async Task<IActionResult> IsAdmin()
     {
-        var claims = HttpContext.User.Claims;
-
         var idClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
         var roleClaim = HttpContext.User.FindFirst(ClaimTypes.Role);
 
