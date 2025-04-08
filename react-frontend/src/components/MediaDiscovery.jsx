@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import Banner from '../images/banner.jpg'
 import axios from 'axios'
+import getImageUrl from '../Utils/GetImageUrl'
 
 function MediaDiscovery() {
   const [mediaList, setMediaList] = useState([])
@@ -23,19 +23,6 @@ function MediaDiscovery() {
     fetchMedia()
   }, [])
 
-  function getImageUrl(posterImage)
-  {
-    // Ensure that a random NULL value won't cause issues
-    if (posterImage && posterImage.length > 0)
-    {
-      const base64String = btoa(
-        posterImage.reduce((data, byte) => data + String.fromCharCode(byte), '')
-      )
-      return `data:image/jpeg;base64,${base64String}`
-    } 
-    else
-      return Banner
-  }
 
   function truncateTitle(title)
   {
@@ -56,7 +43,7 @@ function MediaDiscovery() {
           <div
             key={index}
             className="w-[15vw] h-[25vh] m-5 rounded-lg bg-cover bg-center flex flex-col justify-end"
-            style={{ backgroundImage: `url(${getImageUrl(media.PosterImage)})` }}
+            style={{ backgroundImage: `url(${getImageUrl(media.posterImage)})` }}
             title= { media.title}
           >
             <div className="text-xl text-white bg-gray-900 bg-opacity-60 p2 text-center w-full h-[4vh] rounded-lg">

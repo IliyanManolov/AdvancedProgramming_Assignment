@@ -1,7 +1,7 @@
 import { useParams, useLocation } from 'react-router-dom';
 import { React, useEffect, useState } from 'react';
-import Banner from '../images/banner.jpg';
 import axios from 'axios';
+import getImageUrl from '../Utils/GetImageUrl'
 
 function MediaDetails() {
     const { id } = useParams();
@@ -51,19 +51,6 @@ function MediaDetails() {
 
     if (loading) return <p className="p-4">Loading...</p>;
     if (error) return <p className="p-4 text-red-600">{error}</p>;
-
-    // Move this to a shared function since i'm already using it at 5 different places
-    function getImageUrl(posterImage) {
-        // Ensure that a random NULL value won't cause issues
-        if (posterImage && posterImage.length > 0) {
-            const base64String = btoa(
-                posterImage.reduce((data, byte) => data + String.fromCharCode(byte), '')
-            )
-            return `data:image/jpeg;base64,${base64String}`
-        }
-        else
-            return Banner
-    }
 
     return (
         <div className="bg-gradient-to-br from-gray-400 to-white min-h-screen py-12 px-6">

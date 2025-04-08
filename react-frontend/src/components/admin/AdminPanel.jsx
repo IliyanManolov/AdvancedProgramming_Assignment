@@ -28,8 +28,8 @@ function AdminPanel() {
         // Length is set in minutes but kept in seconds
         formData.length = formData.length * 60;
 
-        // THE workaround. Multi select library forces us to use their structure. Added like this for now until I get to refactoring stage
-        formData.genreIds = formData.genreIds.map(el => Number(el.value))
+        formData.posterImage = formData.encodedImage
+        delete formData.encodedImage;
 
         console.log(formData);
     }

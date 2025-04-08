@@ -1,6 +1,6 @@
 import React from 'react'
-import Banner from '../images/banner.jpg'
 import { Link } from 'react-router-dom';
+import getImageUrl from '../Utils/GetImageUrl'
 
 function MediaDisplayTable({selectedGenres, media, mediaType}) {
 
@@ -64,20 +64,6 @@ function MediaDisplayTable({selectedGenres, media, mediaType}) {
     </div>
     </>
   )
-
-  function getImageUrl(posterImage)
-  {
-    // Ensure that a random NULL value won't cause issues
-    if (posterImage && posterImage.length > 0)
-    {
-      const base64String = btoa(
-        posterImage.reduce((data, byte) => data + String.fromCharCode(byte), '')
-      )
-      return `data:image/jpeg;base64,${base64String}`
-    } 
-    else
-      return Banner
-  }
 }
 
 export default MediaDisplayTable
