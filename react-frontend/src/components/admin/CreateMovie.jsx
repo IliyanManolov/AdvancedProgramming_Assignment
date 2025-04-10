@@ -105,7 +105,7 @@ function CreateMovie({ onSubmit, genres, directors }) {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg">
+        <div className="w-[25vw] mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg">
             <h2 className="text-2xl font-bold mb-6 text-center">Create a movie</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <FormInput label="Title" name="title" value={formData.title} onChange={handleChange} required={true} />

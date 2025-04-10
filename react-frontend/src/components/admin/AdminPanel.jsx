@@ -51,10 +51,14 @@ function AdminPanel() {
 
     return (
 
-        <>
-            {/* TODO: decide how to handle genres & directors */}
+        <div className="grid grid-cols-3">
             <CreateMovie genres={allGenres} onSubmit={handleSubmit} directors={directors}></CreateMovie>
-        </>
+            
+            {/* TEMP FOR TESTING PURPOSES */}
+            <CreateMovie genres={allGenres} onSubmit={handleSubmit} directors={directors}></CreateMovie>
+            
+            <CreateMovie genres={allGenres} onSubmit={handleSubmit} directors={directors}></CreateMovie>
+        </div>
     )
 }
 

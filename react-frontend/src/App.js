@@ -16,7 +16,6 @@ import AdminPanel from './components/admin/AdminPanel';
 // TODO: add single media page with more details (director, actors, etc.)
 // ^ initial version made, needs maaaajor UI overhauling # I am a backend dev dont shoot me
 // TODO: add watchlist functionality
-// TODO: revise backend record creation to be using the cookine
 // TODO: very basic admin panel
 
 // ADD PROTECTIONS FOR ACCESSING ADMIN PANEL
