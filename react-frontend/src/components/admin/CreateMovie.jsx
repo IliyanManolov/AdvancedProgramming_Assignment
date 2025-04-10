@@ -21,7 +21,6 @@ function CreateMovie({ onSubmit, genres, directors }) {
 
     // TODO: Add separate handleChange for the selections
     const handleChange = (e) => {
-
         setFormData((prev) => ({
             ...prev,
             [e.target.name]: e.target.type === 'number' ? Number(e.target.value) : e.target.value,
@@ -32,6 +31,13 @@ function CreateMovie({ onSubmit, genres, directors }) {
         setFormData((prev) => ({
             ...prev,
             ["genreIds"]: e,
+        }));
+    }
+
+    const handleDirectorChange = (e) => {
+        setFormData((prev) => ({
+            ...prev,
+            ["directorId"]: e,
         }));
     }
 
@@ -61,10 +67,18 @@ function CreateMovie({ onSubmit, genres, directors }) {
         setLoading(true);
 
         var copy = { ...formData }
-        onSubmit(copy);
+        // onSubmit(copy);
 
         try {
             copy.genreIds = formData.genreIds.map(el => Number(el.value))
+            copy.directorId = formData.directorId.value;
+
+            // Length is set in minutes but kept in seconds
+            copy.length = copy.length * 60;
+            copy.posterImage = copy.encodedImage
+            delete copy.encodedImage;
+
+            console.log(copy);
 
             const response = await axios.post(
                 'http://localhost:8080/api/media/movies/',
@@ -96,11 +110,18 @@ function CreateMovie({ onSubmit, genres, directors }) {
             <form onSubmit={handleSubmit} className="space-y-4">
                 <FormInput label="Title" name="title" value={formData.title} onChange={handleChange} required={true} />
                 <FormInput label="Description" name="description" value={formData.description} onChange={handleChange} required />
-                <FormInput label="Director ID" name="directorId" value={formData.directorId} type="number" onChange={handleChange} required={true} />
+                <MultiSelectionInput label="Director" value={formData.directorId} onChange={handleDirectorChange} options={directors.map(option => ({
+                    label: option.fullName,
+                    value: option.id,
+                }))} isMultiSelect={false} />
                 <FormInput label="Length (in minutes)" name="length" value={formData.length} type="number" onChange={handleChange} required={true} />
-                <MultiSelectionInput label="Genres" value={formData.genreIds} onChange={handleGenresChange} options={genres} isMultiSelect={true} />
+                <MultiSelectionInput label="Genres" value={formData.genreIds} onChange={handleGenresChange} options={genres.map(option => ({
+                    label: option.name,
+                    value: option.id,
+                }))} isMultiSelect={true} />
                 <FormInput label="Picture" name="posterImage" value={formData.posterImage} type="file" onChange={handleImageChange} required />
                 <FormInput label="Release Date" name="releaseDate" value={formData.releaseDate} type="date" onChange={handleChange} required={true} />
+
 
                 {error && <p className="text-red-500">{JSON.stringify(error)}</p>}
                 {userId && <p className="text-green-600">Created movie successfully!</p>}

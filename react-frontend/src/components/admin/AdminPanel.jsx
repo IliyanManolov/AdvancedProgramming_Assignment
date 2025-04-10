@@ -24,13 +24,28 @@ function AdminPanel() {
 
     }, [])
 
+    const [directors, setDirectors] = useState([]);
+
+    useEffect(() => {
+
+        async function fetchDirectors() {
+            try {
+                const res = await axios.get("http://localhost:8080/api/directors");
+                // console.log(res.data);
+                setDirectors(res.data);
+
+            }
+            catch (err) {
+                console.error("Failed to fetch genres:", err)
+            }
+        }
+
+        fetchDirectors()
+
+    }, [])
+
+    // CHANGE THIS RESET FETCHING INFO ON SUCCESS
     const handleSubmit = async (formData) => {
-        // Length is set in minutes but kept in seconds
-        formData.length = formData.length * 60;
-
-        formData.posterImage = formData.encodedImage
-        delete formData.encodedImage;
-
         console.log(formData);
     }
 
@@ -38,7 +53,7 @@ function AdminPanel() {
 
         <>
             {/* TODO: decide how to handle genres & directors */}
-            <CreateMovie genres={allGenres} onSubmit={handleSubmit} directors={[]}></CreateMovie>
+            <CreateMovie genres={allGenres} onSubmit={handleSubmit} directors={directors}></CreateMovie>
         </>
     )
 }

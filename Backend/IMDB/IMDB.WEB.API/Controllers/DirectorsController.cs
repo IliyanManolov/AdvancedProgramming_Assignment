@@ -27,7 +27,7 @@ public class DirectorsController : ControllerBase
             return BadRequest();
         }
 
-        var (actorId, error) = await _directorService.CreateAsync(model);
+        var (directorId, error) = await _directorService.CreateAsync(model);
 
         if (!string.IsNullOrEmpty(error))
         {
@@ -37,6 +37,14 @@ public class DirectorsController : ControllerBase
                 return BadRequest(error);
         }
 
-        return Ok(actorId);
+        return Ok(directorId);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllAsync()
+    {
+        var directors = await _directorService.GetAllAsync();
+
+        return Ok(directors);
     }
 }

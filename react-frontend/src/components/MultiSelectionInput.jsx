@@ -3,17 +3,12 @@ import Select from 'react-select'
 
 function MultiSelectionInput({ label, value, onChange, isMultiSelect, options = []}) {
 
-    const mappedOptions = options.map(option => ({
-        label: option.name,
-        value: option.id,
-    }));
-
     return (
         <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
             <Select
                 onChange={onChange}
-                options={mappedOptions}
+                options={options}
 
                 value={value}
                 isMulti={isMultiSelect}

@@ -1,6 +1,7 @@
 ﻿using IMDB.Application.Abstractions.Repositories;
 using IMDB.Application.Abstractions.Services;
 using IMDB.Application.DTOs.Director;
+using IMDB.Application.DTOs.Media;
 using IMDB.Domain.Enums;
 using IMDB.Domain.Models;
 using Microsoft.Extensions.Logging;
@@ -49,5 +50,19 @@ public class DirectorService : IDirectorService
 
         await _directorRepository.CreateAsync(newActor);
         return (newActor.Id, null);
+    }
+
+    public async Task<IEnumerable<DirectorShortDto>> GetAllAsync()
+    {
+        var dbDirectors = await _directorRepository.GetAllAsync();
+
+        return dbDirectors.Select(d => new DirectorShortDto()
+        {
+            FirstName = d.FirstName,
+            Id = d.Id,
+            LastName = d.LastName,
+            BirthDate = d.BirthDate,
+            DateOfDeath = d.DateOfDeath,
+        });
     }
 }
