@@ -18,6 +18,5 @@ public class CreateActorDto
     public string Nationality { get; set; }
     public byte[]? ProfileImage { get; set; }
 
-    [Required]
     public long? CreatedByUserId { get; set; }
 }

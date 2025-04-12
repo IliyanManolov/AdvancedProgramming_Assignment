@@ -50,4 +50,18 @@ public class ActorService : IActorService
         await _actorRepository.CreateAsync(newActor);
         return (newActor.Id, null);
     }
+
+    public async Task<IEnumerable<ActorShortDto>> GetAllAsync()
+    {
+        var dbActors = await _actorRepository.GetAllAsync();
+
+        return dbActors.Select(x => new ActorShortDto()
+        {
+            FirstName = x.FirstName,
+            Id = x.Id,
+            LastName = x.LastName,
+            BirthDate = x.BirthDate,
+            DateOfDeath = x.DateOfDeath,
+        });
+    }
 }

@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import FormInput from '../FormInput'
 import axios from 'axios';
 
-function CreateDirector({ onSubmit }) {
-
+function CreateActor({ onSubmit }) {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -16,7 +15,7 @@ function CreateDirector({ onSubmit }) {
     })
 
     const [error, setError] = useState('');
-    const [userId, setDirectorId] = useState(null);
+    const [userId, setActorId] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
@@ -49,11 +48,10 @@ function CreateDirector({ onSubmit }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        setDirectorId(null);
+        setActorId(null);
         setLoading(true);
 
         var copy = { ...formData }
-        // onSubmit(copy);
 
         try {
             copy.profileImage = copy.encodedImage
@@ -65,7 +63,7 @@ function CreateDirector({ onSubmit }) {
             console.log(copy);
 
             const response = await axios.post(
-                'http://localhost:8080/api/directors',
+                'http://localhost:8080/api/actors',
                 copy,
                 {
                     withCredentials: true,
@@ -74,7 +72,7 @@ function CreateDirector({ onSubmit }) {
                     },
                 }
             );
-            setDirectorId(response.data.id);
+            setActorId(response.data.id);
             onSubmit();
         }
         catch (err) {
@@ -91,7 +89,7 @@ function CreateDirector({ onSubmit }) {
 
     return (
         <div className="w-[25vw] mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg">
-            <h2 className="text-2xl font-bold mb-6 text-center">Create a director</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center">Create an actor</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
 
                 <FormInput label="First Name" name="firstName" value={formData.firstName} onChange={handleChange} required={true} />
@@ -103,18 +101,18 @@ function CreateDirector({ onSubmit }) {
                 <FormInput label="Date of death" name="dateOfDeath" value={formData.dateOfDeath} type="date" onChange={handleChange} required={false} />
 
                 {error && <p className="text-red-5S00">{JSON.stringify(error)}</p>}
-                {userId && <p className="text-green-600">Created director successfully!</p>}
+                {userId && <p className="text-green-600">Created actor successfully!</p>}
 
                 <button
                     type="submit"
                     className="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition"
                     disabled={loading}
                 >
-                    {loading ? 'Creating director...' : 'Create director'}
+                    {loading ? 'Creating actor...' : 'Create actor'}
                 </button>
             </form>
         </div>
     )
 }
 
-export default CreateDirector
+export default CreateActor
