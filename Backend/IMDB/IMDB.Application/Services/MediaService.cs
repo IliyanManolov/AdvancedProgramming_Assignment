@@ -166,6 +166,9 @@ public class MediaService : IMediaService
         if (dbUser is null)
             return (null, "UNAUTHORIZED");
 
+        if (show.Episodes.Any(x => x.Title == dto.Title && x.SeasonNumber == dto.SeasonNumber))
+            return (null, "Episode with this title and season already exists. Use another title");
+
         var dbEpisode = new ShowEpisode()
         {
             CreateTimeStamp = DateTime.UtcNow,

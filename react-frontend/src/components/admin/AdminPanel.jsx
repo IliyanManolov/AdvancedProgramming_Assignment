@@ -5,6 +5,7 @@ import CreateDirector from './CreateDirector';
 import CreateActor from './CreateActor';
 import CreateGenre from './CreateGenre';
 import CreateShow from './CreateShow';
+import CreateShowEpisode from './CreateShowEpisode';
 
 function AdminPanel() {
 
@@ -21,7 +22,7 @@ function AdminPanel() {
         async function fetchGenres() {
             try {
                 const res = await axios.get("http://localhost:8080/api/genres");
-                console.log(res.data);
+                // console.log(res.data);
                 setAllGenres(res.data);
 
             }
@@ -80,7 +81,7 @@ function AdminPanel() {
             try {
                 const res = await axios.get("http://localhost:8080/api/media/shows");
                 // console.log(res.data);
-                setActors(res.data);
+                setShows(res.data);
             }
             catch (err) {
                 console.error("Failed to fetch actors:", err)
@@ -124,6 +125,8 @@ function AdminPanel() {
             <CreateMovie genres={allGenres} onSubmit={handleSubmit} directors={directors} actors={actors}></CreateMovie>
 
             <CreateShow genres={allGenres} onSubmit={handleNewShow} directors={directors} actors={actors}></CreateShow>
+
+            <CreateShowEpisode shows={shows}></CreateShowEpisode>
         </div>
     )
 }
