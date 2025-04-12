@@ -4,6 +4,7 @@ import CreateMovie from './CreateMovie';
 import CreateDirector from './CreateDirector';
 import CreateActor from './CreateActor';
 import CreateGenre from './CreateGenre';
+import CreateShow from './CreateShow';
 
 function AdminPanel() {
 
@@ -12,6 +13,7 @@ function AdminPanel() {
     const [directorRefreshKey, setDirectorRefreshKey] = useState(0);
     const [actorRefreshKey, setActorRefreshKey] = useState(0);
     const [genreRefreshKey, setGenreRefreshKey] = useState(0);
+    const [showRefreshKey, setShowRefreshKey] = useState(0);
 
     const [allGenres, setAllGenres] = useState([]);
     useEffect(() => {
@@ -71,6 +73,24 @@ function AdminPanel() {
 
     }, [actorRefreshKey])
 
+    const [shows, setShows] = useState([]);
+    useEffect(() => {
+
+        async function fetchShows() {
+            try {
+                const res = await axios.get("http://localhost:8080/api/media/shows");
+                // console.log(res.data);
+                setActors(res.data);
+            }
+            catch (err) {
+                console.error("Failed to fetch actors:", err)
+            }
+        }
+
+        fetchShows()
+
+    }, [showRefreshKey])
+
     // CHANGE THIS RESET FETCHING INFO ON SUCCESS
     const handleSubmit = async (formData) => {
         console.log(formData);
@@ -88,6 +108,10 @@ function AdminPanel() {
         setGenreRefreshKey(p => p + 1);
     };
 
+    const handleNewShow = () => {
+        setShowRefreshKey(p => p + 1);
+    };
+
     return (
 
         <div className="grid grid-cols-3">
@@ -98,6 +122,8 @@ function AdminPanel() {
             <CreateActor genres={allGenres} onSubmit={handleNewActor}></CreateActor>
 
             <CreateMovie genres={allGenres} onSubmit={handleSubmit} directors={directors} actors={actors}></CreateMovie>
+
+            <CreateShow genres={allGenres} onSubmit={handleNewShow} directors={directors} actors={actors}></CreateShow>
         </div>
     )
 }

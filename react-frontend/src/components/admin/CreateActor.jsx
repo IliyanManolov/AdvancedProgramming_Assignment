@@ -60,7 +60,7 @@ function CreateActor({ onSubmit }) {
             if (copy.dateOfDeath === '')
                 copy.dateOfDeath = null;
 
-            console.log(copy);
+            // console.log(copy);
 
             const response = await axios.post(
                 'http://localhost:8080/api/actors',

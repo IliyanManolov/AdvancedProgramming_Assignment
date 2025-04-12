@@ -53,7 +53,6 @@ function CreateDirector({ onSubmit }) {
         setLoading(true);
 
         var copy = { ...formData }
-        // onSubmit(copy);
 
         try {
             copy.profileImage = copy.encodedImage
@@ -62,7 +61,7 @@ function CreateDirector({ onSubmit }) {
             if (copy.dateOfDeath === '')
                 copy.dateOfDeath = null;
 
-            console.log(copy);
+            // console.log(copy);
 
             const response = await axios.post(
                 'http://localhost:8080/api/directors',

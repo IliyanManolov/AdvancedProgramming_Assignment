@@ -97,8 +97,8 @@ public class MediaController : ControllerBase
         return Ok(movieId);
     }
 
-    [Authorize(Roles = "Administrator,Moderator")]
     [HttpPost("shows/")]
+    [Authorize(Roles = "Administrator,Moderator")]
     public async Task<IActionResult> CreateShowAsync([FromBody] CreateTvShowDto model)
     {
         var (userId, userError) = await GetCreatedById();
@@ -170,8 +170,22 @@ public class MediaController : ControllerBase
     }
 
     [HttpPost("episodes/")]
+    [Authorize(Roles = "Administrator,Moderator")]
     public async Task<IActionResult> CreateEpisodeAsync([FromBody] CreateEpisodeDto model)
     {
+
+        var (userId, userError) = await GetCreatedById();
+
+        if (!string.IsNullOrEmpty(userError))
+        {
+            if (userError.Contains("unauthorized", StringComparison.InvariantCultureIgnoreCase))
+                return Unauthorized();
+            else
+                return BadRequest(userError);
+        }
+
+        model.CreatedByUserId = userId!.Value;
+
         if (!ModelState.IsValid)
         {
             return BadRequest();

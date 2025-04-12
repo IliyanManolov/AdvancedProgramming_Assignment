@@ -3,12 +3,14 @@ import FormInput from '../FormInput'
 import axios from 'axios';
 import MultiSelectionInput from '../MultiSelectionInput';
 
-function CreateMovie({ onSubmit, genres, directors, actors }) {
+function CreateShow({ onSubmit, genres, directors, actors }) {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
         releaseDate: '',
+        showEndDate: '',
         length: 0,
+        seasonsCount: 0,
         genreIds: [],
         actorIds: [],
         directorId: 0,
@@ -75,7 +77,6 @@ function CreateMovie({ onSubmit, genres, directors, actors }) {
         setLoading(true);
 
         var copy = { ...formData }
-        // onSubmit(copy);
 
         try {
             copy.genreIds = formData.genreIds.map(el => Number(el.value))
@@ -87,10 +88,13 @@ function CreateMovie({ onSubmit, genres, directors, actors }) {
             copy.posterImage = copy.encodedImage
             delete copy.encodedImage;
 
+            if (copy.showEndDate === '')
+                copy.showEndDate = null
+
             // console.log(copy);
 
             const response = await axios.post(
-                'http://localhost:8080/api/media/movies/',
+                'http://localhost:8080/api/media/shows/',
                 copy,
                 {
                     withCredentials: true,
@@ -100,6 +104,7 @@ function CreateMovie({ onSubmit, genres, directors, actors }) {
                 }
             );
             setMovieId(response.data.id);
+            onSubmit();
         }
         catch (err) {
             if (err.response?.status === 400) {
@@ -115,7 +120,7 @@ function CreateMovie({ onSubmit, genres, directors, actors }) {
 
     return (
         <div className="w-[25vw] mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg">
-            <h2 className="text-2xl font-bold mb-6 text-center">Create a movie</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center">Create a show</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <FormInput label="Title" name="title" value={formData.title} onChange={handleChange} required={true} />
                 <FormInput label="Description" name="description" value={formData.description} onChange={handleChange} required />
@@ -134,6 +139,8 @@ function CreateMovie({ onSubmit, genres, directors, actors }) {
                 }))} isMultiSelect={true} />
                 <FormInput label="Picture" name="posterImage" value={formData.posterImage} type="file" onChange={handleImageChange} required />
                 <FormInput label="Release Date" name="releaseDate" value={formData.releaseDate} type="date" onChange={handleChange} required={true} />
+                <FormInput label="Show end date" name="showEndDate" value={formData.showEndDate} type="date" onChange={handleChange} required={false} />
+                <FormInput label="Seasons count" name="seasonsCount" value={formData.seasonsCount} type="number" onChange={handleChange} required={true} />
 
 
                 {error && <p className="text-red-500">{JSON.stringify(error)}</p>}
@@ -144,11 +151,11 @@ function CreateMovie({ onSubmit, genres, directors, actors }) {
                     className="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition"
                     disabled={loading}
                 >
-                    {loading ? 'Creating movie...' : 'Create movie'}
+                    {loading ? 'Creating show...' : 'Create show'}
                 </button>
             </form>
         </div>
     )
 }
 
-export default CreateMovie
+export default CreateShow

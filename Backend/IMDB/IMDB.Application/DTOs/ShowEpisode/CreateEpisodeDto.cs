@@ -21,6 +21,5 @@ public class CreateEpisodeDto
 
     [Required]
     public long ShowId { get; set; }
-    [Required]
     public long CreatedByUserId { get; set; }
 }
