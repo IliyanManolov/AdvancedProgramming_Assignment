@@ -5,6 +5,11 @@ import WatchlistDisplayTable from './WatchlistDisplayTable';
 function Watchlist() {
 
     const [mediaList, setMediaList] = useState([])
+    const [watchlistRefreshKey, setWatchlistRefreshKey] = useState(0);
+
+    const handleWatchlistRefresh = () => {
+        setWatchlistRefreshKey(p => p + 1);
+    };
 
     useEffect(() => {
         async function fetchMedia() {
@@ -15,7 +20,7 @@ function Watchlist() {
                         'Content-Type': 'application/json',
                     },
                 });
-                console.log(res.data);
+                // console.log(res.data);
                 setMediaList(res.data.media);
             }
             catch (err) {
@@ -24,11 +29,11 @@ function Watchlist() {
         }
 
         fetchMedia()
-    }, [])
+    }, [watchlistRefreshKey])
 
     return (
         <>
-        <WatchlistDisplayTable mediaList={mediaList}></WatchlistDisplayTable>
+            <WatchlistDisplayTable mediaList={mediaList} handleRefresh={handleWatchlistRefresh}></WatchlistDisplayTable>
         </>
     )
 }
