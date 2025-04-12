@@ -6,6 +6,7 @@ public class CreateTvShowDto
 {
     [Required]
     public ISet<long> GenreIds { get; set; }
+    public ISet<long> ActorIds { get; set; }
     public long DirectorId { get; set; }
 
     [Required]

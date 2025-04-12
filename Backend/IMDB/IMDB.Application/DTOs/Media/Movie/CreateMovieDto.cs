@@ -6,6 +6,7 @@ public class CreateMovieDto
 {
     [Required]
     public ISet<long> GenreIds { get; set; }
+    public ISet<long> ActorIds { get; set; }
     public long DirectorId { get; set; }
     [Required]
     public DateTime ReleaseDate { get; set; }

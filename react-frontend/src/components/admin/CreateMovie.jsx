@@ -3,13 +3,14 @@ import FormInput from '../FormInput'
 import axios from 'axios';
 import MultiSelectionInput from '../MultiSelectionInput';
 
-function CreateMovie({ onSubmit, genres, directors }) {
+function CreateMovie({ onSubmit, genres, directors, actors }) {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
         releaseDate: '',
         length: 0,
         genreIds: [],
+        actorIds: [],
         directorId: 0,
         posterImage: '',
         encodedImage: ''
@@ -38,6 +39,13 @@ function CreateMovie({ onSubmit, genres, directors }) {
         setFormData((prev) => ({
             ...prev,
             ["directorId"]: e,
+        }));
+    }
+
+    const handleActorChange = (e) => {
+        setFormData((prev) => ({
+            ...prev,
+            ["actorIds"]: e,
         }));
     }
 
@@ -71,6 +79,7 @@ function CreateMovie({ onSubmit, genres, directors }) {
 
         try {
             copy.genreIds = formData.genreIds.map(el => Number(el.value))
+            copy.actorIds = formData.actorIds.map(el => el.value)
             copy.directorId = formData.directorId.value;
 
             // Length is set in minutes but kept in seconds
@@ -110,11 +119,15 @@ function CreateMovie({ onSubmit, genres, directors }) {
             <form onSubmit={handleSubmit} className="space-y-4">
                 <FormInput label="Title" name="title" value={formData.title} onChange={handleChange} required={true} />
                 <FormInput label="Description" name="description" value={formData.description} onChange={handleChange} required />
+                <FormInput label="Length (in minutes)" name="length" value={formData.length} type="number" onChange={handleChange} required={true} />
                 <MultiSelectionInput label="Director" value={formData.directorId} onChange={handleDirectorChange} options={directors.map(option => ({
                     label: option.fullName,
                     value: option.id,
                 }))} isMultiSelect={false} />
-                <FormInput label="Length (in minutes)" name="length" value={formData.length} type="number" onChange={handleChange} required={true} />
+                <MultiSelectionInput label="Actors" value={formData.actorIds} onChange={handleActorChange} options={actors.map(option => ({
+                    label: option.fullName,
+                    value: option.id,
+                }))} isMultiSelect={true} />
                 <MultiSelectionInput label="Genres" value={formData.genreIds} onChange={handleGenresChange} options={genres.map(option => ({
                     label: option.name,
                     value: option.id,

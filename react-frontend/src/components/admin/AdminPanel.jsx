@@ -88,9 +88,8 @@ function AdminPanel() {
     return (
 
         <div className="grid grid-cols-3">
-            <CreateMovie genres={allGenres} onSubmit={handleSubmit} directors={directors}></CreateMovie>
+            <CreateMovie genres={allGenres} onSubmit={handleSubmit} directors={directors} actors={actors}></CreateMovie>
             
-            {/* TEMP FOR TESTING PURPOSES */}
             <CreateDirector genres={allGenres} onSubmit={handleNewDirector} ></CreateDirector>
             
             <CreateActor genres={allGenres} onSubmit={handleNewActor}></CreateActor>

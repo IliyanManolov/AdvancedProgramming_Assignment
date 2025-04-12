@@ -67,6 +67,11 @@ public class MediaService : IMediaService
         if (genreErrors is not null && genreErrors.Any())
             return (null, "Genres not found");
 
+        var (actors, actorsErrors) = await ValidateActorIds(dto.ActorIds);
+
+        if (actorsErrors is not null && actorsErrors.Any())
+            return (null, "Genres not found");
+
         var dbMovie = new Movie()
         {
             CreatedByUserId = dbUser.Id,
@@ -80,7 +85,8 @@ public class MediaService : IMediaService
             ReleaseDate = dto.ReleaseDate,
             Director = directors!.First()!,
             DirectorId = directors.First().Id,
-            Genres = genres!
+            Genres = genres!,
+            Actors = actors
         };
 
         await _movieRepository.CreateAsync(dbMovie);
@@ -110,6 +116,11 @@ public class MediaService : IMediaService
         if (genreErrors is not null && genreErrors.Any())
             return (null, "Genres not found");
 
+        var (actors, actorsErrors) = await ValidateActorIds(dto.ActorIds);
+
+        if (actorsErrors is not null && actorsErrors.Any())
+            return (null, "Genres not found");
+
         if (dto.SeasonsCount is null || dto.SeasonsCount <= 0)
             return (null, "Invalid seasons count");
 
@@ -133,7 +144,8 @@ public class MediaService : IMediaService
             DirectorId = directors.First().Id,
             Genres = genres!,
             EndDate = dto.ShowEndDate,
-            Seasons = dto.SeasonsCount
+            Seasons = dto.SeasonsCount,
+            Actors = actors
         };
 
         await _showRepository.CreateAsync(dbShow);
