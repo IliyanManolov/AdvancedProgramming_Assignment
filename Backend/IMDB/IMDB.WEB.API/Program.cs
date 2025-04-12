@@ -2,6 +2,7 @@ using IMDB.Application;
 using IMDB.Infrastructure;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 
 internal class Program
 {
@@ -25,6 +26,8 @@ internal class Program
         builder.Services.AddApplicationLayer();
         builder.Services.AddDatabase(builder.Configuration);
 
+        builder.Services.AddDataProtection()
+            .PersistKeysToFileSystem(new DirectoryInfo("/keys"));
 
         builder.Services.AddCors(options =>
         {

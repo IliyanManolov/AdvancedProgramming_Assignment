@@ -9,6 +9,7 @@ services:
       dockerfile: IMDB.WEB.API/Dockerfile
     volumes:
       - ./Config:/_config
+      - ./dev-keys:/keys
     environment:
       - ASPNETCORE_URLS=http://+:8080
       - ASPNETCORE_ENVIRONMENT=Development

@@ -5,6 +5,8 @@
 
 Config/*
 Config/
+dev-keys/*
+dev-keys/
 
 # User-specific files
 *.rsuser
