@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import CreateMovie from './CreateMovie';
+import CreateDirector from './CreateDirector';
 
 function AdminPanel() {
+
+
+    // Re-fetch the specific entity whenever a new one is created
+    const [directorRefreshKey, setDirectorRefreshKey] = useState(0);
 
     const [allGenres, setAllGenres] = useState([]);
 
@@ -42,12 +47,16 @@ function AdminPanel() {
 
         fetchDirectors()
 
-    }, [])
+    }, [directorRefreshKey])
 
     // CHANGE THIS RESET FETCHING INFO ON SUCCESS
     const handleSubmit = async (formData) => {
         console.log(formData);
     }
+
+    const handleNewDirector = () => {
+        setDirectorRefreshKey(p => p + 1);
+    };
 
     return (
 
@@ -55,7 +64,7 @@ function AdminPanel() {
             <CreateMovie genres={allGenres} onSubmit={handleSubmit} directors={directors}></CreateMovie>
             
             {/* TEMP FOR TESTING PURPOSES */}
-            <CreateMovie genres={allGenres} onSubmit={handleSubmit} directors={directors}></CreateMovie>
+            <CreateDirector genres={allGenres} onSubmit={handleNewDirector} ></CreateDirector>
             
             <CreateMovie genres={allGenres} onSubmit={handleSubmit} directors={directors}></CreateMovie>
         </div>
