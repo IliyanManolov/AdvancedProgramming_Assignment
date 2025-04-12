@@ -3,6 +3,7 @@ import axios from 'axios';
 import CreateMovie from './CreateMovie';
 import CreateDirector from './CreateDirector';
 import CreateActor from './CreateActor';
+import CreateGenre from './CreateGenre';
 
 function AdminPanel() {
 
@@ -10,15 +11,15 @@ function AdminPanel() {
     // Re-fetch the specific entity whenever a new one is created
     const [directorRefreshKey, setDirectorRefreshKey] = useState(0);
     const [actorRefreshKey, setActorRefreshKey] = useState(0);
+    const [genreRefreshKey, setGenreRefreshKey] = useState(0);
 
     const [allGenres, setAllGenres] = useState([]);
-
     useEffect(() => {
 
         async function fetchGenres() {
             try {
                 const res = await axios.get("http://localhost:8080/api/genres");
-                // console.log(res.data);
+                console.log(res.data);
                 setAllGenres(res.data);
 
             }
@@ -29,10 +30,9 @@ function AdminPanel() {
 
         fetchGenres()
 
-    }, [])
+    }, [genreRefreshKey])
 
     const [directors, setDirectors] = useState([]);
-
     useEffect(() => {
 
         async function fetchDirectors() {
@@ -53,7 +53,6 @@ function AdminPanel() {
 
     
     const [actors, setActors] = useState([]);
-
     useEffect(() => {
 
         async function fetchActors() {
@@ -85,14 +84,20 @@ function AdminPanel() {
         setActorRefreshKey(p => p + 1);
     };
 
+    const handleNewGenre = () => {
+        setGenreRefreshKey(p => p + 1);
+    };
+
     return (
 
         <div className="grid grid-cols-3">
-            <CreateMovie genres={allGenres} onSubmit={handleSubmit} directors={directors} actors={actors}></CreateMovie>
+            <CreateGenre onSubmit={handleNewGenre}></CreateGenre>
             
             <CreateDirector genres={allGenres} onSubmit={handleNewDirector} ></CreateDirector>
             
             <CreateActor genres={allGenres} onSubmit={handleNewActor}></CreateActor>
+
+            <CreateMovie genres={allGenres} onSubmit={handleSubmit} directors={directors} actors={actors}></CreateMovie>
         </div>
     )
 }
