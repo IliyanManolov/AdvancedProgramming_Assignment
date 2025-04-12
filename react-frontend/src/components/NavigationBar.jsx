@@ -6,6 +6,7 @@ function NavigationBar() {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [watchlistCount, setWatchlistCount] = useState();
     const location = useLocation();
 
     useEffect(() => {
@@ -18,7 +19,7 @@ function NavigationBar() {
     }, [location]); // base the refresh on the location of the current page since component is shared everywhere
 
     useEffect(() => {
-        async function CheckAdmin(){
+        async function CheckAdmin() {
             try {
                 await axios.get(
                     'http://localhost:8080/oauth/admin',
@@ -28,10 +29,8 @@ function NavigationBar() {
                 );
                 setIsAdmin(true)
             }
-            catch (err)
-            {
-                if (err.response?.status === 500)
-                {
+            catch (err) {
+                if (err.response?.status === 500) {
                     console.log('An unexpected error occurred.');
                 }
             }
@@ -39,6 +38,28 @@ function NavigationBar() {
 
         if (isLoggedIn === true)
             CheckAdmin();
+    }, [isLoggedIn])
+
+    useEffect(() => {
+        async function GetWatchlistShort(){
+            try {
+                var res = await axios.get(
+                    'http://localhost:8080/api/watchlist',
+                    {
+                        withCredentials: true
+                    }
+                );
+                setWatchlistCount(res.data.mediaCount)
+            }
+            catch (err) {
+                if (err.response?.status === 500) {
+                    console.log('An unexpected error occurred.');
+                }
+            }
+        }
+
+        if (isLoggedIn)
+            GetWatchlistShort()
     }, [isLoggedIn])
 
     return (
@@ -50,7 +71,7 @@ function NavigationBar() {
             <Link to="/shows" className="font-bold text-blue-600">TV Shows</Link>
 
             {isLoggedIn && (
-                <h3 className="font-bold text-blue-600">Watchlist</h3>
+                <Link to="/watchlist" className="font-bold text-blue-600">Watchlist ({watchlistCount} remaining)</Link>
             )}
 
 
@@ -59,6 +80,12 @@ function NavigationBar() {
                 <>
                     <Link to="/login" className="font-bold text-blue-600">Login</Link>
                     <Link to="/register" className="font-bold text-blue-600">Register</Link>
+                </>
+            )}
+
+            {isAdmin && (
+                <>
+                    <Link to="/adminpanel" className="font-bold text-blue-600">Administrator Panel</Link>
                 </>
             )}
         </div>

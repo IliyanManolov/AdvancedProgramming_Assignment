@@ -13,7 +13,17 @@ internal class WatchListRepository : BaseRepository<WatchList>, IWatchListReposi
 
     public async Task<WatchList?> GetByUserIdAsync(long? userId)
     {
+        // Nested N:N relationships are *very* fun
         return await Query
+            .Include(x => x.Movies)
+                .ThenInclude(e => e.Director)
+            .Include(x => x.Movies)
+                .ThenInclude(e => e.Genres)
+            .Include(x => x.Shows)
+                .ThenInclude(e => e.Director)
+            .Include(x => x.Shows)
+                .ThenInclude(e => e.Genres)
+            .Include(x => x.User)
             .FirstOrDefaultAsync(e => e.UserId.Equals(userId));
     }
 }

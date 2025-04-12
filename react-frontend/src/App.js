@@ -5,11 +5,12 @@ import MediaDiscovery from './components/MediaDiscovery';
 import Register from './components/Register';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Movies from './components/Movies';
-import NotFound from './components/NotFound';
+import NotFound from './components/shared/NotFound';
 import Login from './components/Login';
 import MediaDetails from './components/MediaDetails';
 import Shows from './components/Shows';
 import AdminPanel from './components/admin/AdminPanel';
+import Watchlist from './components/Watchlist';
 
 // Tailwind will be used for CSS
 
@@ -35,7 +36,7 @@ function App() {
               </Banner>
 
               <MediaDiscovery>
-              </MediaDiscovery>      
+              </MediaDiscovery>
             </>
           }></Route>
 
@@ -55,31 +56,37 @@ function App() {
           }>
           </Route>
 
-          <Route path="/movies" element= {
+          <Route path="/movies" element={
             <>
               <Movies></Movies>
             </>
           }></Route>
 
-          <Route path="/movies/:id" element= {
+          <Route path="/movies/:id" element={
             <>
               <MediaDetails></MediaDetails>
             </>
           }></Route>
 
-          <Route path="/shows" element= {
+          <Route path="/shows" element={
             <>
               <Shows></Shows>
             </>
           }></Route>
 
-          <Route path="/shows/:id" element= {
+          <Route path="/shows/:id" element={
             <>
               <MediaDetails></MediaDetails>
             </>
           }></Route>
 
-          <Route path="/adminpanel" element= {
+          <Route path="/watchlist" element={
+            <>
+              <Watchlist></Watchlist>
+            </>
+          }></Route>
+
+          <Route path="/adminpanel" element={
             <>
               <AdminPanel></AdminPanel>
             </>
@@ -93,7 +100,7 @@ function App() {
       </BrowserRouter>
     </>
 
-    
+
     // navbar
     // banner - TBD? - generic "movie" image covering the entire width
     // Movie / Series selection (inside navbar)
