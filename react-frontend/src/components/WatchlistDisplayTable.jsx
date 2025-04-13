@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import getImageUrl from '../Utils/GetImageUrl'
 import ItemDispalyRow from './ItemDispalyRow';
 
-function WatchlistDisplayTable({ mediaList, handleRefresh }) {
-    
+function WatchlistDisplayTable({ mediaList, handleRefresh, watchlistDict }) {
+
     return (
         <>
             <div className="overflow-x-auto p-4">
@@ -27,7 +27,7 @@ function WatchlistDisplayTable({ mediaList, handleRefresh }) {
                     </thead>
                     <tbody>
                         {mediaList.map((item, index) => (
-                            <ItemDispalyRow item={item} index={index} handleRefresh={handleRefresh}></ItemDispalyRow>
+                            <ItemDispalyRow item={item} index={index} handleRefresh={handleRefresh} watchlistDict={watchlistDict}></ItemDispalyRow>
                         ))}
                     </tbody>
                 </table>

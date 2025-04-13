@@ -2,7 +2,7 @@ import { React, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import getImageUrl from '../Utils/GetImageUrl'
 
-function ItemDispalyRow({ item, index, handleRefresh }) {
+function ItemDispalyRow({ item, index, handleRefresh, watchlistDict }) {
 
     // TODO: Handle removing items from watchlist here
     // In case OK -> handleRefresh() to force re-fetching of the watch list items
@@ -31,7 +31,7 @@ function ItemDispalyRow({ item, index, handleRefresh }) {
             <td className="px-4 py-3 text-center">{item.type === 'TvShow' ? item.showSeasonsCount : "N/A"}</td>
             <td className="px-4 py-3 text-center">{item.type === 'TvShow' ? item.showEpisodesCount : "N/A"}</td>
             <td className="px-4 py-3 text-center">
-                <button onClick={() => handleRefresh()} className="text-xl">
+                <button onClick={() => handleRefresh(item.type, item.id)} className="text-xl">
                     💖
                 </button>
             </td>
