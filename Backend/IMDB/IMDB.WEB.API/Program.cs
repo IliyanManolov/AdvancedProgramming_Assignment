@@ -3,6 +3,8 @@ using IMDB.Infrastructure;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 internal class Program
 {
@@ -18,7 +20,11 @@ internal class Program
         builder.Services.AddObservability(builder.Configuration);
         builder.Host.UseCustomLogging();
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+            });
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();

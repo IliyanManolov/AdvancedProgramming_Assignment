@@ -8,16 +8,28 @@ function Watchlist() {
     const [mediaDict, setMediaDict] = useState({});
     const [watchlistRefreshKey, setWatchlistRefreshKey] = useState(0);
 
-    const handleWatchlistRefresh = (type, id) => {
-        console.log(type);
-        console.log(id);
-
-        // Send DELETE request for the specific element
-        
-        // If success -> refresh key
-        // else - ? error in the top of the screen ?
-
-        setWatchlistRefreshKey(p => p + 1);
+    const handleWatchlistRefresh = async (type, id) => {
+        if (mediaDict[type][id]) {
+            try {
+                // Manually assemble request because axios delete does not allow sending bodies?
+                const res = await axios.request({
+                    "url": "http://localhost:8080/api/watchlist",
+                    "method": "DELETE",
+                    "data": {
+                        "Type": type,
+                        "Id": Number(id)
+                    },
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                setWatchlistRefreshKey(p => p + 1);
+            }
+            catch (err) {
+                console.error("Failed to fetch media:", err)
+            }
+        }
     };
 
     useEffect(() => {

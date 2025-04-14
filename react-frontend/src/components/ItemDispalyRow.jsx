@@ -31,7 +31,7 @@ function ItemDispalyRow({ item, index, handleRefresh, watchlistDict }) {
             <td className="px-4 py-3 text-center">{item.type === 'TvShow' ? item.showSeasonsCount : "N/A"}</td>
             <td className="px-4 py-3 text-center">{item.type === 'TvShow' ? item.showEpisodesCount : "N/A"}</td>
             <td className="px-4 py-3 text-center">
-                <button onClick={() => handleRefresh(item.type, item.id)} className="text-xl">
+                <button onClick={async () => await handleRefresh(item.type, item.id)} className="text-xl">
                     💖
                 </button>
             </td>

@@ -41,6 +41,7 @@ internal abstract class BaseRepository<T> : IBaseRepository<T> where T : DomainE
 
     public async Task<T> UpdateAsync(T entity)
     {
+        entity.UpdateTimeStamp = DateTime.UtcNow;
         _dbContext.Set<T>()
             .Entry(entity).State = EntityState.Modified;
 

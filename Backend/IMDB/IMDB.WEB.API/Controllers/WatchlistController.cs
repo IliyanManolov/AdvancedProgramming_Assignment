@@ -1,4 +1,5 @@
 ﻿using IMDB.Application.Abstractions.Services;
+using IMDB.Application.DTOs.Watchlist;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -43,6 +44,60 @@ public class WatchlistController : ControllerBase
         }
 
         return Ok(watchlist);
+    }
+
+    [HttpDelete]
+    [Authorize]
+    public async Task<IActionResult> RemoveItem([FromBody] WatchlistModificationDto model)
+    {
+        var (userId, userError) = await GetUserId();
+
+        if (!string.IsNullOrEmpty(userError))
+        {
+            if (userError.Contains("unauthorized", StringComparison.InvariantCultureIgnoreCase))
+                return Unauthorized();
+            else
+                return BadRequest(userError);
+        }
+
+        var (success, error) = await _watchlistService.DeleteElement(model, userId!.Value);
+
+        if (!success)
+        {
+            if (error.Contains("unauthorized", StringComparison.InvariantCultureIgnoreCase))
+                return Unauthorized();
+            else
+                return BadRequest(error);
+        }
+
+        return Ok();
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> AddItem([FromBody] WatchlistModificationDto model)
+    {
+        var (userId, userError) = await GetUserId();
+
+        if (!string.IsNullOrEmpty(userError))
+        {
+            if (userError.Contains("unauthorized", StringComparison.InvariantCultureIgnoreCase))
+                return Unauthorized();
+            else
+                return BadRequest(userError);
+        }
+
+        var (success, error) = await _watchlistService.DeleteElement(model, userId!.Value);
+
+        if (!success)
+        {
+            if (error.Contains("unauthorized", StringComparison.InvariantCultureIgnoreCase))
+                return Unauthorized();
+            else
+                return BadRequest(error);
+        }
+
+        return Ok();
     }
 
     [HttpGet("details")]
