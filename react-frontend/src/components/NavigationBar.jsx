@@ -41,7 +41,7 @@ function NavigationBar() {
     }, [isLoggedIn])
 
     useEffect(() => {
-        async function GetWatchlistShort(){
+        async function GetWatchlistShort() {
             try {
                 var res = await axios.get(
                     'http://localhost:8080/api/watchlist',

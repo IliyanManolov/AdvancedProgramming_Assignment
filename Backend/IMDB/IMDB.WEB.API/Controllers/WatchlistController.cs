@@ -87,7 +87,7 @@ public class WatchlistController : ControllerBase
                 return BadRequest(userError);
         }
 
-        var (success, error) = await _watchlistService.DeleteElement(model, userId!.Value);
+        var (success, error) = await _watchlistService.AddElement(model, userId!.Value);
 
         if (!success)
         {

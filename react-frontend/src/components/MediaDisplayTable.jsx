@@ -1,8 +1,8 @@
-import { React, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
-import getImageUrl from '../Utils/GetImageUrl'
+import { React, useEffect, useState } from 'react';
+import ItemDispalyRow from './ItemDispalyRow';
 
-function MediaDisplayTable({ selectedGenres, media, mediaType }) {
+
+function MediaDisplayTable({ selectedGenres, media, watchlistDict, handleWatclistChange }) {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
@@ -33,12 +33,8 @@ function MediaDisplayTable({ selectedGenres, media, mediaType }) {
               <th className="px-4 py-3 text-center">Genres</th>
               <th className="px-4 py-3 text-center">Rating</th>
               <th className="px-4 py-3 text-center">Reviews</th>
-              {mediaType === "shows" && (
-                <>
-                  <th className="px-4 py-3 text-center">Seasons</th>
-                  <th className="px-4 py-3 text-center">Episodes</th>
-                </>
-              )}
+              <th className="px-4 py-3 text-center">Seasons</th>
+              <th className="px-4 py-3 text-center">Episodes</th>
               {
                 // Intentionally empty
                 isLoggedIn &&
@@ -52,31 +48,7 @@ function MediaDisplayTable({ selectedGenres, media, mediaType }) {
           </thead>
           <tbody>
             {filteredMedia.map((item, index) => (
-              <tr key={item.id} className="border-t hover:bg-gray-50">
-                <td className="px-4 py-3">
-                  {/* TBD: keep as state or change to URL parameter. Currently hidden and cannot be bookmarked */}
-                  <Link to={`/${mediaType}/${item.id}`} state={{ type: item.type }}>
-                    <img
-                      src={getImageUrl(item.posterImage)}
-                      alt={item.title}
-                      className="w-[10vw] h-[10vh] rounded object-cover"
-                    />
-                  </Link>
-                </td>
-                <td className="px-4 py-3 font-medium text-center">{item.title}</td>
-                <td className="px-4 py-3 text-sm text-gray-600 text-center">
-                  {item.description}
-                </td>
-                <td className="px-4 py-3 text-center">{item.genres.join(", ")}</td>
-                <td className="px-4 py-3 text-center">{item.rating}</td>
-                <td className="px-4 py-3 text-center">{item.reviews}</td>
-                {mediaType === "shows" && (
-                  <>
-                    <td className="px-4 py-3 text-center">{item.showSeasonsCount}</td>
-                    <td className="px-4 py-3 text-center">{item.showEpisodesCount}</td>
-                  </>
-                )}
-              </tr>
+              <ItemDispalyRow item={item} index={index} handleRefresh={handleWatclistChange} watchlistDict={watchlistDict}></ItemDispalyRow>
             ))}
           </tbody>
         </table>

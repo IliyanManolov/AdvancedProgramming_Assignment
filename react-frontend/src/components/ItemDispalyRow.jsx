@@ -4,9 +4,26 @@ import getImageUrl from '../Utils/GetImageUrl'
 
 function ItemDispalyRow({ item, index, handleRefresh, watchlistDict }) {
 
-    // TODO: Handle removing items from watchlist here
-    // In case OK -> handleRefresh() to force re-fetching of the watch list items
-    // For removing - DELETE with {"id": 123, "type": "item.type"}
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    useEffect(() => {
+        function CheckLogin() {
+            const authCookie = document.cookie.split(';').some((cookie) => cookie.trim().startsWith('IMDB_Cookie='));
+            setIsLoggedIn(authCookie);
+        }
+
+        CheckLogin();
+    }, []);
+
+    const [icon, setIcon] = useState();
+    useEffect(() => {
+        if (isLoggedIn) {
+            // Exists in watchlist
+            if (watchlistDict[item.type] && watchlistDict[item.type][item.id])
+                setIcon("💖")
+            else
+                setIcon("🤍");
+        }
+    })
 
     return (
         <tr key={index} className="border-t hover:bg-gray-50">
@@ -31,9 +48,15 @@ function ItemDispalyRow({ item, index, handleRefresh, watchlistDict }) {
             <td className="px-4 py-3 text-center">{item.type === 'TvShow' ? item.showSeasonsCount : "N/A"}</td>
             <td className="px-4 py-3 text-center">{item.type === 'TvShow' ? item.showEpisodesCount : "N/A"}</td>
             <td className="px-4 py-3 text-center">
-                <button onClick={async () => await handleRefresh(item.type, item.id)} className="text-xl">
-                    💖
-                </button>
+                {
+                    isLoggedIn && (
+                        <>
+                            <button onClick={async () => await handleRefresh(item.type, item.id)} className="text-xl">
+                                { icon }
+                            </button>
+                        </>
+                    )
+                }
             </td>
         </tr>
     )

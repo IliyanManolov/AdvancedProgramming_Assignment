@@ -44,7 +44,7 @@ function Shows() {
     return (
       <>
         <Genres selectedGenres={selectedGenres} onToggleGenre={handleGenreToggle}></Genres>
-        <MediaDisplayTable selectedGenres={selectedGenres} media={shows} mediaType={"shows"}></MediaDisplayTable>
+        <MediaDisplayTable selectedGenres={selectedGenres} media={shows} ></MediaDisplayTable>
       </>
     )
 }
