@@ -16,8 +16,7 @@ import Watchlist from './components/Watchlist';
 
 // TODO: add single media page with more details (director, actors, etc.)
 // ^ initial version made, needs maaaajor UI overhauling # I am a backend dev dont shoot me
-// TODO: add watchlist functionality
-// TODO: very basic admin panel
+// TODO: Change front page - display only 6 (or maybe 10?) latest movies by date added (new endpoint)
 
 // ADD PROTECTIONS FOR ACCESSING ADMIN PANEL
 
@@ -99,11 +98,6 @@ function App() {
         </Routes>
       </BrowserRouter>
     </>
-
-
-    // navbar
-    // banner - TBD? - generic "movie" image covering the entire width
-    // Movie / Series selection (inside navbar)
   );
 }
 

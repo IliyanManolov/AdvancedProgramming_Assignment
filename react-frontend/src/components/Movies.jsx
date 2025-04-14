@@ -129,8 +129,6 @@ function Movies() {
 
 
   return (
-
-
     <>
       <Genres selectedGenres={selectedGenres} onToggleGenre={handleGenreToggle}></Genres>
       <MediaDisplayTable selectedGenres={selectedGenres} media={movies} watchlistDict={watchlistDict} handleWatclistChange={handleRefresh}></MediaDisplayTable>
