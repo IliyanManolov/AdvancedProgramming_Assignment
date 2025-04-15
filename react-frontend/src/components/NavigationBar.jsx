@@ -1,22 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
-
+import { useAuth } from './AuthContext';
+ 
 function NavigationBar() {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { isAuthenticated: isLoggedIn } = useAuth();
     const [isAdmin, setIsAdmin] = useState(false);
     const [watchlistCount, setWatchlistCount] = useState();
-    const location = useLocation();
 
-    useEffect(() => {
-        function CheckLogin() {
-            const authCookie = document.cookie.split(';').some((cookie) => cookie.trim().startsWith('IMDB_Cookie='));
-            setIsLoggedIn(authCookie);
-        }
-
-        CheckLogin();
-    }, [location]); // base the refresh on the location of the current page since component is shared everywhere
 
     useEffect(() => {
         async function CheckAdmin() {

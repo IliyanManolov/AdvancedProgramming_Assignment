@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Genres from './Genres'
 import MediaDisplayTable from './MediaDisplayTable';
+import { useAuth } from './AuthContext';
 
 function Movies() {
 
@@ -22,15 +23,7 @@ function Movies() {
     fetchMedia()
   }, [])
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  useEffect(() => {
-    function CheckLogin() {
-      const authCookie = document.cookie.split(';').some((cookie) => cookie.trim().startsWith('IMDB_Cookie='));
-      setIsLoggedIn(authCookie);
-    }
-
-    CheckLogin();
-  }, []);
+  const { isAuthenticated: isLoggedIn } = useAuth();
 
   const [watchlistDict, setWatchlistDict] = useState({});
   const [watchlistRefreshKey, setWatchlistRefreshKey] = useState(0);

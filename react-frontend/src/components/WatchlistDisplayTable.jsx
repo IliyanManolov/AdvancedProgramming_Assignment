@@ -1,6 +1,4 @@
-import { React, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
-import getImageUrl from '../Utils/GetImageUrl'
+import { React } from 'react'
 import ItemDispalyRow from './ItemDispalyRow';
 
 function WatchlistDisplayTable({ mediaList, handleRefresh, watchlistDict }) {

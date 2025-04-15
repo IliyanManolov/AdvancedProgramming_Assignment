@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import FormInput from './FormInput';
+import { useAuth } from './AuthContext';
 
 function Login() {
     const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ function Login() {
     const [error, setError] = useState('');
     const [userId, setUserId] = useState(null);
     const [loading, setLoading] = useState(false);
+    const { isAuthenticated, setIsAuthenticated } = useAuth();
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -41,22 +43,20 @@ function Login() {
 
             setUserId(response.data.id);
 
+            setIsAuthenticated(true);
             // Redirect to home page after 2 seconds
             setTimeout(() => {
                 navigate("/")
             }, 2000);
         }
-        catch (err)
-        {
-            if (err.response?.status === 401)
-            {
+        catch (err) {
+            if (err.response?.status === 401) {
                 setError(err.response.data);
-            } else
-            {
+            } else {
                 setError('An unexpected error occurred.');
             }
         }
-        
+
         setLoading(false);
     };
 

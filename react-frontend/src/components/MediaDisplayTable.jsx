@@ -1,18 +1,11 @@
 import { React, useEffect, useState } from 'react';
 import ItemDispalyRow from './ItemDispalyRow';
+import { useAuth } from './AuthContext';
 
 
 function MediaDisplayTable({ selectedGenres, media, watchlistDict, handleWatclistChange }) {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  useEffect(() => {
-    function CheckLogin() {
-      const authCookie = document.cookie.split(';').some((cookie) => cookie.trim().startsWith('IMDB_Cookie='));
-      setIsLoggedIn(authCookie);
-    }
-
-    CheckLogin();
-  }, []);
+  const { isAuthenticated: isLoggedIn } = useAuth();
 
   // Annoying filtering because no LINQ...
   const filteredMedia = selectedGenres.length > 0

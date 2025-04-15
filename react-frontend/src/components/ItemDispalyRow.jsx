@@ -1,18 +1,11 @@
 import { React, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import getImageUrl from '../Utils/GetImageUrl'
+import { useAuth } from './AuthContext';
 
 function ItemDispalyRow({ item, index, handleRefresh, watchlistDict }) {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    useEffect(() => {
-        function CheckLogin() {
-            const authCookie = document.cookie.split(';').some((cookie) => cookie.trim().startsWith('IMDB_Cookie='));
-            setIsLoggedIn(authCookie);
-        }
-
-        CheckLogin();
-    }, []);
+    const { isAuthenticated: isLoggedIn } = useAuth();
 
     const [icon, setIcon] = useState();
     useEffect(() => {
@@ -52,7 +45,7 @@ function ItemDispalyRow({ item, index, handleRefresh, watchlistDict }) {
                     isLoggedIn && (
                         <>
                             <button onClick={async () => await handleRefresh(item.type, item.id)} className="text-xl">
-                                { icon }
+                                {icon}
                             </button>
                         </>
                     )

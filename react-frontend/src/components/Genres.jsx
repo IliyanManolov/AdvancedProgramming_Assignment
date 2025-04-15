@@ -3,32 +3,29 @@ import axios from 'axios'
 
 function Genres({ selectedGenres, onToggleGenre }) {
 
-    const [genres, setGenres] = useState([]);
+  const [genres, setGenres] = useState([]);
 
-    useEffect(() => {
+  useEffect(() => {
 
-    async function fetchGenres()
-    {
-      try
-      {
+    async function fetchGenres() {
+      try {
         const res = await axios.get("http://localhost:8080/api/genres");
         // console.log(res.data);
         setGenres(res.data);
       }
-      catch (err)
-      {
+      catch (err) {
         console.error("Failed to fetch genres:", err)
       }
     }
 
     fetchGenres()
-    }, [])
+  }, [])
 
 
   return (
     <>
       <div className="mt-6 flex space-x-2 justify-center">
-        
+
         {genres.map((genre => {
           const isSelected = selectedGenres.includes(genre.name);
           return (
@@ -42,7 +39,7 @@ function Genres({ selectedGenres, onToggleGenre }) {
         }))}
 
       </div>
-    
+
     </>
   )
 }

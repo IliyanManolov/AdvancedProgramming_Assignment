@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import FormInput from './FormInput';
 import axios from 'axios';
 
-function Register(){
+function Register() {
   const [formData, setFormData] = useState({
     username: '',
     firstName: '',
@@ -30,30 +30,28 @@ function Register(){
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:8080/oauth/register', 
+      const response = await axios.post('http://localhost:8080/oauth/register',
         formData,
         {
-            headers: {
-                'Content-Type': 'application/json',
-            }, 
+          headers: {
+            'Content-Type': 'application/json',
+          },
         }
       );
 
       setUserId(response.data);
     }
-    catch (err)
-    {
-        if (err.response?.status === 400)
-        {
-            const errorMsg = err.response.data;
-            setError(errorMsg);
-        }
-        else
-          setError('An unexpected error occurred.');
+    catch (err) {
+      if (err.response?.status === 400) {
+        const errorMsg = err.response.data;
+        setError(errorMsg);
+      }
+      else
+        setError('An unexpected error occurred.');
 
     }
     setLoading(false);
-    
+
   };
 
   return (
