@@ -28,6 +28,16 @@ internal class TvShowRepository : BaseRepository<TvShow>, ITvShowRepository
             .Include(e => e.Episodes)
             .ToListAsync();
     }
+    public async Task<IEnumerable<TvShow>> GetFiveLatestAsync()
+    {
+        return await Query
+            .Include(E => E.Actors)
+            .Include(e => e.Genres)
+            .Include(e => e.Director)
+            .OrderByDescending(e => e.ReleaseDate)
+            .Take(5)
+            .ToListAsync();
+    }
 
     public async Task<IEnumerable<TvShow>> GetAllByActorIdAsync(long? actorId)
     {

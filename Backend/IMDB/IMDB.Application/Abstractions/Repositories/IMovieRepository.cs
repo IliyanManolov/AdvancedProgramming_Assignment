@@ -14,5 +14,5 @@ public interface IMovieRepository : IBaseRepository<Movie>
     public Task<IEnumerable<Movie>> GetAllWithMaxLengthAsync(long? maxLength);
     public Task<IEnumerable<Movie>> GetAllWithMinimumLengthAsync(long? minLength);
     public Task<IEnumerable<Movie>> GetAllBetweenSpecificLengthAsync(long? minLength, long? maxLength);
-
+    public Task<IEnumerable<Movie>> GetFiveLatestAsync();
 }

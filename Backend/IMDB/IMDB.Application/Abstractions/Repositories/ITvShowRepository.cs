@@ -13,4 +13,5 @@ public interface ITvShowRepository : IBaseRepository<TvShow>
     public Task<TvShow> GetByNameAsync(string? showName);
     public Task<IEnumerable<TvShow>> GetBySeasonsCountAsync(long? seasonsCount);
     public Task<IEnumerable<TvShow>> GetAllEndedAsync();
+    public Task<IEnumerable<TvShow>> GetFiveLatestAsync();
 }

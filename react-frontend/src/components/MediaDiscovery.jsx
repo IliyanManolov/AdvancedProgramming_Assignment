@@ -11,7 +11,7 @@ function MediaDiscovery() {
     {
       try
       {
-        const res = await axios.get("http://localhost:8080/api/media");
+        const res = await axios.get("http://localhost:8080/api/media/newReleases");
         // console.log(res.data);
         setMediaList(res.data);
       }

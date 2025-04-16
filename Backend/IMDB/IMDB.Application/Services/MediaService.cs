@@ -219,6 +219,19 @@ public class MediaService : IMediaService
         return (result, null);
     }
 
+    public async Task<(IEnumerable<MediaShortDto>? MediaList, string? Error)> GetTopTenAsync()
+    {
+        var shows = await _showRepository.GetFiveLatestAsync();
+        var movies = await _movieRepository.GetFiveLatestAsync();
+
+        var result = new List<MediaShortDto>();
+
+        result.AddRange(_mediaTransformer.ToShortDto(shows));
+        result.AddRange(_mediaTransformer.ToShortDto(movies));
+
+        return (result, null);
+    }
+
     public async Task<(MediaShortDto? Media, string? Error)> GetMovieByIdAsync(long? id)
     {
         var movie = await _movieRepository.GetByIdAsync(id);

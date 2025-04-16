@@ -28,6 +28,17 @@ internal class MovieRepository : BaseRepository<Movie>, IMovieRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Movie>> GetFiveLatestAsync()
+    {
+        return await Query
+            .Include(E => E.Actors)
+            .Include(e => e.Genres)
+            .Include(e => e.Director)
+            .OrderByDescending(e => e.ReleaseDate)
+            .Take(5)
+            .ToListAsync();
+    }
+
     public async Task<IEnumerable<Movie>> GetAllByActorIdAsync(long? actorId)
     {
         return await Query

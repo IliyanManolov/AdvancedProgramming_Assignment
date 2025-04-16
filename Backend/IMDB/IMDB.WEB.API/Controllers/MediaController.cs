@@ -258,6 +258,22 @@ public class MediaController : ControllerBase
         }
     }
 
+    [HttpGet("newReleases/")]
+    public async Task<IActionResult> GetLatestTopTenAsync()
+    {
+        var (mediaDiscovery, error) = await _mediaService.GetTopTenAsync();
+
+        if (!string.IsNullOrEmpty(error))
+        {
+            if (error.Contains("unauthorized", StringComparison.InvariantCultureIgnoreCase))
+                return Unauthorized();
+            else
+                return BadRequest(error);
+        }
+
+        return Ok(mediaDiscovery);
+    }
+
     [HttpGet("movies/{id}")]
     public async Task<IActionResult> GetMovieAsync(long id)
     {
