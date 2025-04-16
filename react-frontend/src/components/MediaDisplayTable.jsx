@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from 'react';
 import ItemDispalyRow from './ItemDispalyRow';
-import { useAuth } from './AuthContext';
+import { useAuth } from './contexts/AuthContext';
 
 
 function MediaDisplayTable({ selectedGenres, media, watchlistDict, handleWatclistChange }) {

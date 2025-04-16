@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import FormInput from './FormInput';
-import { useAuth } from './AuthContext';
+import { useAuth } from './contexts/AuthContext';
 
 function Login() {
     const [formData, setFormData] = useState({

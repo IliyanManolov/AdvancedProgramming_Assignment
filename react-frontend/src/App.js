@@ -11,7 +11,8 @@ import MediaDetails from './components/MediaDetails';
 import Shows from './components/Shows';
 import AdminPanel from './components/admin/AdminPanel';
 import Watchlist from './components/Watchlist';
-import { AuthProvider } from './components/AuthContext';
+import { AuthProvider } from './components/contexts/AuthContext';
+import { WatchlistProvider } from './components/contexts/WatchlistContext';
 
 // Tailwind will be used for CSS
 
@@ -26,78 +27,80 @@ function App() {
 
     <>
       <AuthProvider>
-        <BrowserRouter>
-          <NavigationBar></NavigationBar>
-          <Routes>
-            <Route path="/" element={
-              <>
+        <WatchlistProvider>
+          <BrowserRouter>
+            <NavigationBar></NavigationBar>
+            <Routes>
+              <Route path="/" element={
+                <>
 
-                <Banner>
-                </Banner>
+                  <Banner>
+                  </Banner>
 
-                <MediaDiscovery>
-                </MediaDiscovery>
-              </>
-            }></Route>
+                  <MediaDiscovery>
+                  </MediaDiscovery>
+                </>
+              }></Route>
 
-            <Route path="/register" element={
-              <>
-                <Banner></Banner>
-                <Register></Register>
-              </>
-            }>
-            </Route>
+              <Route path="/register" element={
+                <>
+                  <Banner></Banner>
+                  <Register></Register>
+                </>
+              }>
+              </Route>
 
-            <Route path="/login" element={
-              <>
-                <Banner></Banner>
-                <Login></Login>
-              </>
-            }>
-            </Route>
+              <Route path="/login" element={
+                <>
+                  <Banner></Banner>
+                  <Login></Login>
+                </>
+              }>
+              </Route>
 
-            <Route path="/movies" element={
-              <>
-                <Movies></Movies>
-              </>
-            }></Route>
+              <Route path="/movies" element={
+                <>
+                  <Movies></Movies>
+                </>
+              }></Route>
 
-            <Route path="/movies/:id" element={
-              <>
-                <MediaDetails></MediaDetails>
-              </>
-            }></Route>
+              <Route path="/movies/:id" element={
+                <>
+                  <MediaDetails></MediaDetails>
+                </>
+              }></Route>
 
-            <Route path="/shows" element={
-              <>
-                <Shows></Shows>
-              </>
-            }></Route>
+              <Route path="/shows" element={
+                <>
+                  <Shows></Shows>
+                </>
+              }></Route>
 
-            <Route path="/shows/:id" element={
-              <>
-                <MediaDetails></MediaDetails>
-              </>
-            }></Route>
+              <Route path="/shows/:id" element={
+                <>
+                  <MediaDetails></MediaDetails>
+                </>
+              }></Route>
 
-            <Route path="/watchlist" element={
-              <>
-                <Watchlist></Watchlist>
-              </>
-            }></Route>
+              <Route path="/watchlist" element={
+                <>
+                  <Watchlist></Watchlist>
+                </>
+              }></Route>
 
-            <Route path="/adminpanel" element={
-              <>
-                <AdminPanel></AdminPanel>
-              </>
-            }></Route>
+              <Route path="/adminpanel" element={
+                <>
+                  <AdminPanel></AdminPanel>
+                </>
+              }></Route>
 
-            <Route path="*" element={
-              <NotFound></NotFound>
-            }></Route>
+              <Route path="*" element={
+                <NotFound></NotFound>
+              }></Route>
 
-          </Routes>
-        </BrowserRouter>
+            </Routes>
+          </BrowserRouter>
+        </WatchlistProvider>
       </AuthProvider>
     </>
   );

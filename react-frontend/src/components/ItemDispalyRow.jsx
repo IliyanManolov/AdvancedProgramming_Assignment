@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import getImageUrl from '../Utils/GetImageUrl'
-import { useAuth } from './AuthContext';
+import { useAuth } from './contexts/AuthContext';
 
 function ItemDispalyRow({ item, index, handleRefresh, watchlistDict }) {
 
@@ -44,7 +44,7 @@ function ItemDispalyRow({ item, index, handleRefresh, watchlistDict }) {
                 {
                     isLoggedIn && (
                         <>
-                            <button onClick={async () => await handleRefresh(item.type, item.id)} className="text-xl">
+                            <button onClick={async () => await handleRefresh(item.id, item.type)} className="text-xl">
                                 {icon}
                             </button>
                         </>

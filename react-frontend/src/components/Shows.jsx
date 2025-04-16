@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Genres from './Genres'
 import MediaDisplayTable from './MediaDisplayTable';
-import { useAuth } from './AuthContext';
+import { useAuth } from './contexts/AuthContext';
+import { useWatchlist } from './contexts/WatchlistContext';
 
 function Shows() {
   const [shows, setShows] = useState([]);
@@ -35,87 +36,7 @@ function Shows() {
     });
   };
 
-
-  const { isAuthenticated: isLoggedIn } = useAuth();
-
-  const [watchlistDict, setWatchlistDict] = useState({});
-  const [watchlistRefreshKey, setWatchlistRefreshKey] = useState(0);
-  useEffect(() => {
-    async function fetchWatchlist() {
-      try {
-        const res = await axios.get("http://localhost:8080/api/watchlist/details", {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        const watchListDict = res.data.media.reduce((dict, item) => {
-          if (!dict[item.type]) {
-            dict[item.type] = {};
-          }
-          dict[item.type][item.id] = item.title;
-          return dict;
-        }, {});
-
-        console.log(watchListDict)
-
-        setWatchlistDict(watchListDict)
-      }
-      catch (err) {
-        console.error("Failed to fetch watchlist:", err)
-        setWatchlistDict({})
-      }
-    }
-
-    if (isLoggedIn)
-      fetchWatchlist()
-  }, [watchlistRefreshKey, isLoggedIn])
-
-  const handleRefresh = async (type, id) => {
-    console.log(watchlistDict)
-    if (watchlistDict[type] && watchlistDict[type][id]) {
-      try {
-        // Manually assemble request because axios delete does not allow sending bodies?
-        const res = await axios.request({
-          "url": "http://localhost:8080/api/watchlist",
-          "method": "DELETE",
-          "data": {
-            "Type": type,
-            "Id": Number(id)
-          },
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-        setWatchlistRefreshKey(p => p + 1);
-      }
-      catch (err) {
-        console.error("Failed to remove from watchlist:", err)
-      }
-    }
-    else {
-      try {
-        const res = await axios.request({
-          "url": "http://localhost:8080/api/watchlist",
-          "method": "POST",
-          "data": {
-            "Type": type,
-            "Id": Number(id)
-          },
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-        setWatchlistRefreshKey(p => p + 1);
-      }
-      catch (err) {
-        console.error("Failed to add to watchlist:", err)
-      }
-    }
-  };
+  const { watchlistDict: watchlistDict, ChangeElement: handleRefresh} = useWatchlist();
 
   return (
     <>

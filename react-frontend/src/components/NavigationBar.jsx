@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from './AuthContext';
- 
+import { useAuth } from './contexts/AuthContext';
+import { useWatchlist } from './contexts/WatchlistContext';
+
 function NavigationBar() {
 
     const { isAuthenticated: isLoggedIn } = useAuth();
     const [isAdmin, setIsAdmin] = useState(false);
-    const [watchlistCount, setWatchlistCount] = useState();
-
+    // const [watchlistCount, setWatchlistCount] = useState();
+    const { watchlistCount } = useWatchlist();
 
     useEffect(() => {
         async function CheckAdmin() {
@@ -30,28 +31,7 @@ function NavigationBar() {
 
         if (isLoggedIn === true)
             CheckAdmin();
-    }, [isLoggedIn])
 
-    useEffect(() => {
-        async function GetWatchlistShort() {
-            try {
-                var res = await axios.get(
-                    'http://localhost:8080/api/watchlist',
-                    {
-                        withCredentials: true
-                    }
-                );
-                setWatchlistCount(res.data.mediaCount)
-            }
-            catch (err) {
-                if (err.response?.status === 500) {
-                    console.log('An unexpected error occurred.');
-                }
-            }
-        }
-
-        if (isLoggedIn)
-            GetWatchlistShort()
     }, [isLoggedIn])
 
     return (
