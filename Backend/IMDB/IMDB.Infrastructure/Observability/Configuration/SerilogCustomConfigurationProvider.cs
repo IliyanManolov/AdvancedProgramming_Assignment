@@ -47,6 +47,16 @@ public class SerilogCustomConfigurationProvider : IConfigurationProvider
             {
                 "INFORMATION" => "Warning",
                 _ => convertedSeverity
+            },
+            ["Serilog:MinimumLevel:Override:Microsoft.EntityFrameworkCore.Database.Command"] = convertedSeverity.ToUpperInvariant() switch
+            {
+                "INFORMATION" => "Warning",
+                _ => convertedSeverity
+            },
+            ["Serilog:MinimumLevel:Override:Microsoft.EntityFrameworkCore.Query"] = convertedSeverity.ToUpperInvariant() switch
+            {
+                "INFORMATION" => "Error",
+                _ => convertedSeverity
             }
         };
     }
