@@ -21,7 +21,6 @@ function ItemDispalyRow({ item, index, handleRefresh, watchlistDict }) {
     return (
         <tr key={index} className="border-t hover:bg-gray-50">
             <td className="px-4 py-3">
-                {/* TBD: keep as state or change to URL parameter. Currently hidden and cannot be bookmarked */}
                 <Link to={`/${item.type === 'TvShow' ? 'shows' : 'movies'}/${item.id}`} state={{ type: item.type }}>
                     <img
                         src={getImageUrl(item.posterImage)}

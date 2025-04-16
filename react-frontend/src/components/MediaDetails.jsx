@@ -23,7 +23,7 @@ function MediaDetails() {
                 let endpoint = mediaType === "Movie" ? "movies" : "shows"
 
                 const res = await axios.get(`http://localhost:8080/api/media/${endpoint}/${id}`);
-                console.log(res.data);
+                // console.log(res.data);
                 setMedia(res.data);
             }
             catch (err) {

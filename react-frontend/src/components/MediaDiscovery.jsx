@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import getImageUrl from '../Utils/GetImageUrl'
+import { Link } from 'react-router-dom'
 
 function MediaDiscovery() {
   const [mediaList, setMediaList] = useState([])
@@ -40,16 +41,18 @@ function MediaDiscovery() {
 
       <div className="flex justify-center flex-wrap">
         {mediaList.map((media, index) => (
-          <div
-            key={index}
-            className="w-[15vw] h-[25vh] m-5 rounded-lg bg-cover bg-center flex flex-col justify-end"
-            style={{ backgroundImage: `url(${getImageUrl(media.posterImage)})` }}
-            title= { media.title}
-          >
-            <div className="text-xl text-white bg-gray-900 bg-opacity-60 p2 text-center w-full h-[4vh] rounded-lg">
-              {truncateTitle(media.title)}
+          <Link to={`/${media.type === 'TvShow' ? 'shows' : 'movies'}/${media.id}`} state={{ type: media.type }}>
+            <div
+              key={index}
+              className="w-[15vw] h-[25vh] m-5 rounded-lg bg-cover bg-center flex flex-col justify-end"
+              style={{ backgroundImage: `url(${getImageUrl(media.posterImage)})` }}
+              title= { media.title}
+            >
+              <div className="text-xl text-white bg-gray-900 bg-opacity-60 p2 text-center w-full h-[4vh] rounded-lg">
+                {truncateTitle(media.title)}
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

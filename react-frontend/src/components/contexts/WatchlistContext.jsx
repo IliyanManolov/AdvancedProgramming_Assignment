@@ -24,7 +24,7 @@ export const WatchlistProvider = ({ children }) => {
                     'Content-Type': 'application/json',
                 },
             });
-            console.log(res.data);
+            // console.log(res.data);
             setWatchlist(res.data.media);
 
             const tmpDict = res.data.media.reduce((dict, item) => {
