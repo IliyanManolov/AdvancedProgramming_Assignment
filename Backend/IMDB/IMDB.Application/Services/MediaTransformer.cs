@@ -48,7 +48,7 @@ public class MediaTransformer : IMediaTransformer
             Description = dbEp.Description,
             Length = dbEp.Length,
             Rating = dbEp.Rating,
-            Reviews = dbEp.Reviews,
+            Reviews = dbEp.Reviews?.Count ?? 0,
             SeasonNumber = dbEp.SeasonNumber,
             Title = dbEp.Title
         });
@@ -71,7 +71,7 @@ public class MediaTransformer : IMediaTransformer
             PosterImage = show.PosterImage,
             Type = MediaType.TvShow,
             Director = $"{show.Director.FirstName} {show.Director.LastName}",
-            Reviews = show.Reviews ?? 0,
+            Reviews = show.Reviews?.Count ?? 0,
             Length = show.Episodes.Any() ? show.Episodes.Sum(x => x.Length)!.Value : 0
         };
     }
@@ -91,7 +91,7 @@ public class MediaTransformer : IMediaTransformer
             PosterImage = movie.PosterImage,
             Type = MediaType.Movie,
             Director = $"{movie.Director.FirstName} {movie.Director.LastName}",
-            Reviews = movie.Reviews ?? 0,
+            Reviews = movie.Reviews?.Count ?? 0,
         };
     }
 

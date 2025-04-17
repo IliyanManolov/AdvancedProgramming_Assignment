@@ -1,4 +1,5 @@
 ﻿using IMDB.Domain.Models;
+using IMDB.Infrastructure.Mappings.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -34,9 +35,6 @@ internal class ShowEpisodeMapping : IEntityTypeConfiguration<ShowEpisode>
         builder.Property(e => e.Rating)
             .HasColumnName("rating");
 
-        builder.Property(e => e.Reviews)
-            .HasColumnName("reviews_count");
-
         builder.Property(e => e.DateAired)
             .HasColumnName("aired_date")
             .IsRequired();
@@ -48,6 +46,10 @@ internal class ShowEpisodeMapping : IEntityTypeConfiguration<ShowEpisode>
         builder.HasOne(e => e.CreatedByUser)
             .WithMany(s => s.CreatedEpisodes)
             .HasForeignKey(e => e.CreatedByUserId);
+
+        builder.HasMany(e => e.Reviews)
+            .WithOne(r => r.Episode)
+            .HasForeignKey(r => r.EpisodeId);
 
         builder.AddBaseEntityTemporalMappings();
     }

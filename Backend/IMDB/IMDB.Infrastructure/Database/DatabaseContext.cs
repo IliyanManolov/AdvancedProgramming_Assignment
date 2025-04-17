@@ -33,6 +33,7 @@ public class DatabaseContext : DbContext
         modelBuilder.ApplyConfiguration(new UserMapping());
         modelBuilder.ApplyConfiguration(new WatchListMapping());
         modelBuilder.ApplyConfiguration(new GenreMapping());
+        modelBuilder.ApplyConfiguration(new ReviewMapping());
 
         base.OnModelCreating(modelBuilder);
     }

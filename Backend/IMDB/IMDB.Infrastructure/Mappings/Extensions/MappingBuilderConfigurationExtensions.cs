@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace IMDB.Infrastructure.Mappings;
+namespace IMDB.Infrastructure.Mappings.Extensions;
 
 public static class MappingBuilderConfigurationExtensions
 {
@@ -74,9 +74,6 @@ public static class MappingBuilderConfigurationExtensions
 
         builder.Property(e => e.Rating)
             .HasColumnName("rating");
-
-        builder.Property(e => e.Reviews)
-            .HasColumnName("reviews");
 
         builder.Property(e => e.Description)
             .HasColumnName("description");

@@ -1,4 +1,5 @@
 ﻿using IMDB.Domain.Models;
+using IMDB.Infrastructure.Mappings.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -41,6 +42,11 @@ internal class MovieMapping : IEntityTypeConfiguration<Movie>
                 {
                     j.HasKey("GenreId", "MovieId");
                 });
+
+
+        builder.HasMany(e => e.Reviews)
+            .WithOne(e => e.Movie)
+            .HasForeignKey(e => e.MovieId);
 
         builder.HasOne(e => e.CreatedByUser)
             .WithMany(u => u.CreatedMovies)

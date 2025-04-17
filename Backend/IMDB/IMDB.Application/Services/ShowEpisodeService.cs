@@ -58,7 +58,6 @@ public class ShowEpisodeService : IShowEpisodeService
             CreateTimeStamp = DateTime.UtcNow,
             Description = dto.Description,
             Length = dto.Length,
-            Reviews = 0,
             SeasonNumber = dto.SeasonNumber,
             ShowId = dbShow.Id,
             Title = dto.Title

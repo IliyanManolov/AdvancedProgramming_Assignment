@@ -1,5 +1,6 @@
 ﻿using IMDB.Domain.Enums;
 using IMDB.Domain.Models;
+using IMDB.Infrastructure.Mappings.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -74,6 +75,10 @@ internal class UserMapping : IEntityTypeConfiguration<User>
         builder.HasMany(e => e.CreatedGenres)
             .WithOne(c => c.CreatedByUser)
             .HasForeignKey(c => c.CreatedByUserId);
+
+        builder.HasMany(e => e.Reviews)
+            .WithOne(r => r.User)
+            .HasForeignKey(r => r.UserId);
 
         builder.AddBaseEntityTemporalMappings();
     }

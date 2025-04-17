@@ -12,9 +12,9 @@ public class ShowEpisode : DomainEntity
     public string? Description { get; set; }
     public int? SeasonNumber { get; set; }
     public double? Rating { get; set; }
-    public long? Reviews { get; set; }
-
 
     public User CreatedByUser { get; set; }
     public long? CreatedByUserId { get; set; }
+
+    public ISet<Review> Reviews { get; set; } = new HashSet<Review>();
 }

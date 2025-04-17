@@ -11,7 +11,7 @@ public abstract class Media : DomainEntity
     public ISet<Genre> Genres { get; set; } = new HashSet<Genre>();
     public string Title { get; set; }
     public double? Rating { get; set; }
-    public long? Reviews { get; set; }
+    public ISet<Review>? Reviews { get; set; }
     public string? Description { get; set; }
     public byte[]? PosterImage { get; set; }
 

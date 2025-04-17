@@ -1,4 +1,5 @@
 ﻿using IMDB.Domain.Models;
+using IMDB.Infrastructure.Mappings.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -1,4 +1,5 @@
 ﻿using IMDB.Domain.Models;
+using IMDB.Infrastructure.Mappings.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -49,6 +50,10 @@ internal class TvShowMapping : IEntityTypeConfiguration<TvShow>
                 {
                     j.HasKey("GenreId", "TvShowId");
                 });
+
+        builder.HasMany(e => e.Reviews)
+            .WithOne(e => e.Show)
+            .HasForeignKey(e => e.ShowId);
 
 
         builder.HasOne(e => e.Director)

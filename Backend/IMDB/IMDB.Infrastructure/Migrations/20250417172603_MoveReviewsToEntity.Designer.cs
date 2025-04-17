@@ -4,6 +4,7 @@ using IMDB.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IMDB.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250417172603_MoveReviewsToEntity")]
+    partial class MoveReviewsToEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -265,40 +268,34 @@ namespace IMDB.Infrastructure.Migrations
                 {
                     b.Property<long?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
+                        .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long?>("Id"));
 
                     b.Property<DateTime?>("CreateTimeStamp")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("create_date");
+                        .HasColumnType("datetime2");
 
                     b.Property<long?>("EpisodeId")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit")
-                        .HasColumnName("is_deleted");
+                        .HasColumnType("bit");
 
                     b.Property<long?>("MovieId")
                         .HasColumnType("bigint");
 
                     b.Property<double>("Rating")
-                        .HasColumnType("float")
-                        .HasColumnName("rating");
+                        .HasColumnType("float");
 
                     b.Property<string>("ReviewText")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("review_text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long?>("ShowId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("UpdateTimeStamp")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("update_date");
+                        .HasColumnType("datetime2");
 
                     b.Property<long?>("UserId")
                         .HasColumnType("bigint");
@@ -313,7 +310,7 @@ namespace IMDB.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("media_reviews", "imdb");
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("IMDB.Domain.Models.ShowEpisode", b =>
