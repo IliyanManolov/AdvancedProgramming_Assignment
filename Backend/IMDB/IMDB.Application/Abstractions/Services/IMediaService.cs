@@ -1,6 +1,7 @@
 ﻿using IMDB.Application.DTOs.Media;
 using IMDB.Application.DTOs.Media.Movie;
 using IMDB.Application.DTOs.Media.TvShow;
+using IMDB.Application.DTOs.Review;
 using IMDB.Application.DTOs.ShowEpisode;
 
 namespace IMDB.Application.Abstractions.Services;
@@ -25,4 +26,6 @@ public interface IMediaService
     public Task<(long? Id, string? Error)> UpdateTvShowAsync(UpdateTvShowDto dto, long id);
 
     public Task<(IEnumerable<EpisodeDetailsDto>? episodesList, string? Error)> GetShowEpisodes(long? showId);
+
+    public Task<(long? Id, string? Error)> CreateReview(CreateReviewDto dto);
 }

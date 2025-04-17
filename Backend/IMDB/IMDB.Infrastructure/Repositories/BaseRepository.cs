@@ -17,6 +17,7 @@ internal abstract class BaseRepository<T> : IBaseRepository<T> where T : DomainE
 
     public async Task<T> CreateAsync(T entity)
     {
+        entity.CreateTimeStamp = DateTime.UtcNow;
         await _dbContext.Set<T>().AddAsync(entity);
         await _dbContext.SaveChangesAsync();
         return entity;

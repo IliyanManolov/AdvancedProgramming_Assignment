@@ -54,6 +54,7 @@ public static class Configuration
         services.AddScoped<ITvShowRepository, TvShowRepository>();
 
         services.AddScoped<IGenreRepository, GenreRepository>();
+        services.AddScoped<IReviewRepository, ReviewRepository>();
 
     }
 

@@ -4,7 +4,6 @@ using IMDB.Application.DTOs.Media.Movie;
 using IMDB.Application.DTOs.Media.TvShow;
 using IMDB.Application.DTOs.Media;
 using IMDB.Application.DTOs.ShowEpisode;
-using IMDB.Application.Services;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 namespace IMDB.WEB.API.Controllers;

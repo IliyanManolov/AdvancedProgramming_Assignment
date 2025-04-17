@@ -3,11 +3,13 @@ using IMDB.Application.Abstractions.Services;
 using IMDB.Application.DTOs.Media;
 using IMDB.Application.DTOs.Media.Movie;
 using IMDB.Application.DTOs.Media.TvShow;
+using IMDB.Application.DTOs.Review;
 using IMDB.Application.DTOs.ShowEpisode;
 using IMDB.Domain.AbstractModels;
 using IMDB.Domain.Enums;
 using IMDB.Domain.Models;
 using Microsoft.Extensions.Logging;
+using System.Reflection;
 
 namespace IMDB.Application.Services;
 
@@ -22,6 +24,7 @@ public class MediaService : IMediaService
     private readonly IActorRepository _actorRepository;
     private readonly IGenreRepository _genreRepository;
     private readonly IEpisodeRepository _episodeRepository;
+    private readonly IReviewRepository _reviewRepository;
 
     public MediaService(IMediaTransformer mediaTransformer,
         IMovieRepository movieRepository,
@@ -31,6 +34,7 @@ public class MediaService : IMediaService
         IActorRepository actorRepository,
         IGenreRepository genreRepository,
         IEpisodeRepository episodeRepository,
+        IReviewRepository reviewRepository,
         ILoggerFactory loggerFactory)
     {
         _mediaTransformer = mediaTransformer;
@@ -41,6 +45,7 @@ public class MediaService : IMediaService
         _actorRepository = actorRepository;
         _genreRepository = genreRepository;
         _episodeRepository = episodeRepository;
+        _reviewRepository = reviewRepository;
         _logger = loggerFactory.CreateLogger<MediaService>();
     }
 
@@ -151,6 +156,23 @@ public class MediaService : IMediaService
         return (dbShow.Id, null);
     }
 
+    public async Task<(long? Id, string? Error)> CreateReview(CreateReviewDto dto)
+    {
+
+        if (dto.Rating > 10 || dto.Rating < 0)
+        {
+            _logger.LogError("Invalid value for review detected - '{reviewRating}'", dto.Rating);
+            return (null, "Invalid values for rating");
+        }
+
+        return dto.MediaType switch
+        {
+            MediaType.Movie => await CreateMovieReviewAsync(dto),
+            MediaType.TvShow => await CreateShowReviewAsync(dto),
+            MediaType.Episode => await CreateEpisodeReviewAsync(dto),
+            _ => throw new ArgumentException($"Unable to determine review media type. {dto.MediaType}"),
+        };
+    }
 
     public async Task<(long? Id, string? Error)> CreateEpisodeAsync(CreateEpisodeDto dto)
     {
@@ -475,5 +497,105 @@ public class MediaService : IMediaService
         }
 
         return (genres, errors);
+    }
+
+    private async Task<(long? Id, string? Error)> CreateMovieReviewAsync(CreateReviewDto model)
+    {
+        var media = await _movieRepository.GetByIdAsync(model.MediaId);
+
+        if (media is null)
+            return (null, "Media not found");
+
+        var user = await _userRepository.GetByIdAsync(model.UserId);
+
+        if (media.Reviews.Any(x => x.UserId.Equals(user!.Id)))
+            return (null, "User already has a review for this media");
+
+        var dbReview = new Review()
+        {
+            MovieId = media.Id,
+            IsDeleted = false,
+            Rating = model.Rating,
+            ReviewText = model.Review,
+            UserId = user.Id
+        };
+
+        media.Rating = CalculateRating(currentReviewCount: media.Reviews.Count, currentRating: media.Rating.Value, newRating: model.Rating);
+
+        await _reviewRepository.CreateAsync(dbReview);
+
+        await _movieRepository.UpdateAsync(media);
+
+        return (dbReview.Id, null);
+    }
+
+    private async Task<(long? Id, string? Error)> CreateShowReviewAsync(CreateReviewDto model)
+    {
+        var media = await _showRepository.GetByIdAsync(model.MediaId);
+
+        if (media is null)
+            return (null, "Media not found");
+
+        var user = await _userRepository.GetByIdAsync(model.UserId);
+
+        if (media.Reviews.Any(x => x.UserId.Equals(user!.Id)))
+            return (null, "User already has a review for this media");
+
+        var dbReview = new Review()
+        {
+            ShowId = media.Id,
+            IsDeleted = false,
+            Rating = model.Rating,
+            ReviewText = model.Review,
+            UserId = user.Id
+        };
+
+        media.Rating = CalculateRating(currentReviewCount: media.Reviews.Count, currentRating: media.Rating.Value, newRating: model.Rating);
+
+        await _reviewRepository.CreateAsync(dbReview);
+
+        await _showRepository.UpdateAsync(media);
+
+        return (dbReview.Id, null);
+    }
+
+    private async Task<(long? Id, string? Error)> CreateEpisodeReviewAsync(CreateReviewDto model)
+    {
+        var media = await _episodeRepository.GetByIdAsync(model.MediaId);
+
+        if (media is null)
+            return (null, "Media not found");
+
+        var user = await _userRepository.GetByIdAsync(model.UserId);
+
+        if (media.Reviews.Any(x => x.UserId.Equals(user!.Id)))
+            return (null, "User already has a review for this media");
+
+        var dbReview = new Review()
+        {
+            EpisodeId = media.Id,
+            IsDeleted = false,
+            Rating = model.Rating,
+            ReviewText = model.Review,
+            UserId = user.Id
+        };
+
+
+        media.Rating = CalculateRating(currentReviewCount: media.Reviews.Count, currentRating: media.Rating.Value, newRating: model.Rating);
+
+        await _reviewRepository.CreateAsync(dbReview);
+
+        await _episodeRepository.UpdateAsync(media);
+
+        return (dbReview.Id, null);
+    }
+
+    private double CalculateRating(int currentReviewCount, double currentRating, double newRating)
+    {
+        var currentTotal = currentReviewCount * currentRating;
+
+        var newTotal = currentTotal + newRating;
+
+        return Math.Round(newTotal / (currentReviewCount + 1), 2);
     }
 }

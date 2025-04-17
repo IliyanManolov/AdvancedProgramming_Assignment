@@ -3,5 +3,6 @@
 public enum MediaType
 {
     Movie,
-    TvShow
+    TvShow,
+    Episode
 }
