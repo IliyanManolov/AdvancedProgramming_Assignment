@@ -47,7 +47,7 @@ public class ReviewsController : ControllerBase
             return Ok(id);
     }
 
-    [HttpGet]
+    [HttpPost("get/")]
     public async Task<IActionResult> GetReviewsForMediaAsync([FromBody] ReviewsRequestDto model)
     {
         var (reviews, error) = await _mediaService.GetReviewsForMediaAsync(model);

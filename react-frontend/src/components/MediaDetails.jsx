@@ -2,12 +2,15 @@ import { useParams, useLocation } from 'react-router-dom';
 import { React, useEffect, useState } from 'react';
 import axios from 'axios';
 import getImageUrl from '../Utils/GetImageUrl'
+import { useReviews } from './contexts/ReviewContext';
 
 function MediaDetails() {
     const { id } = useParams();
     const [media, setMedia] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+
+    const { getReviews } = useReviews();
 
     const location = useLocation();
     const mediaType = location.state?.type;
