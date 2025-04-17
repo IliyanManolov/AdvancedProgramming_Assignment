@@ -1,5 +1,6 @@
 ﻿using IMDB.Application.Abstractions.Services;
 using IMDB.Application.DTOs.Media;
+using IMDB.Application.DTOs.Review;
 using IMDB.Application.DTOs.ShowEpisode;
 using IMDB.Domain.AbstractModels;
 using IMDB.Domain.Models;
@@ -51,6 +52,18 @@ public class MediaTransformer : IMediaTransformer
             Reviews = dbEp.Reviews?.Count ?? 0,
             SeasonNumber = dbEp.SeasonNumber,
             Title = dbEp.Title
+        });
+    }
+
+    public IEnumerable<ReviewDetailsDto> ToDetails(IEnumerable<Review> reviews)
+    {
+        return reviews.Select(x => new ReviewDetailsDto()
+        {
+            CreatedDate = x.CreateTimeStamp!.Value,
+            LastEditDate = x.UpdateTimeStamp,
+            Rating = x.Rating,
+            ReviewText = x.ReviewText,
+            UserName = x.User.Username!
         });
     }
 

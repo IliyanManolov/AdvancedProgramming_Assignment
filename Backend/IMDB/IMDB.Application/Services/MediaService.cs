@@ -174,6 +174,18 @@ public class MediaService : IMediaService
         };
     }
 
+    public async Task<(IEnumerable<ReviewDetailsDto>? Reviews, string? Error)> GetReviewsForMediaAsync(ReviewsRequestDto model)
+    {
+        // Use review repository directly since we already know the media type & id and do not need to fetch *everything* from the DB
+        return model.MediaType switch
+        {
+            MediaType.Movie => (_mediaTransformer.ToDetails(await _reviewRepository.GetAllForMovieAsync(model.MediaId)), null),
+            MediaType.TvShow => (_mediaTransformer.ToDetails(await _reviewRepository.GetAllForShowAsync(model.MediaId)), null),
+            MediaType.Episode => (_mediaTransformer.ToDetails(await _reviewRepository.GetAllForEpisodeAsync(model.MediaId)), null),
+            _ => throw new ArgumentException($"Unable to determine review media type. {model.MediaType}"),
+        };
+    }
+
     public async Task<(long? Id, string? Error)> CreateEpisodeAsync(CreateEpisodeDto dto)
     {
         var show = await _showRepository.GetByIdAsync(dto.ShowId);

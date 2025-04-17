@@ -1,4 +1,5 @@
 ﻿using IMDB.Application.DTOs.Media;
+using IMDB.Application.DTOs.Review;
 using IMDB.Application.DTOs.ShowEpisode;
 using IMDB.Domain.AbstractModels;
 using IMDB.Domain.Models;
@@ -9,4 +10,5 @@ public interface IMediaTransformer
 {
     public IEnumerable<MediaShortDto> ToShortDto(IEnumerable<Media> dbMediaList);
     public IEnumerable<EpisodeDetailsDto> ToDetails(IEnumerable<ShowEpisode> episodes);
+    public IEnumerable<ReviewDetailsDto> ToDetails(IEnumerable<Review> reviews);
 }

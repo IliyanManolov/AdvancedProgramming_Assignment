@@ -23,7 +23,7 @@ public class ReviewsController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> CreateReview([FromBody] CreateReviewDto model)
+    public async Task<IActionResult> CreateReviewAsync([FromBody] CreateReviewDto model)
     {
         var (userId, userError) = await GetUserId();
 
@@ -45,6 +45,19 @@ public class ReviewsController : ControllerBase
         }
         else
             return Ok(id);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetReviewsForMediaAsync([FromBody] ReviewsRequestDto model)
+    {
+        var (reviews, error) = await _mediaService.GetReviewsForMediaAsync(model);
+
+        if (!string.IsNullOrEmpty(error))
+        {
+            return BadRequest(error);
+        }
+        else
+            return Ok(reviews);
     }
 
     private async Task<(long? id, string? Error)> GetUserId()

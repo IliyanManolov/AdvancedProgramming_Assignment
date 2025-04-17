@@ -28,4 +28,5 @@ public interface IMediaService
     public Task<(IEnumerable<EpisodeDetailsDto>? episodesList, string? Error)> GetShowEpisodes(long? showId);
 
     public Task<(long? Id, string? Error)> CreateReview(CreateReviewDto dto);
+    public Task<(IEnumerable<ReviewDetailsDto>? Reviews, string? Error)> GetReviewsForMediaAsync(ReviewsRequestDto model);
 }
