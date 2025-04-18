@@ -1,12 +1,14 @@
 ﻿using IMDB.Infrastructure.Observability.Configuration;
 using IMDB.Infrastructure.Observability.Formatters;
 using IMDB.Infrastructure.Observability.Models;
+using IMDB.Infrastructure.Observability.Sinks.OpenSearch;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
+using Serilog.Sinks.PeriodicBatching;
 
 namespace IMDB.Infrastructure;
 
@@ -45,6 +47,17 @@ public static partial class ObservabilityConfiguration
                 .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
                 .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning);
 
+            if (options?.Logging?.OpenSearchConfiguration != null)
+            {
+                var sink = new OpenSearchBatchingSink(options.Logging.OpenSearchConfiguration, new JsonLogFormatter());
+                var batchinOptions = new PeriodicBatchingSinkOptions()
+                {
+                    BatchSizeLimit = options.Logging.OpenSearchConfiguration.BatchSize,
+                    Period = TimeSpan.FromSeconds(options.Logging.OpenSearchConfiguration.BatchTime)
+                };
+
+                loggerConfig.WriteTo.Sink(new PeriodicBatchingSink(sink, batchinOptions));
+            }
 
 
             loggerConfig.WriteTo.Console(formatter: new JsonLogFormatter());

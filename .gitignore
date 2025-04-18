@@ -9,6 +9,7 @@ dev-keys/*
 dev-keys/
 OpenSearchData/*
 OpenSearchData/
+*.env
 
 # User-specific files
 *.rsuser
