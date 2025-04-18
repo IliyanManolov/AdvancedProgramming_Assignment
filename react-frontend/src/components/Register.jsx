@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import FormInput from './FormInput';
+import FormInput from './inputs/FormInput';
 import axios from 'axios';
 
 function Register() {

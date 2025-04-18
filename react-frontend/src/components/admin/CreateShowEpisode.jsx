@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import FormInput from '../FormInput'
+import FormInput from '../inputs/FormInput'
 import axios from 'axios';
-import MultiSelectionInput from '../MultiSelectionInput';
+import MultiSelectionInput from '../inputs/MultiSelectionInput';
 
 function CreateShowEpisode({ shows }) {
 

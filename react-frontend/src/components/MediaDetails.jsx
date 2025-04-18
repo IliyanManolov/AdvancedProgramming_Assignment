@@ -5,7 +5,7 @@ import getImageUrl from '../Utils/GetImageUrl'
 import formatDate from '../Utils/FormatDate';
 import { useReviews } from './contexts/ReviewContext';
 import ReviewsDisplay from './ReviewsDisplay';
-import ReviewForm from './ReviewForm';
+import ReviewForm from './inputs/ReviewForm';
 
 function MediaDetails() {
     const { id } = useParams();

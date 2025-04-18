@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import FormInput from './FormInput';
+import FormInput from './inputs/FormInput';
 import { useAuth } from './contexts/AuthContext';
 
 function Login() {
