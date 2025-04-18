@@ -24,12 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Sample-Config\appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Config\appsettings.json" />
   </ItemGroup>
 

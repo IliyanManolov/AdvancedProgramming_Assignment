@@ -10,7 +10,8 @@
     <DockerServiceName>imdb.web.api</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="Config\appsettings.json"/>
+    <None Include=".env" />
+    <None Include="Config\appsettings.json" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
