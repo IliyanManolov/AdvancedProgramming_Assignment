@@ -29,7 +29,7 @@ export const ReviewProvider = ({ children }) => {
                 }
             })
 
-            console.log(res);
+            // console.log(res);
             // Update only the path we care about (save on API calls)
             setReviewsDict(prev => ({
                 ...prev,
@@ -38,7 +38,9 @@ export const ReviewProvider = ({ children }) => {
                     [id]: res.data
                 }
             }))
-            // console.log(res.data);
+
+            console.log(reviewsDict);
+            return reviewsDict[type][id];
         }
         catch (err) {
             console.error("Failed to fetch reviews for media:", err)
@@ -48,6 +50,7 @@ export const ReviewProvider = ({ children }) => {
 
     const addReview = async (formData) => {
 
+        // TODO: potentially redirect to the Login page?
         // No point in wasting API calls if we are not logged in
         if (!isAuthenticated)
             return;

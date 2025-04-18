@@ -2,7 +2,9 @@ import { useParams, useLocation } from 'react-router-dom';
 import { React, useEffect, useState } from 'react';
 import axios from 'axios';
 import getImageUrl from '../Utils/GetImageUrl'
+import formatDate from '../Utils/FormatDate';
 import { useReviews } from './contexts/ReviewContext';
+import ReviewsDisplay from './ReviewsDisplay';
 
 function MediaDetails() {
     const { id } = useParams();
@@ -10,6 +12,7 @@ function MediaDetails() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
+    const [reviews, setReviews] = useState([]);
     const { getReviews } = useReviews();
 
     const location = useLocation();
@@ -28,6 +31,9 @@ function MediaDetails() {
                 const res = await axios.get(`http://localhost:8080/api/media/${endpoint}/${id}`);
                 // console.log(res.data);
                 setMedia(res.data);
+
+                const reviewsData = await getReviews(id, mediaType);
+                setReviews(reviewsData);
             }
             catch (err) {
                 if (err.response?.status === 400)
@@ -41,16 +47,6 @@ function MediaDetails() {
 
         fetchMovie();
     }, [id]);
-
-    const formatDate = (dateStr) => {
-        const date = new Date(dateStr);
-        // I hate DateTime in React
-        return date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-        });
-    };
 
     if (loading) return <p className="p-4">Loading...</p>;
     if (error) return <p className="p-4 text-red-600">{error}</p>;
@@ -82,6 +78,8 @@ function MediaDetails() {
                     className="w-[35vw] h-[35vh] object-cover"
                 />
             </div>
+
+            <ReviewsDisplay reviews={reviews}></ReviewsDisplay>
         </div>
     );
 
