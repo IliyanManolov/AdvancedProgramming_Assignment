@@ -20,7 +20,7 @@ function MediaDisplayTable({ selectedGenres, media, watchlistDict, handleWatclis
         <table className="min-w-full table-auto border-collapse rounded-xl shadow-md">
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-4 py-3 w-[10vw] text-center"></th>
+              <th className="px-4 py-3 w-[15vw] text-center"></th>
               <th className="px-4 py-3 text-center">Title</th>
               <th className="px-4 py-3 text-center">Description</th>
               <th className="px-4 py-3 text-center">Genres</th>

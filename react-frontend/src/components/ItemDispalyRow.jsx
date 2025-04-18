@@ -25,7 +25,7 @@ function ItemDispalyRow({ item, index, handleRefresh, watchlistDict }) {
                     <img
                         src={getImageUrl(item.posterImage)}
                         alt={item.title}
-                        className="w-[10vw] h-[10vh] rounded object-cover"
+                        className="w-[15vw] h-[10vh] rounded object-cover"
                     />
                 </Link>
             </td>
