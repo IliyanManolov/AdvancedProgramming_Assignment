@@ -29,7 +29,6 @@ export const ReviewProvider = ({ children }) => {
                 }
             })
 
-            // console.log(res);
             // Update only the path we care about (save on API calls)
             setReviewsDict(prev => ({
                 ...prev,
@@ -39,8 +38,8 @@ export const ReviewProvider = ({ children }) => {
                 }
             }))
 
-            console.log(reviewsDict);
-            return reviewsDict[type][id];
+            // Return the response data instead of accessing the dictionary in case it hasnt updated yet
+            return res.data;
         }
         catch (err) {
             console.error("Failed to fetch reviews for media:", err)
@@ -69,11 +68,11 @@ export const ReviewProvider = ({ children }) => {
 
             // Move this to a separate function
             const refreshResponse = await axios.request({
-                "url": "http://localhost:8080/api/reviews",
-                "method": "GET",
+                "url": "http://localhost:8080/api/reviews/get",
+                "method": "POST",
                 "data": {
-                    "Type": formData.type,
-                    "Id": Number(formData.id)
+                    "MediaType": formData.type,
+                    "MediaId": Number(formData.id)
                 },
                 withCredentials: true,
                 headers: {

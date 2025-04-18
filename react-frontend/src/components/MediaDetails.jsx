@@ -5,6 +5,7 @@ import getImageUrl from '../Utils/GetImageUrl'
 import formatDate from '../Utils/FormatDate';
 import { useReviews } from './contexts/ReviewContext';
 import ReviewsDisplay from './ReviewsDisplay';
+import ReviewForm from './ReviewForm';
 
 function MediaDetails() {
     const { id } = useParams();
@@ -13,7 +14,7 @@ function MediaDetails() {
     const [error, setError] = useState('');
 
     const [reviews, setReviews] = useState([]);
-    const { getReviews } = useReviews();
+    const { getReviews, addReview } = useReviews();
 
     const location = useLocation();
     const mediaType = location.state?.type;
@@ -48,6 +49,15 @@ function MediaDetails() {
         fetchMovie();
     }, [id]);
 
+    const handleNewReview = async (form) => {
+
+        form.mediaType = mediaType;
+        form.mediaId = id;
+
+        console.log(form);
+        await addReview(form);
+    }
+
     if (loading) return <p className="p-4">Loading...</p>;
     if (error) return <p className="p-4 text-red-600">{error}</p>;
 
@@ -79,6 +89,7 @@ function MediaDetails() {
                 />
             </div>
 
+            <ReviewForm onSubmitReview={handleNewReview}></ReviewForm>
             <ReviewsDisplay reviews={reviews}></ReviewsDisplay>
         </div>
     );

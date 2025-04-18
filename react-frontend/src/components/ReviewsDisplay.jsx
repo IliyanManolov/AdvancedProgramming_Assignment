@@ -14,7 +14,7 @@ function ReviewsDisplay({ reviews }) {
                                 <span className="text-sm text-gray-500">{formatDate(review.createdDate)}</span>
                             </div>
                             <p className="text-sm text-gray-600 mb-1">
-                                <span className="font-semibold">Rating:</span>{review.rating}/10
+                                <span className="font-semibold">Rating: </span>{review.rating}/10
                             </p>
                             <p className="text-gray-800">{review.reviewText}</p>
                         </div>
