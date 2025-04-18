@@ -24,7 +24,7 @@ function Genres({ selectedGenres, onToggleGenre }) {
 
   return (
     <>
-      <div className="mt-6 flex space-x-2 justify-center">
+      <div className="mt-6 flex flex-wrap gap-2 justify-center">
 
         {genres.map((genre => {
           const isSelected = selectedGenres.includes(genre.name);
