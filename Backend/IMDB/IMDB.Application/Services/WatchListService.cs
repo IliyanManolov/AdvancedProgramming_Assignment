@@ -179,6 +179,12 @@ public class WatchListService : IWatchListService
         if (dbUser is null)
             return (null, $"No user with id '{userId}' found");
 
+        if (dbUser.IsDeleted == true)
+        {
+            _logger.LogDebug("User is deleted");
+            return (null, $"No user with id '{userId}' found");
+        }
+
         var dbWatchlist = await _watchlistRepository.GetByUserIdAsync(userId);
 
         if (dbWatchlist is null)

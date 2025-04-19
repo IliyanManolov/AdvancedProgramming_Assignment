@@ -43,16 +43,47 @@ public static class DiHelper
         context.Users.Add(new User() { Id = 2, CreateTimeStamp = DateTime.UtcNow, FirstName = "Admin", LastName = "Account", Username = "LocalAdmin", Role = Role.Administrator, Email = "localadmin@imdb.com", Password = password.GetHash("admin") });
         context.Users.Add(new User() { Id = 3, CreateTimeStamp = DateTime.UtcNow, FirstName = "Deleted", LastName = "User", Username = "DeletedUser", Role = Role.User, Email = "deleted@imdb.com", Password = password.GetHash("deletedpassword"), IsDeleted = true });
 
-        context.Genres.Add(new Genre() { Id = 1, Name = "Thriller", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 });
-        context.Genres.Add(new Genre() { Id = 2, Name = "Horror", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 });
-        context.Genres.Add(new Genre() { Id = 3, Name = "Comedy", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 });
-        context.Genres.Add(new Genre() { Id = 4, Name = "Action", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 });
-        context.Genres.Add(new Genre() { Id = 5, Name = "Science Fiction", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 });
-        context.Genres.Add(new Genre() { Id = 6, Name = "Romantic", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 });
+        var genresDict = new Dictionary<string, Genre>
+        {
+            { "Thriller", new Genre() { Id = 1, Name = "Thriller", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 } },
+            { "Horror", new Genre() { Id = 2, Name = "Horror", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 } },
+            { "Comedy", new Genre() { Id = 3, Name = "Comedy", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 } },
+            { "Action", new Genre() { Id = 4, Name = "Action", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 } },
+            { "Science Fiction", new Genre() { Id = 5, Name = "Science Fiction", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 } },
+            { "Romantic", new Genre() { Id = 6, Name = "Romantic", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 } }
+        };
+
+        context.Genres.AddRange(genresDict.Values);
+
+        var moviesDict = new Dictionary<string, Movie>
+        {
+            { "Basic",
+                new Movie()
+                {
+                    CreatedByUserId = 2,
+                    Description = "Basic Movie Description",
+                    DirectorId = 1,
+                    Genres = new HashSet<Genre>(){ { genresDict["Horror"] } },
+                    Rating = 10,
+                    Reviews = new HashSet<Review>(),
+                    Title = "Basic Movie Title"
+                }
+            }
+        };
+
+        context.Movies.AddRange(moviesDict.Values);
+
+        context.WatchLists.Add(new WatchList() { UserId = 1, Id = 1 });
+        context.WatchLists.Add(new WatchList() { UserId = 2, Id = 2, Movies = new HashSet<Movie>() { { moviesDict["Basic"] } } });
+        context.WatchLists.Add(new WatchList() { UserId = 3, Id = 3 });
+
+
 
         context.Actors.Add(new Actor() { BirthDate = DateTime.ParseExact("2001-02-21", "yyyy-MM-dd", CultureInfo.InvariantCulture), Id = 1, Biography = "Actor #1", CreatedByUserId = 2, FirstName = "John", LastName = "Doe", Nationality = "Bulgarian" });
         context.Actors.Add(new Actor() { BirthDate = DateTime.ParseExact("1998-01-01", "yyyy-MM-dd", CultureInfo.InvariantCulture), Id = 2, Biography = "Actor #2", CreatedByUserId = 2, FirstName = "Jane", LastName = "Doe", Nationality = "Bulgarian" });
         context.Actors.Add(new Actor() { BirthDate = DateTime.ParseExact("2002-12-12", "yyyy-MM-dd", CultureInfo.InvariantCulture), Id = 3, Biography = "Actor #3", CreatedByUserId = 2, FirstName = "Sam", LastName = "Smith", Nationality = "Bulgarian" });
+
+        context.Directors.Add(new Director() { Id = 1, FirstName = "Director First Name", LastName = "Director Last Name", CreatedByUserId = 2, BirthDate = DateTime.ParseExact("2002-12-12", "yyyy-MM-dd", CultureInfo.InvariantCulture), Nationality = "Bulgarian" });
 
         context.SaveChanges();
     }
