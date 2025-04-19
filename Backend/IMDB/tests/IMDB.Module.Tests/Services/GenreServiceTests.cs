@@ -1,6 +1,6 @@
 ﻿using IMDB.Application.Abstractions.Services;
 using IMDB.Application.DTOs.Genres;
-using IMDB.Domain.Models;
+using IMDB.Application.DTOs.ShowEpisode;
 using IMDB.Module.Tests.Fixture;
 using Microsoft.Extensions.DependencyInjection;
 
