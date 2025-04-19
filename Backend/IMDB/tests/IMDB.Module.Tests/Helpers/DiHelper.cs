@@ -41,7 +41,14 @@ public static class DiHelper
         context.Users.Add(new User() { Id = 1, CreateTimeStamp = DateTime.UtcNow, FirstName = "John", LastName = "Doe", Username = "JohnDoeAccount", Role = Role.User, Email = "johndoe@imdb.com", Password = password.GetHash("password") });
         context.Users.Add(new User() { Id = 2, CreateTimeStamp = DateTime.UtcNow, FirstName = "Admin", LastName = "Account", Username = "LocalAdmin", Role = Role.Administrator, Email = "localadmin@imdb.com", Password = password.GetHash("admin") });
         context.Users.Add(new User() { Id = 3, CreateTimeStamp = DateTime.UtcNow, FirstName = "Deleted", LastName = "User", Username = "DeletedUser", Role = Role.User, Email = "deleted@imdb.com", Password = password.GetHash("deletedpassword"), IsDeleted = true });
-        
+
+        context.Genres.Add(new Genre() { Id = 1, Name = "Thriller", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 });
+        context.Genres.Add(new Genre() { Id = 2, Name = "Horror", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 });
+        context.Genres.Add(new Genre() { Id = 3, Name = "Comedy", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 });
+        context.Genres.Add(new Genre() { Id = 4, Name = "Action", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 });
+        context.Genres.Add(new Genre() { Id = 5, Name = "Science Fiction", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 });
+        context.Genres.Add(new Genre() { Id = 6, Name = "Romantic", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 });
+
         context.SaveChanges();
     }
 }
