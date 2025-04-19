@@ -12,10 +12,7 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add this as env variable
-
         builder.Configuration.UseCustomConfiguration();
-        // Add services to the container.
 
         builder.Services.AddObservability(builder.Configuration);
         builder.Host.UseCustomLogging();

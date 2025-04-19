@@ -41,7 +41,7 @@ public static class Configuration
         return services;
     }
 
-    private static void AddRepositories(this IServiceCollection services)
+    public static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IWatchListRepository, WatchListRepository>();

@@ -14,6 +14,7 @@ public class DatabaseContext : DbContext
     public DbSet<TvShow> TvShows { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<WatchList> WatchLists { get; set; }
+    public DbSet<Review> Reviews { get; set; }
 
 
     public DatabaseContext(DbContextOptions dbContextOptions)
