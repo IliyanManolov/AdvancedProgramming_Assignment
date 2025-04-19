@@ -34,6 +34,9 @@ public class ActorService : IActorService
         if (dbActor is not null)
             return (null, $"Actor {dto.FirstName} {dto.LastName} already exists");
 
+        if (dto.BirthDate is null || dto.BirthDate > DateTime.UtcNow)
+            return (null, "Invalid birth date");
+
         var newActor = new Actor()
         {
             Biography = dto.Biography,

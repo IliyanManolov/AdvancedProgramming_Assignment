@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,6 +49,10 @@ public static class DiHelper
         context.Genres.Add(new Genre() { Id = 4, Name = "Action", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 });
         context.Genres.Add(new Genre() { Id = 5, Name = "Science Fiction", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 });
         context.Genres.Add(new Genre() { Id = 6, Name = "Romantic", CreateTimeStamp = DateTime.UtcNow, CreatedByUserId = 2 });
+
+        context.Actors.Add(new Actor() { BirthDate = DateTime.ParseExact("2001-02-21", "yyyy-MM-dd", CultureInfo.InvariantCulture), Id = 1, Biography = "Actor #1", CreatedByUserId = 2, FirstName = "John", LastName = "Doe", Nationality = "Bulgarian" });
+        context.Actors.Add(new Actor() { BirthDate = DateTime.ParseExact("1998-01-01", "yyyy-MM-dd", CultureInfo.InvariantCulture), Id = 2, Biography = "Actor #2", CreatedByUserId = 2, FirstName = "Jane", LastName = "Doe", Nationality = "Bulgarian" });
+        context.Actors.Add(new Actor() { BirthDate = DateTime.ParseExact("2002-12-12", "yyyy-MM-dd", CultureInfo.InvariantCulture), Id = 3, Biography = "Actor #3", CreatedByUserId = 2, FirstName = "Sam", LastName = "Smith", Nationality = "Bulgarian" });
 
         context.SaveChanges();
     }
