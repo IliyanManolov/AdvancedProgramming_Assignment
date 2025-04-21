@@ -116,6 +116,10 @@ public static class DiHelper
         context.Directors.Add(new Director() { Id = 2, FirstName = "Second Director First Name", LastName = "Second Director Last Name", CreatedByUserId = 2, BirthDate = DateTime.ParseExact("2002-12-12", "yyyy-MM-dd", CultureInfo.InvariantCulture), Nationality = "Bulgarian" });
         context.Directors.Add(new Director() { Id = 3, FirstName = "Third Director First Name", LastName = "Third Director Last Name", CreatedByUserId = 2, BirthDate = DateTime.ParseExact("2002-12-12", "yyyy-MM-dd", CultureInfo.InvariantCulture), Nationality = "Bulgarian" });
 
+        context.Reviews.Add(new Review() { Id = 1, UserId = 1, ReviewText = "Test movie seed review", Rating = 5, MovieId = 1, CreateTimeStamp = DateTime.UtcNow});
+        context.Reviews.Add(new Review() { Id = 2, UserId = 1, ReviewText = "Test show seed review", Rating = 5, ShowId = 1, CreateTimeStamp = DateTime.UtcNow });
+        context.Reviews.Add(new Review() { Id = 3, UserId = 1, ReviewText = "Test episode seed review", Rating = 5, EpisodeId = 1, CreateTimeStamp = DateTime.UtcNow });
+
         context.SaveChanges();
     }
 }

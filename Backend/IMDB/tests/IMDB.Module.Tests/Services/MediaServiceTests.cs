@@ -137,6 +137,34 @@ public class MediaServiceTests
         Assert.Contains(errorContains, message, StringComparison.InvariantCultureIgnoreCase);
     }
 
+    [Fact]
+    public async Task ShouldCreateMovie()
+    {
+        var model = new CreateMovieDto()
+        {
+            Length = 3600,
+            Description = "Random movie",
+            Title = "Test Create Movie",
+            CreatedByUserId = 2,
+            DirectorId = 1,
+            GenreIds = new HashSet<long>() { { 1 } },
+            ActorIds = new HashSet<long>() { { 1 } }
+        };
+
+        var (result, message) = await _service.CreateMovieAsync(model);
+
+        Assert.NotNull(result);
+        Assert.Null(message);
+
+        var (final, finalError) = await _service.GetMovieByIdAsync(result);
+
+        Assert.NotNull(final);
+        Assert.Null(finalError);
+
+        Assert.Equal(model.Length, final.Length);
+        Assert.Equal(model.Title, final.Title);
+        Assert.Equal(model.Description, final.Description);
+    }
 
     #endregion
 
@@ -245,6 +273,38 @@ public class MediaServiceTests
         Assert.NotNull(message);
 
         Assert.Contains(errorContains, message, StringComparison.InvariantCultureIgnoreCase);
+    }
+
+    [Fact]
+    public async Task ShouldCreateShow()
+    {
+        var model = new CreateTvShowDto()
+        {
+            Description = "Random show",
+            Title = "Test Create Show",
+            CreatedByUserId = 2,
+            DirectorId = 1,
+            GenreIds = new HashSet<long>() { { 1 } },
+            ActorIds = new HashSet<long>() { { 1 } },
+            SeasonsCount = 1
+        };
+
+        var (result, message) = await _service.CreateTvShowAsync(model);
+
+        Assert.Null(message);
+        Assert.NotNull(result);
+
+        var (final, finalError) = await _service.GetShowByIdAsync(result);
+
+        Assert.NotNull(final);
+        Assert.Null(finalError);
+
+        // Show without any episodes defaults to 0 length
+        Assert.Equal(0, final.Length);
+        Assert.Equal(0, final.ShowEpisodesCount);
+        Assert.Equal(model.SeasonsCount, final.ShowSeasonsCount);
+        Assert.Equal(model.Title, final.Title);
+        Assert.Equal(model.Description, final.Description);
     }
 
     #endregion
@@ -468,6 +528,42 @@ public class MediaServiceTests
         Assert.NotNull(message);
 
         Assert.Contains(errorContains, message, StringComparison.InvariantCultureIgnoreCase);
+    }
+
+    [Theory]
+    [InlineData(MediaType.Movie, 1)]
+    [InlineData(MediaType.TvShow, 1)]
+    [InlineData(MediaType.Episode, 1)]
+    public async Task ShouldGetReviewsForMediaById(MediaType type, long id)
+    {
+        var model = new ReviewsRequestDto()
+        {
+            MediaId = id,
+            MediaType = type,
+        };
+
+        var (result, message) = await _service.GetReviewsForMediaAsync(model);
+
+        Assert.Null(message);
+        Assert.NotEmpty(result);
+    }
+
+    [Theory]
+    [InlineData(MediaType.Movie, 123456)]
+    [InlineData(MediaType.TvShow, 123456)]
+    [InlineData(MediaType.Episode, 123456)]
+    public async Task ShouldFailToGetReviewsForMediaById(MediaType type, long id)
+    {
+        var model = new ReviewsRequestDto()
+        {
+            MediaId = id,
+            MediaType = type,
+        };
+
+        var (result, message) = await _service.GetReviewsForMediaAsync(model);
+
+        Assert.Null(message);
+        Assert.Empty(result);
     }
 
     #endregion

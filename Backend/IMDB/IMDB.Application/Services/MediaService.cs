@@ -181,6 +181,7 @@ public class MediaService : IMediaService
         };
     }
 
+    // Current behaviour is intentionally not validating if the media exists
     public async Task<(IEnumerable<ReviewDetailsDto>? Reviews, string? Error)> GetReviewsForMediaAsync(ReviewsRequestDto model)
     {
         // Use review repository directly since we already know the media type & id and do not need to fetch *everything* from the DB

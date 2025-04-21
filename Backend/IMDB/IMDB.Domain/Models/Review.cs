@@ -4,7 +4,7 @@ namespace IMDB.Domain.Models;
 
 public class Review : DomainEntity
 {
-    public bool IsDeleted { get; set; }
+    public bool IsDeleted { get; set; } = false;
     public long? MovieId { get; set; }
     public Movie Movie { get; set; }
     public long? ShowId { get; set; }
