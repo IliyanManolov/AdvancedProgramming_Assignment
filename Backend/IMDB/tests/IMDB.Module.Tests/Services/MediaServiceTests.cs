@@ -7,6 +7,7 @@ using IMDB.Domain.AbstractModels;
 using IMDB.Domain.Models;
 using IMDB.Module.Tests.Fixture;
 using Microsoft.Extensions.DependencyInjection;
+using OpenSearch.Client;
 
 namespace IMDB.Module.Tests.Services;
 
@@ -467,6 +468,50 @@ public class MediaServiceTests
         Assert.NotNull(message);
 
         Assert.Contains(errorContains, message, StringComparison.InvariantCultureIgnoreCase);
+    }
+
+    #endregion
+
+
+    #region Miscellaneous tests 
+    [Fact]
+    public async Task ShouldGetTopThen()
+    {
+        var (result, message) = await _service.GetTopTenAsync();
+
+        Assert.NotNull(result);
+        Assert.NotEmpty(result);
+        Assert.Null(message);
+    }
+
+    [Fact]
+    public async Task ShouldGetAllDiscovery()
+    {
+        var (result, message) = await _service.GetAllDiscoveryAsync();
+
+        Assert.NotNull(result);
+        Assert.NotEmpty(result);
+        Assert.Null(message);
+    }
+
+    [Fact]
+    public async Task ShouldGetAllMovies()
+    {
+        var (result, message) = await _service.GetAllMoviesAsync();
+
+        Assert.NotNull(result);
+        Assert.NotEmpty(result);
+        Assert.Null(message);
+    }
+
+    [Fact]
+    public async Task ShouldGetAllShows()
+    {
+        var (result, message) = await _service.GetAllShowsAsync();
+
+        Assert.NotNull(result);
+        Assert.NotEmpty(result);
+        Assert.Null(message);
     }
 
     #endregion
