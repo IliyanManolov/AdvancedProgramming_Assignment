@@ -66,12 +66,32 @@ public static class DiHelper
                     Genres = new HashSet<Genre>(){ { genresDict["Horror"] } },
                     Rating = 10,
                     Reviews = new HashSet<Review>(),
-                    Title = "Basic Movie Title"
+                    Title = "Basic Movie Title",
+                    Id = 1
+                }
+            }
+        };
+
+        var showsDict = new Dictionary<string, TvShow>
+        {
+            { "Basic",
+                new TvShow()
+                {
+                    CreatedByUserId = 2,
+                    Description = "Basic Movie Description",
+                    DirectorId = 1,
+                    Genres = new HashSet<Genre>(){ { genresDict["Horror"] } },
+                    Rating = 10,
+                    Reviews = new HashSet<Review>(),
+                    Title = "Basic Movie Title",
+                    Id = 1,
+                    Seasons = 1
                 }
             }
         };
 
         context.Movies.AddRange(moviesDict.Values);
+        context.TvShows.AddRange(showsDict.Values);
 
         context.WatchLists.Add(new WatchList() { UserId = 1, Id = 1 });
         context.WatchLists.Add(new WatchList() { UserId = 2, Id = 2, Movies = new HashSet<Movie>() { { moviesDict["Basic"] } } });

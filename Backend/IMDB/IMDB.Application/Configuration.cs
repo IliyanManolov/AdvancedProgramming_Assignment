@@ -20,6 +20,8 @@ public static class Configuration
         services.AddScoped<IGenreService, GenreService>();
         services.AddScoped<IMediaService, MediaService>();
 
+        services.AddScoped<IShowEpisodeService, ShowEpisodeService>();
+
         return services;
     }
 }

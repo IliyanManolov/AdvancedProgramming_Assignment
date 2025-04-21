@@ -48,7 +48,7 @@ public class ShowEpisodeService : IShowEpisodeService
         if (string.IsNullOrEmpty(dto.Title))
         {
             _logger.LogDebug("Episode title is empty or null - '{title}'", dto.Title);
-            return (null, "Invalid episode length");
+            return (null, "Invalid episode title");
         }
 
         var dbEpisode = new ShowEpisode()
