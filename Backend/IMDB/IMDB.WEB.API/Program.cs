@@ -51,7 +51,7 @@ internal class Program
                 settings.Cookie.IsEssential = true;
                 settings.Cookie.HttpOnly = false;
                 settings.SlidingExpiration = true;
-                settings.ExpireTimeSpan = TimeSpan.FromHours(12);
+                settings.ExpireTimeSpan = TimeSpan.FromHours(48);
                 settings.Cookie.Name = "IMDB_Cookie";
                 settings.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             });
@@ -66,12 +66,11 @@ internal class Program
 
         var app = builder.Build();
 
-        // Configure the HTTP request pipeline.
-        //if (app.Environment.IsDevelopment())
-        //{
+        if (app.Environment.IsDevelopment())
+        {
             app.UseSwagger();
             app.UseSwaggerUI();
-        //}
+        }
 
         app.UseApplicationLogging();
 

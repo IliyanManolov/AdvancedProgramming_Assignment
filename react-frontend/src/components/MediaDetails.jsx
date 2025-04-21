@@ -6,6 +6,7 @@ import formatDate from '../Utils/FormatDate';
 import { useReviews } from './contexts/ReviewContext';
 import ReviewsDisplay from './ReviewsDisplay';
 import ReviewForm from './inputs/ReviewForm';
+import { useAuth } from './contexts/AuthContext';
 
 function MediaDetails() {
     const { id } = useParams();
@@ -15,6 +16,7 @@ function MediaDetails() {
 
     const [reviews, setReviews] = useState([]);
     const { getReviews, addReview } = useReviews();
+    const {isAuthenticated} = useAuth();
 
     const location = useLocation();
     const mediaType = location.state?.type;
@@ -88,8 +90,11 @@ function MediaDetails() {
                     className="w-[35vw] h-[35vh] object-cover"
                 />
             </div>
+            { isAuthenticated && (
+                <ReviewForm onSubmitReview={handleNewReview}></ReviewForm>
+            )
 
-            <ReviewForm onSubmitReview={handleNewReview}></ReviewForm>
+            }
             <ReviewsDisplay reviews={reviews}></ReviewsDisplay>
         </div>
     );
