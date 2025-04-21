@@ -514,5 +514,33 @@ public class MediaServiceTests
         Assert.Null(message);
     }
 
+
+    [Theory]
+    [InlineData(2, "Horror")]
+    [InlineData(0, "Romantic")]
+    public async Task ShouldGetAllWithGenre(int expectedCount, params string[] genres)
+    {
+        var (result, message) = await _service.GetAllWithGenres(genres);
+
+        Assert.NotNull(result);
+        Assert.Equal(expectedCount, result.Count());
+        Assert.Null(message);
+    }
+
+    [Theory]
+    [InlineData(1, "Horror", "InvalidGenre")]
+    [InlineData(1, "InvalidGenre", "Horror")]
+    [InlineData(1, "Horror", "InvalidGenre", "Romantic")]
+    [InlineData(2, "InvalidGenre", "Another Invalid Genre", "Romantic")]
+    public async Task ShouldFailToGetAllWithGenre(int expectedCount, params string[] genres)
+    {
+        var (result, message) = await _service.GetAllWithGenres(genres);
+
+        Assert.Null(result);
+        Assert.NotNull(message);
+        Assert.Contains("Genre not found", message, StringComparison.InvariantCultureIgnoreCase);
+        Assert.Equal(expectedCount, message.Split(';').Length);
+    }
+
     #endregion
 }
