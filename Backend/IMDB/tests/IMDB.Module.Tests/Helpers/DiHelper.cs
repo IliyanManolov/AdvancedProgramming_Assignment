@@ -84,7 +84,7 @@ public static class DiHelper
                     Genres = new HashSet<Genre>(){ { genresDict["Horror"] } },
                     Rating = 10,
                     Reviews = new HashSet<Review>(),
-                    Title = "Basic Movie Title",
+                    Title = "Basic Show Title",
                     Id = 1,
                     Seasons = 1
                 }
@@ -99,7 +99,14 @@ public static class DiHelper
         context.WatchLists.Add(new WatchList() { UserId = 3, Id = 3 });
         context.WatchLists.Add(new WatchList() { UserId = 4, Id = 4 });
 
-
+        context.ShowEpisodes.Add(new ShowEpisode()
+        {
+            CreatedByUserId = 2,
+            Description = "Random episode description",
+            ShowId = 1,
+            SeasonNumber = 1,
+            Title = "Randomg episode"
+        });
 
         context.Actors.Add(new Actor() { BirthDate = DateTime.ParseExact("2001-02-21", "yyyy-MM-dd", CultureInfo.InvariantCulture), Id = 1, Biography = "Actor #1", CreatedByUserId = 2, FirstName = "John", LastName = "Doe", Nationality = "Bulgarian" });
         context.Actors.Add(new Actor() { BirthDate = DateTime.ParseExact("1998-01-01", "yyyy-MM-dd", CultureInfo.InvariantCulture), Id = 2, Biography = "Actor #2", CreatedByUserId = 2, FirstName = "Jane", LastName = "Doe", Nationality = "Bulgarian" });

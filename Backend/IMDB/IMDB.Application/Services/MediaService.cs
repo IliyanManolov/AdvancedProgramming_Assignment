@@ -75,7 +75,7 @@ public class MediaService : IMediaService
         var (actors, actorsErrors) = await ValidateActorIds(dto.ActorIds);
 
         if (actorsErrors is not null && actorsErrors.Any())
-            return (null, "Genres not found");
+            return (null, "Actors not found");
 
         var dbMovie = new Movie()
         {
@@ -123,7 +123,7 @@ public class MediaService : IMediaService
         var (actors, actorsErrors) = await ValidateActorIds(dto.ActorIds);
 
         if (actorsErrors is not null && actorsErrors.Any())
-            return (null, "Genres not found");
+            return (null, "Actors not found");
 
         if (dto.SeasonsCount is null || dto.SeasonsCount <= 0)
             return (null, "Invalid seasons count");
@@ -162,8 +162,15 @@ public class MediaService : IMediaService
         if (dto.Rating > 10 || dto.Rating < 0)
         {
             _logger.LogError("Invalid value for review detected - '{reviewRating}'", dto.Rating);
-            return (null, "Invalid values for rating");
+            return (null, "Invalid value for rating");
         }
+
+        dto.Rating = Math.Round(dto.Rating, 2);
+
+        var dbUser = await UserExists(dto.UserId);
+
+        if (dbUser is null)
+            return (null, "UNAUTHORIZED");
 
         return dto.MediaType switch
         {
@@ -408,6 +415,22 @@ public class MediaService : IMediaService
 
         return dbUser;
     }
+
+    private async Task<User?> UserExists(long userId)
+    {
+        var dbUser = await _userRepository.GetByIdAsync(userId);
+
+        if (dbUser is null || dbUser.IsDeleted == true)
+        {
+            _logger.LogDebug("User does not exist '{exists}' or is deleted '{deleted}'",
+                dbUser is not null,
+                dbUser?.IsDeleted);
+            return null;
+        }
+
+        return dbUser;
+    }
+
     private async Task<(ISet<Director>? directors, IList<string>? ValidationErrors)> ValidateDirectorIds(ISet<long> IDs)
     {
 
@@ -518,9 +541,7 @@ public class MediaService : IMediaService
         if (media is null)
             return (null, "Media not found");
 
-        var user = await _userRepository.GetByIdAsync(model.UserId);
-
-        if (media.Reviews.Any(x => x.UserId.Equals(user!.Id)))
+        if (media.Reviews.Any(x => x.UserId.Equals(model.UserId)))
             return (null, "User already has a review for this media");
 
         var dbReview = new Review()
@@ -529,7 +550,7 @@ public class MediaService : IMediaService
             IsDeleted = false,
             Rating = model.Rating,
             ReviewText = model.Review,
-            UserId = user.Id
+            UserId = model.UserId
         };
 
         media.Rating = CalculateRating(currentReviewCount: media.Reviews.Count, currentRating: media.Rating.Value, newRating: model.Rating);
@@ -550,7 +571,7 @@ public class MediaService : IMediaService
 
         var user = await _userRepository.GetByIdAsync(model.UserId);
 
-        if (media.Reviews.Any(x => x.UserId.Equals(user!.Id)))
+        if (media.Reviews!.Any(x => x.UserId.Equals(model.UserId)))
             return (null, "User already has a review for this media");
 
         var dbReview = new Review()
@@ -559,7 +580,7 @@ public class MediaService : IMediaService
             IsDeleted = false,
             Rating = model.Rating,
             ReviewText = model.Review,
-            UserId = user.Id
+            UserId = model.UserId
         };
 
         media.Rating = CalculateRating(currentReviewCount: media.Reviews.Count, currentRating: media.Rating.Value, newRating: model.Rating);
@@ -578,9 +599,7 @@ public class MediaService : IMediaService
         if (media is null)
             return (null, "Media not found");
 
-        var user = await _userRepository.GetByIdAsync(model.UserId);
-
-        if (media.Reviews.Any(x => x.UserId.Equals(user!.Id)))
+        if (media.Reviews.Any(x => x.UserId.Equals(model.UserId)))
             return (null, "User already has a review for this media");
 
         var dbReview = new Review()
@@ -589,7 +608,7 @@ public class MediaService : IMediaService
             IsDeleted = false,
             Rating = model.Rating,
             ReviewText = model.Review,
-            UserId = user.Id
+            UserId = model.UserId
         };
 
 
@@ -604,6 +623,7 @@ public class MediaService : IMediaService
 
     private double CalculateRating(int currentReviewCount, double currentRating, double newRating)
     {
+        newRating = Math.Round(newRating, 2);
         var currentTotal = currentReviewCount * currentRating;
 
         var newTotal = currentTotal + newRating;
