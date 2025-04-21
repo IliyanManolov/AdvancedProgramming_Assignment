@@ -113,6 +113,30 @@ public class MediaServiceTests
         Assert.Contains(errorContains, message, StringComparison.InvariantCultureIgnoreCase);
     }
 
+    [Theory]
+    [InlineData(1)]
+    public async Task ShouldGetMovieById(long id)
+    {
+        var (result, message) = await _service.GetMovieByIdAsync(id);
+
+        Assert.NotNull(result);
+        Assert.Null(message);
+    }
+
+    [Theory]
+    [InlineData(123456)]
+    public async Task ShouldFailToGetMovieById(long id)
+    {
+        string errorContains = "does not exist";
+        var (result, message) = await _service.GetMovieByIdAsync(id);
+
+        Assert.Null(result);
+        Assert.NotNull(message);
+
+        Assert.Contains(errorContains, message, StringComparison.InvariantCultureIgnoreCase);
+    }
+
+
     #endregion
 
     #region Show tests
@@ -199,8 +223,56 @@ public class MediaServiceTests
         Assert.Contains(errorContains, message, StringComparison.InvariantCultureIgnoreCase);
     }
 
+    [Theory]
+    [InlineData(1)]
+    public async Task ShouldGetShowById(long id)
+    {
+        var (result, message) = await _service.GetShowByIdAsync(id);
+
+        Assert.NotNull(result);
+        Assert.Null(message);
+    }
+
+    [Theory]
+    [InlineData(123456)]
+    public async Task ShouldFailToGetShowById(long id)
+    {
+        string errorContains = "does not exist";
+        var (result, message) = await _service.GetShowByIdAsync(id);
+
+        Assert.Null(result);
+        Assert.NotNull(message);
+
+        Assert.Contains(errorContains, message, StringComparison.InvariantCultureIgnoreCase);
+    }
+
     #endregion
 
+    #region Episodes tests
+    [Theory]
+    [InlineData(1)]
+    public async Task ShouldGetEpisodesByShowId(long id)
+    {
+        var (result, message) = await _service.GetShowEpisodes(id);
+
+        Assert.NotNull(result);
+        Assert.NotEmpty(result);
+        Assert.Null(message);
+    }
+
+    [Theory]
+    [InlineData(123456)]
+    public async Task ShouldFailToGetEpisodesByShowId(long id)
+    {
+        string errorContains = "does not exist";
+        var (result, message) = await _service.GetShowEpisodes(id);
+
+        Assert.Null(result);
+        Assert.NotNull(message);
+
+        Assert.Contains(errorContains, message, StringComparison.InvariantCultureIgnoreCase);
+    }
+    #endregion
 
     #region Reviews tests
 
