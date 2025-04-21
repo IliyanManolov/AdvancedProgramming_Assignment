@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FormInput from './inputs/FormInput';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function Register() {
@@ -15,6 +16,7 @@ function Register() {
   const [error, setError] = useState('');
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -40,6 +42,10 @@ function Register() {
       );
 
       setUserId(response.data);
+
+      setTimeout(() => {
+        navigate("/login")
+      }, 2000);
     }
     catch (err) {
       if (err.response?.status === 400) {
