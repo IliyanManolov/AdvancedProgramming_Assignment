@@ -96,7 +96,6 @@ public class UserService : IUserService
         if (user.Password != user.ConfirmPassword)
             return (null, "Passwords mismatch");
 
-
         var exists = await _userRepository.IsExistingUsernameAsync(user.Username);
 
         if (exists)
