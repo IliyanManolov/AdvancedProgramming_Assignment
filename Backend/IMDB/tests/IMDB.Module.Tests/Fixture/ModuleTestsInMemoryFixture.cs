@@ -35,3 +35,10 @@ public class BasicCollection : ICollectionFixture<ModuleTestsInMemoryFixture>
     // Intentionally empty
     // Each different collection requires such a class
 }
+
+[CollectionDefinition("NonParallelCollection", DisableParallelization = true)]
+public class SequentialCollection : ICollectionFixture<ModuleTestsInMemoryFixture>
+{
+    // Intentionally empty
+    // Each different collection requires such a class
+}

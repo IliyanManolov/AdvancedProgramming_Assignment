@@ -42,6 +42,7 @@ public static class DiHelper
         context.Users.Add(new User() { Id = 1, CreateTimeStamp = DateTime.UtcNow, FirstName = "John", LastName = "Doe", Username = "JohnDoeAccount", Role = Role.User, Email = "johndoe@imdb.com", Password = password.GetHash("password") });
         context.Users.Add(new User() { Id = 2, CreateTimeStamp = DateTime.UtcNow, FirstName = "Admin", LastName = "Account", Username = "LocalAdmin", Role = Role.Administrator, Email = "localadmin@imdb.com", Password = password.GetHash("admin") });
         context.Users.Add(new User() { Id = 3, CreateTimeStamp = DateTime.UtcNow, FirstName = "Deleted", LastName = "User", Username = "DeletedUser", Role = Role.User, Email = "deleted@imdb.com", Password = password.GetHash("deletedpassword"), IsDeleted = true });
+        context.Users.Add(new User() { Id = 4, CreateTimeStamp = DateTime.UtcNow, FirstName = "Watch", LastName = "List", Username = "WatchlistUser", Role = Role.User, Email = "watchlist@imdb.com", Password = password.GetHash("password") });
 
         var genresDict = new Dictionary<string, Genre>
         {
@@ -96,6 +97,7 @@ public static class DiHelper
         context.WatchLists.Add(new WatchList() { UserId = 1, Id = 1 });
         context.WatchLists.Add(new WatchList() { UserId = 2, Id = 2, Movies = new HashSet<Movie>() { { moviesDict["Basic"] } } });
         context.WatchLists.Add(new WatchList() { UserId = 3, Id = 3 });
+        context.WatchLists.Add(new WatchList() { UserId = 4, Id = 4 });
 
 
 
