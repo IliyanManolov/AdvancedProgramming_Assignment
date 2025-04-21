@@ -113,6 +113,8 @@ public static class DiHelper
         context.Actors.Add(new Actor() { BirthDate = DateTime.ParseExact("2002-12-12", "yyyy-MM-dd", CultureInfo.InvariantCulture), Id = 3, Biography = "Actor #3", CreatedByUserId = 2, FirstName = "Sam", LastName = "Smith", Nationality = "Bulgarian" });
 
         context.Directors.Add(new Director() { Id = 1, FirstName = "Director First Name", LastName = "Director Last Name", CreatedByUserId = 2, BirthDate = DateTime.ParseExact("2002-12-12", "yyyy-MM-dd", CultureInfo.InvariantCulture), Nationality = "Bulgarian" });
+        context.Directors.Add(new Director() { Id = 2, FirstName = "Second Director First Name", LastName = "Second Director Last Name", CreatedByUserId = 2, BirthDate = DateTime.ParseExact("2002-12-12", "yyyy-MM-dd", CultureInfo.InvariantCulture), Nationality = "Bulgarian" });
+        context.Directors.Add(new Director() { Id = 3, FirstName = "Third Director First Name", LastName = "Third Director Last Name", CreatedByUserId = 2, BirthDate = DateTime.ParseExact("2002-12-12", "yyyy-MM-dd", CultureInfo.InvariantCulture), Nationality = "Bulgarian" });
 
         context.SaveChanges();
     }
