@@ -47,7 +47,11 @@ public static partial class ObservabilityConfiguration
                 .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
                 .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning);
 
-            if (options?.Logging?.OpenSearchConfiguration != null)
+            if (options?.Logging?.OpenSearchConfiguration != null
+                && !string.IsNullOrEmpty(options.Logging.OpenSearchConfiguration.ConnectionUrl)
+                && !string.IsNullOrEmpty(options.Logging.OpenSearchConfiguration.Index)
+                && !string.IsNullOrEmpty(options.Logging.OpenSearchConfiguration.User)
+                && !string.IsNullOrEmpty(options.Logging.OpenSearchConfiguration.Password))
             {
                 var sink = new OpenSearchBatchingSink(options.Logging.OpenSearchConfiguration, new JsonLogFormatter());
                 var batchinOptions = new PeriodicBatchingSinkOptions()
